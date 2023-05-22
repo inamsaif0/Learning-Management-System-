@@ -11,9 +11,11 @@ import logout from './assets/logout.png';
 // Menu
 import menu from './assets/menu.png';
 import close from './assets/close.png';
+import { useNavigation } from '@react-navigation/native';
 
 // Photo
 import photo from './assets/photo.jpg';
+import { ScrollView } from 'native-base';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState("Home");
@@ -27,7 +29,9 @@ export default function App() {
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
 
+
   return (
+
     <SafeAreaView style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15 }}>
@@ -146,23 +150,58 @@ export default function App() {
             color: 'black',
             paddingTop: 20
           }}>{currentTab}</Text>
+          <ScrollView>
+            <Image source={photo} style={{
+              width: '100%',
+              height: 300,
+              borderRadius: 15,
+              marginTop: 25
+            }}></Image>
 
-          <Image source={photo} style={{
-            width: '100%',
-            height: 300,
-            borderRadius: 15,
-            marginTop: 25
-          }}></Image>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold'
+              , paddingTop: 15,
+              paddingBottom: 5
+            }}>Padma</Text>
 
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold'
-            , paddingTop: 15,
-            paddingBottom: 5
-          }}>Jenna Ezarik</Text>
+            <Text style={{
+            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
 
-          <Text style={{
-          }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
+            <Image source={profile} style={{
+              width: '100%',
+              height: 300,
+              borderRadius: 15,
+              marginTop: 25
+            }}></Image>
+
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold'
+              , paddingTop: 15,
+              paddingBottom: 5
+            }}>Muskan</Text>
+
+            <Text style={{
+            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
+
+<Image source={photo} style={{
+              width: '100%',
+              height: 300,
+              borderRadius: 15,
+              marginTop: 25
+            }}></Image>
+
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold'
+              , paddingTop: 15,
+              paddingBottom: 5
+            }}>Padma</Text>
+
+            <Text style={{
+            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
+          </ScrollView>
         </Animated.View>
 
       </Animated.View>
@@ -173,11 +212,13 @@ export default function App() {
 
 // For multiple Buttons...
 const TabButton = (currentTab, setCurrentTab, title, image) => {
+  const navigation = useNavigation();
+
   return (
 
     <TouchableOpacity onPress={() => {
       if (title == "LogOut") {
-        // Do your Stuff...
+        navigation.navigate('Login')
       } else {
         setCurrentTab(title)
       }
