@@ -75,7 +75,7 @@ export default function Login() {
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
             <ImageBackground source={require('./assets/back.jpg')}
-                style={{ height: Dimensions.get('window').height / 2.5, opacity: 0.8 }}>
+                style={{ height: Dimensions.get('window').height / 2.5, }}>
 
                 <View style={styles.brandView}>
                     <Icon
