@@ -9,7 +9,9 @@ import { Checkbox } from 'react-native-paper';
 import { TextInput, Button, HelperText } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
+
 
 
 
@@ -21,7 +23,27 @@ export default function Login() {
     const [checked, setChecked] = React.useState(false);
     const navigation = useNavigation();
 
-
+    const [error,setError] = React.useState(false)
+    const handleLogin = async () => {
+        validateEmail();
+        validatePassword();
+        if (!emailError && !passwordError) {
+        const response = await axios.post('http://192.168.100.97:3000/login',{
+            email :  email,
+            password: password
+        })
+        if(response.data.success) {
+            console.log(response)
+            navigation.navigate('Home')
+        } 
+        else {
+            setError(true) 
+            console.log(error)}
+    }
+    }
+    // useEffect(()=>{
+    //     router.prefetch('/users/userList')
+    // },[])
     const validateEmail = () => {
         if (!email) {
             setEmailError('Email is required');
@@ -46,16 +68,16 @@ export default function Login() {
         return emailRegex.test(value);
     };
 
-    const handleLogin = () => {
-        validateEmail();
-        validatePassword();
+    // const handleLogin = () => {
+    //     validateEmail();
+    //     validatePassword();
 
-        if (!emailError && !passwordError) {
-            // Proceed with login logic here
-            console.log('Login pressed');
-            navigation.navigate('Home');
-        }
-    };
+    //     if (!emailError && !passwordError) {
+    //         // Proceed with login logic here
+    //         console.log('Login pressed');
+    //         navigation.navigate('Home');
+    //     }
+    // };
     const handleFacebookLogin = () => {
         // Handle Facebook login here
         console.log('Facebook login pressed');
@@ -91,10 +113,10 @@ export default function Login() {
                 <View style={{ padding: 40 }}>
                     <Text style={{ color: '#4632A1', fontSize: 34 }}>Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
-                        Don't have an account?
+                        Welcome to the Portal
                         <Text style={{ color: 'red', fontStyle: 'italic' }}>
                             {' '}
-                            Register now
+                            
                         </Text>
                     </Text>
                     <View style={styles.bottomPart}>

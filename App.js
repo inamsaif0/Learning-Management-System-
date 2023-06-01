@@ -6,7 +6,12 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
 import Login from './Login';
 import HomeScreen from './HomeScreen'
+import TabBarAccessoriesShowcase from './Example'
 import { NativeBaseProvider } from 'native-base';
+import Example from './Example';
+// import Music from './Music';
+// import FlatListDemo from './FlatList';
+import Listpdf from './Listpdf';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +23,10 @@ export default function App() {
       <Stack.Navigator  initialRouteName="Login" screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} ></Stack.Screen>
         <Stack.Screen name="Home" component={HomeScreen} ></Stack.Screen>
+        <Stack.Screen name="Example" component={Example} ></Stack.Screen>
+        {/* <Stack.Screen name="Music" component={Music} ></Stack.Screen> */}
+
+        {/* <Stack.Screen name='List' component={Listpdf}></Stack.Screen> */}
 
       </Stack.Navigator>
     </NavigationContainer>

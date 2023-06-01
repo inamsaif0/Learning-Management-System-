@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
-import { Animated, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import profile from './assets/profile.png';
 // Tab ICons...
 import home from './assets/home.png';
@@ -12,29 +12,37 @@ import logout from './assets/logout.png';
 import menu from './assets/menu.png';
 import close from './assets/close.png';
 import { useNavigation } from '@react-navigation/native';
-
+import { Card, Button } from 'react-native-paper';
 // Photo
 import photo from './assets/photo.jpg';
-import { ScrollView } from 'native-base';
+import { ScrollView, Stack } from 'native-base';
+import Example from './Example';
+import doc from './assets/doc.png'
+import audio from './assets/audio.png'
+
+import music from './assets/music.png';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState("Home");
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
-
+  const navigationtodraw =  useNavigation();
   // Animated Properties...
 
   const offsetValue = useRef(new Animated.Value(0)).current;
   // Scale Intially must be One...
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
+  const handleClick = () => {
+    setCurrentTab('Toptab');
+  }
 
 
   return (
 
     <SafeAreaView style={styles.container}>
 
-      <View style={{ justifyContent: 'flex-start', padding: 15 }}>
+      <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20 }}>
         <Image source={profile} style={{
           width: 60,
           height: 60,
@@ -76,6 +84,8 @@ export default function App() {
 
       {
         // Over lay View...
+        // main screen
+    
       }
 
       <Animated.View style={{
@@ -95,7 +105,7 @@ export default function App() {
           { translateX: offsetValue }
         ]
       }}>
-
+     
         {
           // Menu Button...
         }
@@ -124,7 +134,7 @@ export default function App() {
               .start()
 
             Animated.timing(closeButtonOffset, {
-              // YOur Random Value...
+              // Your Random Value...
               toValue: !showMenu ? -30 : 0,
               duration: 300,
               useNativeDriver: true
@@ -133,88 +143,161 @@ export default function App() {
 
             setShowMenu(!showMenu);
           }}>
+            
+              <Image source={showMenu ? close : menu} style={{
+                width: 20,
+                height: 20,
+                tintColor: 'black',
+                marginTop: 40,
 
-            <Image source={showMenu ? close : menu} style={{
-              width: 20,
-              height: 20,
-              tintColor: 'black',
-              marginTop: 40,
-
-            }}></Image>
+              }}></Image>
 
           </TouchableOpacity>
+          
+            {currentTab === "Home" ?  
+          <ScrollView style={styles.box}>
+              
+          <TouchableOpacity onPress={handleClick}>
+          <ImageBackground source={photo} style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25,
+            alignItems:'center', 
+            justifyContent:'center'
+            }}   imageStyle={{ borderRadius: 15}}
+            >
+              <Image source={doc} style={{width:'30%', height:'50%',}}></Image>
+              <Text style={{fontSize:20, color:'white', marginTop:10}}> Documents</Text>
+              </ImageBackground>
+ {/* <Card
+          style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25,
+            backgroundColor:'gray'
+          }}
+          >
+      
+        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+          <Text style={{fontSize:25}}>InamSaif</Text>
+        </Card.Content>
+      
+    
+     </Card> */}
+
+          {/* <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold'
+            , paddingTop: 15,
+            paddingBottom: 5
+          }}>Padma</Text>
 
           <Text style={{
-            fontSize: 30,
-            fontWeight: 'bold',
-            color: 'black',
-            paddingTop: 20
-          }}>{currentTab}</Text>
-          <ScrollView>
-            <Image source={photo} style={{
-              width: '100%',
-              height: 300,
-              borderRadius: 15,
-              marginTop: 25
-            }}></Image>
+          }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>*/}
+          </TouchableOpacity> 
+          <TouchableOpacity onPress={handleClick} style={{borderRadius: 15}}>
+          <ImageBackground source={photo} style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25,
+            alignItems:'center', 
+            justifyContent:'center'
+            }}   imageStyle={{ borderRadius: 15}}
+            ><Image source={music} style={{width:'40%', height:'60%',}}></Image>
+              <Text style={{fontSize:20, color:'white', marginTop:10}}>Audio</Text>
+            </ImageBackground>
+          {/* <Card
+          style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25
+          }}
+          >
+      
+        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+          <Text style={{fontSize:25}}>InamSaif</Text>
+        </Card.Content>
+      
+    
+     </Card> */}
+          </TouchableOpacity>
+          <ImageBackground source={photo} style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25,
+            alignItems:'center', 
+            justifyContent:'center'
+            }}   imageStyle={{ borderRadius: 15}}
+            ><Image source={doc} style={{width:'30%', height:'50%',}}></Image>
+              <Text style={{fontSize:20, color:'white', marginTop:10}}>Quiz</Text>
+            </ImageBackground>
+{/* 
+          <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold'
+            , paddingTop: 15,
+            paddingBottom: 5
+          }}>Muskan</Text>
 
-            <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold'
-              , paddingTop: 15,
-              paddingBottom: 5
-            }}>Padma</Text>
+          <Text style={{
+          }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text> */}
+          <TouchableOpacity onPress={handleClick}>
+        {/* <Card
+          style={{
+            width: '100%',
+            height: 210,
+            borderRadius: 15,
+            marginTop: 25
+          }}
+          >
+      
+        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+          <Text style={{fontSize:25}}>InamSaif</Text>
+        </Card.Content>
+      
+    
+     </Card> */}
+          </TouchableOpacity>
 
-            <Text style={{
-            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
+          {/* <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold'
+            , paddingTop: 15,
+            paddingBottom: 5
+          }}>Padma</Text> */}
 
-            <Image source={profile} style={{
-              width: '100%',
-              height: 300,
-              borderRadius: 15,
-              marginTop: 25
-            }}></Image>
+        </ScrollView>
+      : currentTab === "Search" ? <Text>Search</Text> 
+      : currentTab === "Notifications" ? <Text>Notification</Text> 
+      : currentTab === "Settings" ? <Text>Settings</Text> 
+      : currentTab === "Toptab" ? <View style={{height:700 }}><Example/></View>
+      : <Text>Not</Text>}
+       
+           
+       
+      
+            </Animated.View>
 
-            <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold'
-              , paddingTop: 15,
-              paddingBottom: 5
-            }}>Muskan</Text>
+    </Animated.View>
 
-            <Text style={{
-            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
-
-<Image source={photo} style={{
-              width: '100%',
-              height: 300,
-              borderRadius: 15,
-              marginTop: 25
-            }}></Image>
-
-            <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold'
-              , paddingTop: 15,
-              paddingBottom: 5
-            }}>Padma</Text>
-
-            <Text style={{
-            }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>
-          </ScrollView>
-        </Animated.View>
-
-      </Animated.View>
-
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
 
+
+
 // For multiple Buttons...
+// this is the function i can use for all the pages
 const TabButton = (currentTab, setCurrentTab, title, image) => {
   const navigation = useNavigation();
 
   return (
+
 
     <TouchableOpacity onPress={() => {
       if (title == "LogOut") {
@@ -254,8 +337,11 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5359D1',
+    backgroundColor: '#800000',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  box:{
+    display:'flex',
+  }
 });
