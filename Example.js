@@ -15,6 +15,7 @@ import FlatListDemo from './FlatList';
 import Listpdf from './Listpdf'
 import pdf from './assets/pdf.png'
 import Listaudio from './Listaudio';
+import Quiz from './Quiz';
 
 function Example() {
 
@@ -45,7 +46,6 @@ function Example() {
         <TabScreen
           label="Quiz"
           icon="lock"
-          disabled
           // style={{Color:"#800000"}}
           // optional props
           // onPressIn={() => {
@@ -55,7 +55,7 @@ function Example() {
           //   console.log('onPress explore');
           // }}
         >
-           <View style={{ backgroundColor: 'black', flex:1 }} />
+           <Quiz/>
         </TabScreen>
       </Tabs>
     )
@@ -81,16 +81,16 @@ function Recordings() {
     </View>
   );
 }
-function Quiz() {
-  const goTo = useTabNavigation();
-  const index = useTabIndex();
-  return (
-    <View style={{ flex:1 }}>
-      <Title>Explore</Title>
-      <Paragraph>Index: {index}</Paragraph>
-      <Button onPress={() => goTo(1)}>Go to Flights</Button>
-    </View>
-  );
-}
+// function Quiz() {
+//   const goTo = useTabNavigation();
+//   const index = useTabIndex();
+//   return (
+//     <View style={{ flex:1 }}>
+//       <Title>Explore</Title>
+//       <Paragraph>Index: {index}</Paragraph>
+//       <Button onPress={() => goTo(1)}>Go to Flights</Button>
+//     </View>
+//   );
+// }
 
 export default Example;

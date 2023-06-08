@@ -22,7 +22,7 @@ import audio from './assets/audio.png'
 
 import music from './assets/music.png';
 
-export default function App() {
+export default function App({navigation}) {
   const [currentTab, setCurrentTab] = useState("Home");
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
@@ -225,6 +225,8 @@ export default function App() {
     
      </Card> */}
           </TouchableOpacity>
+          <TouchableOpacity onPress={handleClick}>
+
           <ImageBackground source={photo} style={{
             width: '100%',
             height: 210,
@@ -232,10 +234,11 @@ export default function App() {
             marginTop: 25,
             alignItems:'center', 
             justifyContent:'center'
-            }}   imageStyle={{ borderRadius: 15}}
-            ><Image source={doc} style={{width:'30%', height:'50%',}}></Image>
+          }}   imageStyle={{ borderRadius: 15}}
+          ><Image source={doc} style={{width:'30%', height:'50%',}}></Image>
               <Text style={{fontSize:20, color:'white', marginTop:10}}>Quiz</Text>
             </ImageBackground>
+          </TouchableOpacity>
 {/* 
           <Text style={{
             fontSize: 20,
