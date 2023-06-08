@@ -6,8 +6,6 @@ import { Audio } from 'expo-av';
 import * as Sharing from 'expo-sharing';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 
 import {
@@ -20,10 +18,10 @@ function Item({ item, recording, recordings , index}) {
   const [isPlaying, setIsPlaying] = React.useState(false);
 
   const togglePlay = async () => {
-    if (!isPlaying ) {
+    if (!isPlaying) {
       setIsPlaying(true);
       await recordings[index].sound.replayAsync();
-    } else{
+    } else {
       setIsPlaying(false);
       await recordings[index].sound.stopAsync();
     }
@@ -158,23 +156,25 @@ export default class Listaudio extends React.Component {
   }
 
 
-  // stopRecording = async () => {
-  //   const { recording, recordings } = this.state;
-  //   this.setState({ recording: undefined });
+  stopRecording = async () => {
+    const { recording, recordings } = this.state;
+    this.setState({ recording: undefined });
 
-  //   await recording.stopAndUnloadAsync();
+    await recording.stopAndUnloadAsync();
 
-  //   let updatedRecordings = [...recordings];
-  //   const { sound, status } = await recording.createNewLoadedSoundAsync();
-  //   updatedRecordings.push({
-  //     sound: sound,
-  //     duration: this.getDurationFormatted(status.durationMillis),
-  //     file: recording.getURI()
-  //   });
-  //   console.log(updatedRecordings);
+    let updatedRecordings = [...recordings];
+    const { sound, status } = await recording.createNewLoadedSoundAsync();
+    updatedRecordings.push({
+      sound: sound,
+      duration: this.getDurationFormatted(status.durationMillis),
+      file: recording.getURI()
+    });
+    console.log(updatedRecordings);
 
-  //   this.setState({ recordings: updatedRecordings });
-  // }
+    this.setState({ recordings: updatedRecordings });
+  }
+
+
 
   getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
@@ -226,22 +226,19 @@ export default class Listaudio extends React.Component {
   
     // Convert the file to binary data
     const fileUri = recording.getURI();
-    // console.log(fileUri)
     const fileResponse = await fetch(fileUri);
     const fileBlob = await fileResponse.blob();
-    // console.log(fileBlob);
-    const token = await AsyncStorage.getItem('userId');
-    console.log(token)
   
     // Create form data object and append the file
-
+    const formData = new FormData();
+    formData.append('audioFile', fileBlob, 'recording.wav');
   
     // Send the binary data to the backend using Axios
     try {
-      const response = await axios.post(`http://192.168.100.97:3000/uploadaudio/${token}`, updatedRecordings, {
+      const response = await axios.post('http://localhost:3000/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      
+  
       // Handle the response from the backend
       console.log(response.data);
       alert('File uploaded successfully');
@@ -249,23 +246,6 @@ export default class Listaudio extends React.Component {
       console.error(error);
       alert('Failed to upload file');
     }
-    // try {
-    //   const formData = new FormData();
-    //   formData.append('file', {
-    //     uri: fileUri,
-    //     type: 'audio/mp3', // Replace with the appropriate MIME type for your file
-    //     name: 'data.mp3', // Replace with the desired filename
-    //   });
-  
-    //   const response = await axios.post('https://192.168.100.97/upload', formData);
-    //   console.log(response.data); // Handle the response as needed
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
-
-
-    
   };
 
   getDurationFormatted(millis) {
@@ -296,7 +276,21 @@ export default class Listaudio extends React.Component {
       );
     });
   }
- 
+  uploadFile = async (binaryData) => {
+    try {
+      const response = await axios.post('YOUR_BACKEND_API_URL', binaryData, {
+        headers: { 'Content-Type': 'application/octet-stream' }
+      });
+      
+      // Handle the response from the backend
+      console.log(response.data);
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to upload file');
+    }
+  }
+
   render() {
     const { message, recording } = this.state;
     return (
@@ -314,7 +308,7 @@ export default class Listaudio extends React.Component {
           renderItem={({ item, index }) => (
             <Item item={item} recording={this.state.recording} recordings={this.state.recordings} index={index} />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._key}
         />
       </View>
     );
