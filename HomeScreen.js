@@ -277,14 +277,8 @@ export default function App() {
       : currentTab === "Settings" ? <Text>Settings</Text> 
       : currentTab === "Toptab" ? <View style={{height:700 }}><Example/></View>
       : <Text>Not</Text>}
-       
-           
-       
-      
-            </Animated.View>
-
+         </Animated.View>
     </Animated.View>
-
     </SafeAreaView >
   );
 }
@@ -319,14 +313,14 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
 
         <Image source={image} style={{
           width: 25, height: 25,
-          tintColor: currentTab == title ? "#5359D1" : "white"
+          tintColor: currentTab == title ? "#800000" : "white"
         }}></Image>
 
         <Text style={{
           fontSize: 15,
           fontWeight: 'bold',
           paddingLeft: 15,
-          color: currentTab == title ? "#5359D1" : "white"
+          color: currentTab == title ? "#800000" : "white"
         }}>{title}</Text>
 
       </View>

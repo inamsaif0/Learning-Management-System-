@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'native-base';
-import { Dimensions, ImageBackground } from 'react-native';
+import { Dimensions, ImageBackground, Image } from 'react-native';
 import { StyleSheet, Text, ScrollView, ListItem } from 'react-native';
 import { Icon } from 'native-base';
 import { Checkbox } from 'react-native-paper';
@@ -9,11 +9,12 @@ import { Checkbox } from 'react-native-paper';
 import { TextInput, Button, HelperText } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
-
+import adaptiveicon from './assets/adaptive-icon.png'
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
@@ -33,6 +34,13 @@ export default function Login() {
             password: password
         })
         if(response.data.success) {
+            console.log(response.data)
+            try {
+                await AsyncStorage.setItem('userId', response.data.message._id);
+                console.log('User ID set in AsyncStorage:', response.data.message._id);
+              } catch (error) {
+                console.error('Failed to set user ID in AsyncStorage:', error);
+              }
             console.log(response)
             navigation.navigate('Home')
         } 
@@ -96,22 +104,21 @@ export default function Login() {
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
-            <ImageBackground source={require('./assets/back.jpg')}
+            <ImageBackground source={require('./assets/backgroundimage.jpg')}
                 style={{ height: Dimensions.get('window').height / 2.5, }}>
 
                 <View style={styles.brandView}>
-                    <Icon
+                    {/* <Icon
                         name="location-sharp"
                         style={{ color: "#ffff", fontSize: 100 }}
-                    />
-                    <Text style={styles.brandViewText}>
-                        OTP Mobile
-                    </Text>
+                    /> */}
+                    <Image source={adaptiveicon} style={{ height:150, width:300 }}></Image>
+
                 </View>
             </ImageBackground>
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
-                    <Text style={{ color: '#4632A1', fontSize: 34 }}>Welcome</Text>
+                    <Text style={{ fontSize: 34, color:'#800000' }} >Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
                         Welcome to the Portal
                         <Text style={{ color: 'red', fontStyle: 'italic' }}>
@@ -147,6 +154,7 @@ export default function Login() {
 
                         <View style={styles.end}>
                             <Checkbox
+                            theme={{ colors: { primary: '#800000' } }}
                                 status={checked ? 'checked' : 'unchecked'}
                                 onPress={() => {
                                     setChecked(!checked);
@@ -156,35 +164,10 @@ export default function Login() {
                             {/* <Text style={{alignSelf:'flex-end'}}>Forgot Password</Text> */}
                         </View>
                     </View>
-                    <Button mode="contained" onPress={handleLogin} style={styles.button}>
+                    <Button  onPress={handleLogin} style={styles.button} theme={{ colors: { primary: '#ffff' } }}>
                         Login
                     </Button>
-                    <View style={styles.socialButtonsContainer}>
-                        <Button
-                            mode="contained"
-                            icon={() => <FontAwesome name="facebook" size={20} style={styles.socialIcon} />}
-                            onPress={handleFacebookLogin}
-                            style={[styles.socialButton, styles.facebookButton]}
-                        >
-                        
-                        </Button>
-                        <Button
-                            mode="contained"
-                            icon={() => <FontAwesome name="twitter" size={20} style={styles.socialIcon} />}
-                            onPress={handleTwitterLogin}
-                            style={[styles.socialButton, styles.twitterButton]}
-                        >
-                            
-                        </Button>
-                        <Button
-                            mode="contained"
-                            icon={() => <FontAwesome name="instagram" size={20} style={styles.socialIcon} />}
-                            onPress={handleInstagramLogin}
-                            style={[styles.socialButton, styles.instagramButton]}
-                        >
-                            
-                        </Button>
-                    </View>
+
                 </View>
             </View>
             {/* <StatusBar style="auto" /> */}
@@ -206,7 +189,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase'
     },
     bottomView: {
-        flex: 1.5,
+        flex: 1,
         backgroundColor: '#fff',
         bottom: 50,
         borderTopStartRadius: 60,
@@ -222,6 +205,9 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
+        backgroundColor:'#800000',
+        fontColor:'#ffff',
+        marginBottom:80
     },
     bottomPart: {
         marginTop: 50,

@@ -6,8 +6,10 @@ import {
   StyleSheet ,
   SafeAreaView,
   Image,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
  } from 'react-native';
+ import { withNavigation } from 'react-navigation';
 
 const Dev_Height = Dimensions.get("window").height
 const Dev_Width = Dimensions.get("window").width
@@ -15,19 +17,27 @@ const Dev_Width = Dimensions.get("window").width
 import {AntDesign,Entypo,Feather} from "react-native-vector-icons"
 import Slider from '@react-native-community/slider';
 import ProgressCircle from 'react-native-progress-circle'
-
-export default class App extends React.Component {
+// const navigation = useNavigation();
+export default class Music extends React.Component {
+    
   render(){
+    const { navigation } = this.props;
+
+    
     return(
+        
       <SafeAreaView style={styles.contanier}>
         <View style={styles.mainbar}>
-          <AntDesign name="left" size={24} style={{marginLeft:"5%"}} />
+        <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+        <AntDesign name="left" size={24} style={{marginLeft:"5%"}}  />
+        </TouchableOpacity>
+          
           <Text style={styles.now_playing_text}> Now Playing </Text>
           <Entypo name="dots-three-horizontal" size={24} style={{marginLeft:"20%"}} />
         </View>
 
         <View style={styles.music_logo_view}>
-          <Image source={require("./assets/logo.jpg")} style={styles.image_view}/>
+          <Image source={require("./assets/music.png")} style={styles.image_view}/>
         </View>
 
         <View style={styles.name_of_song_View} >
@@ -60,7 +70,7 @@ export default class App extends React.Component {
         <View style={styles.recently_played_view}>
           <Text style={styles.recently_played_text}> Recently Played </Text>
           <View style={styles.recently_played_list}>
-            <Image source={require("./assets/logo.jpg")} style={styles.recently_played_image} />
+            <Image source={require("./assets/music.png")} style={styles.recently_played_image} />
              <View style={styles.recently_played_list_text}>
                 <Text style={styles.recently_played_list_text1}> #01 - Start With SEO </Text>
                 <Text style={styles.recently_played_list_text2}> By Setup Cast - 15: 35 </Text>
