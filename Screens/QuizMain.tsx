@@ -6,7 +6,7 @@ import postDataToServer from '../services/api'
 import End from './End';
 import Timer from '../Components/Timer';
 
-export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
+export default function QuizMain({ timer, end, navigation, updateCompleted, id }) {
 
     const [index, setIndex] = useState<number>(0);
     const [selected, setSelected] = useState({});
@@ -22,7 +22,7 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
     }, [index])
 
     function next() {
-        if (index != randomizedQuestions?.length - 1) {
+        if (index != display(id)?.length - 1) {
 
             setIndex(index + 1)
         }
@@ -40,7 +40,7 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
 
 
     function submitHandler() {
-        if (index === randomizedQuestions?.length - 1) {
+        if (index === display(id)?.length - 1) {
             setSubmit(true)
         }
 
@@ -59,67 +59,67 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
         type: string
     }
     //Beginner level Quiz
-    const test2:Itest[]=[
+    const test2: Itest[] = [
         {
             questionNumber: 1,
             question: "He _______ to school every day.",
             options: ["go", "goes", "went", "gone"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 2,
             question: "Yesterday, they _______ a delicious dinner.",
             options: ["eat", "eats", "ate", "eaten"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 3,
             question: "Sarah _______ her keys this morning.",
             options: ["lose", "loses", "lost", "losted"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 4,
             question: "We _______ a great time at the party last night.",
             options: ["have", "has", "had", "haved"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 5,
             question: "Tom _______ to the store to buy some milk in the morning",
             options: ["go", "goes", "went", "gone"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 6,
             question: "She _______ a wonderful song at the concert.",
             options: ["sing", "sings", "sang", "sung"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 7,
             question: "I _______ my phone on the bus yesterday.",
             options: ["lose", "loses", "lost", "losted"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 8,
             question: "They _______ a new car last week.",
             options: ["buy", "buys", "bought", "buyed"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 9,
             question: "The cat _______ up a tree.",
             options: ["climb", "climbs", "climbed", "clomb"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 10,
             question: "We _______ late for the meeting yesterday.",
             options: ["arrive", "arrives", "arrived", "arrivied"],
             type: "Radio"
-          }
+        }
 
     ]
     //Inter Level Quiz
@@ -130,81 +130,94 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
             question: "Can you please _______ the TV? It's too loud.",
             options: ["turn on", "turn off", "turn up", "turn down"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 2,
             question: "Sarah _______ her coat and left the room.",
             options: ["put on", "take off", "get on", "get off"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 3,
             question: "We need to _______ the meeting because the manager is sick.",
             options: ["call off", "call in", "call out", "call up"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 4,
             question: "Could you _______ the window? It's getting stuffy in here.",
             options: ["open up", "close off", "shut down", "break in"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 5,
             question: "The teacher asked the students to _______ a story about their summer vacation.",
             options: ["make up", "break up", "bring up", "set up"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 6,
             question: "I'm sorry, but I can't _______ what you're saying. Could you please repeat it?",
             options: ["make out", "make up", "put off", "put up"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 7,
             question: "They _______ a great performance at the concert last night.",
             options: ["put on", "put off", "put up", "put in"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 8,
             question: "I'm going to _______ my old clothes and donate them to charity.",
             options: ["give off", "give away", "give in", "give up"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 9,
             question: "The manager _______ the new project during the team meeting.",
             options: ["handed out", "handed over", "handed in", "handed off"],
             type: "Radio"
-          },
-          {
+        },
+        {
             questionNumber: 10,
             question: "I need to _______ this document before the deadline.",
             options: ["fill in", "fill out", "fill up", "fill off"],
             type: "Radio"
-          }
-        ];
+        }
+    ];
 
-        function shuffleArray(array:Itest[]):Itest[] {
-            for (let i = array.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-          }
+    function shuffleArray(array: Itest[]): Itest[] {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    function display(id:string):Itest[]{
+        if(id==="1")
+        {
+            return shuffleArray(test)
+
+        }
+        else if(id==="2")
+        {
+            return shuffleArray(test)
+        }
+
+    }
+
     
-          let randomizedQuestions=shuffleArray(test);
+
     const getSelected = (selected: SetStateAction<{}>) => {
         setSelected(selected);
     }
 
     function updateServer() {
-        console.log(createFinalObject(randomizedQuestions, selected))
-        postDataToServer(createFinalObject(randomizedQuestions, selected))
+        console.log(createFinalObject(display(id), selected))
+        postDataToServer(createFinalObject(display(id), selected))
         setCollect(true);
-        updateCompleted(id,false)
+        updateCompleted(id, false)
     }
 
 
@@ -212,7 +225,7 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
     function createFinalObject(questionPaper: Array<Itest>, selected: any) {
 
 
-        let finalObject = randomizedQuestions.map((id: object, index_value: number) => {
+        let finalObject = display(id).map((id: object, index_value: number) => {
             return {
                 question: questionPaper[index_value].question,
                 get answer() {
@@ -257,7 +270,7 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
 
     return (
         <>
-            {end||collect?<End navigation={navigation}/>:
+            {end || collect ? <End navigation={navigation} /> :
                 <ScrollView >
                     <StatusBar style="auto" />
                     <>
@@ -265,10 +278,10 @@ export default function QuizMain({ timer, end,navigation,updateCompleted,id }) {
                         <Answerquestions
                             collect={collect}
                             index={index}
-                            questionNumber={randomizedQuestions[index].questionNumber}
-                            question={randomizedQuestions[index].question}
-                            options={randomizedQuestions[index].options}
-                            type={randomizedQuestions[index].type}
+                            questionNumber={display(id)[index].questionNumber}
+                            question={display(id)[index].question}
+                            options={display(id)[index].options}
+                            type={display(id)[index].type}
                             getSelected={getSelected}
                         />
                         {
