@@ -63,7 +63,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
             <Text
                 style={{
                     color: "#800000",
-                    fontSize: 30,
+                    fontSize: 20,
                     paddingBottom: 30,
 
 
