@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
 import Answerquestions from '../Components/answer-questions';
 import { SetStateAction, useCallback, useEffect, useState } from 'react';
-import postDataToServer from '../services/api'
+import postDataToServer from '../services/api';
 import End from './End';
 import Timer from '../Components/Timer';
 
@@ -45,12 +45,6 @@ export default function QuizMain({ timer, end,navigation }) {
         }
 
     }
-
-
-
-
-
-
 
     interface Itest {
         questionNumber: number,
@@ -116,8 +110,6 @@ export default function QuizMain({ timer, end,navigation }) {
                             if (checks) {
                                 answerStrings.push(questionPaper[index_value].options[index])
                             }
-
-
                         }
                         )
                         return answerStrings.toString();

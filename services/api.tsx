@@ -1,4 +1,4 @@
-const apiUrl='http://192.168.1.4:3000/api';
+const apiUrl='http://192.168.100.97:3000/api';
 
 
 export default async function postDataToServer(data:object){

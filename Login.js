@@ -86,20 +86,20 @@ export default function Login() {
     //         navigation.navigate('Home');
     //     }
     // };
-    const handleFacebookLogin = () => {
-        // Handle Facebook login here
-        console.log('Facebook login pressed');
-      };
+    // const handleFacebookLogin = () => {
+    //     // Handle Facebook login here
+    //     console.log('Facebook login pressed');
+    //   };
     
-      const handleTwitterLogin = () => {
-        // Handle Twitter login here
-        console.log('Twitter login pressed');
-      };
+    //   const handleTwitterLogin = () => {
+    //     // Handle Twitter login here
+    //     console.log('Twitter login pressed');
+    //   };
     
-      const handleInstagramLogin = () => {
-        // Handle Instagram login here
-        console.log('Instagram login pressed');
-      };
+    //   const handleInstagramLogin = () => {
+    //     // Handle Instagram login here
+    //     console.log('Instagram login pressed');
+    //   };
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}

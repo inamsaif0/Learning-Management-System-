@@ -1,12 +1,12 @@
 import { View } from "react-native";
 import QuizMain from "./Screens/QuizMain";
-import Start from "./Screens/Start";
+import Start from "./screens/Start";
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { useCallback } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from "./Screens/Home";
+import Home from "./screens/Home";
 
 
 
