@@ -23,7 +23,7 @@ type ItemProps = { id: string, title: string, navigation: any, numberOfQuestions
 const Item = ({ id, title, numberOfQuestions, teacher, navigation, completed, updateCompleted }: ItemProps,) => (
 
   <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id })} disabled={!completed}>
-    <Text style={styles.title}>Hello</Text>
+   
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
     <Text style={styles.sub}>Uploaded By :{teacher}</Text>
