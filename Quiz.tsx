@@ -1,4 +1,8 @@
+import { View } from "react-native";
+import QuizMain from "./Screens/QuizMain";
 import Start from "./Screens/Start";
+import { useFonts } from 'expo-font';
+import { useCallback } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from "./Screens/Home";
