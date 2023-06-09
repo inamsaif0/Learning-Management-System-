@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   View,
@@ -7,68 +8,22 @@ import {
   Text,
   StatusBar,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
-const DATA = [
-  {
-    id:"1",
-    title:"Difficult Quiz",
-    numberOfQuestions:4,
-    teacher:"Maaz",
-    questions:{ },
-    completed:true
-  },
-  {
-    id:"2",
-    title:"Midterm Quiz",
-    numberOfQuestions:5,
-    teacher:"Ammar",
-    questions:{ },
-    completed:true
-  },
-  {
-    id:"3",
-    title:"React Quiz",
-    numberOfQuestions:7,
-    teacher:"Furqan",
-    questions:{ },
-    completed:true
-  },
-  {
-    id:"4",
-    title:"Database Quiz",
-    numberOfQuestions:4,
-    teacher:"Anam",
-    questions:{ },
-    completed:false
-  },
-  {
-    id:"5",
-    title:".Net Quiz",
-    numberOfQuestions:9,
-    teacher:"Atif",
-    questions:{ },
-    completed:false
-  },
-  {
-    id:"5",
-    title:".Angular Quiz",
-    numberOfQuestions:9,
-    teacher:"Atif",
-    questions:{ },
-    completed:false
-  },
-];
 
-type ItemProps = {title: string,navigation:any,numberOfQuestions:number,teacher:string,completed:boolean};
 
-const Item = ({title,numberOfQuestions,teacher,navigation,completed}: ItemProps,) => (
+
+
+type ItemProps = {id:string, title: string,navigation:any,numberOfQuestions:number,teacher:string,completed:boolean,updateCompleted:any};
+
+const Item = ({id,title,numberOfQuestions,teacher,navigation,completed,updateCompleted}: ItemProps,) => (
     
-    <Pressable style={styles.item} onPress={()=>navigation.navigate('Start')} disabled={!completed}>
+    <Pressable style={styles.item} onPress={()=>navigation.navigate('Start',{updateCompleted:updateCompleted,id:id})} disabled={!completed}>
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
     <Text style={styles.sub}>Uploaded By :{teacher}</Text>
@@ -88,11 +43,129 @@ const Item = ({title,numberOfQuestions,teacher,navigation,completed}: ItemProps,
 
 
 export default function Home ({navigation}){
+
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  useEffect(() => {
+    retrieveData();
+  }, []);
+
+  
+  const retrieveData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('DATA');
+      setIsLoading(false);
+      if (jsonValue !== null) {
+        const parsedData = JSON.parse(jsonValue);
+        setData(parsedData);
+        
+         
+      } else {
+        setData(DATA)
+        console.log('No DATA found.');
+      }
+    } catch (error) {
+      console.log('Error retrieving DATA:', error);
+    }
+  };
+
+
+  const updateCompleted = (id:string, value:boolean) => {
+    const updatedData = data.map(item => {
+      if (item.id === id) {
+        return { ...item, completed: value };
+      }
+      return item;
+    });
+
+    setData(updatedData);
+    storeData(updatedData); 
+  };
+
+  const storeData = async (data:any) => {
+    try {
+      const jsonValue = JSON.stringify(data);
+      await AsyncStorage.setItem('DATA', jsonValue);
+      console.log('DATA stored successfully.');
+    } catch (error) {
+      console.log('Error storing DATA:', error);
+    }
+  };
+
+
+
+
+
+  const DATA = [
+    {
+      id:"1",
+      pk:1,
+      title:"Beginner Quiz",
+      numberOfQuestions:10,
+      teacher:"Joe",
+      questions:{ },
+      completed:true
+    },
+    {
+      id:"2",
+      pk:2,
+      title:"Intermediate Quiz",
+      numberOfQuestions:10,
+      teacher:"Hannah",
+      questions:{ },
+      completed:true
+    },
+    // {
+    //   id:"3",
+    //   title:"React Quiz",
+    //   numberOfQuestions:7,
+    //   teacher:"Furqan",
+    //   questions:{ },
+    //   completed:true
+    // },
+    // {
+    //   id:"4",
+    //   title:"Database Quiz",
+    //   numberOfQuestions:4,
+    //   teacher:"Anam",
+    //   questions:{ },
+    //   completed:false
+    // },
+    // {
+    //   id:"5",
+    //   title:".Net Quiz",
+    //   numberOfQuestions:9,
+    //   teacher:"Atif",
+    //   questions:{ },
+    //   completed:false
+    // },
+    // {
+    //   id:"5",
+    //   title:".Angular Quiz",
+    //   numberOfQuestions:9,
+    //   teacher:"Atif",
+    //   questions:{ },
+    //   completed:false
+    // },
+  ];
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="blue" />
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
-        renderItem={({item}) => <Item title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} />}
+        data={data}
+        renderItem={({item}) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
         keyExtractor={item => item.id}
         numColumns={2}
       />
@@ -113,7 +186,6 @@ const styles = StyleSheet.create({
     width:110,
     margin: 10,
     backgroundColor: '#800000',
-    fontFamily:'geo-bold',
     shadowColor:'grey',
     shadowRadius:1,
     shadowOpacity:1

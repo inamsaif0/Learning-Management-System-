@@ -21,7 +21,7 @@ function Example() {
 
     return (
       <Tabs
-      style={{backgroundColor:'white', marginTop:30, borderRadius:10}} 
+      style={{backgroundColor:'white', marginTop:5, borderRadius:10}} 
       theme={{ colors: { primary: '#800000' } }}
         // defaultIndex={0} // default = 0
         uppercase={false} // true/false | default=true | labels are uppercase

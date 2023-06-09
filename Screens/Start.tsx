@@ -3,7 +3,9 @@ import { Pressable, SafeAreaView, Text } from 'react-native'
 import QuizMain from './QuizMain'
 
 
-export default function Start({navigation}) {
+export default function Start({navigation,route}) {
+    const {updateCompleted,id}=route.params;
+
     const testTime = '1:00:00';
     function StringToTime(time: string): number {
         let timeSplit = time.split(':')
@@ -17,7 +19,7 @@ export default function Start({navigation}) {
     const [startQuiz, setStartQuiz] = useState<boolean>(false);
     const [endQuiz, setEndQuiz] = useState<boolean>(false)
 
-
+   
 
 
     useEffect(() => {
@@ -25,6 +27,7 @@ export default function Start({navigation}) {
             const timer = setTimeout(() => {
                 setStartQuiz(false)
                 setEndQuiz(true);
+                updateCompleted(id,false)
             }, StringToTime(testTime));
             console.log(timer + 'left')
 
@@ -37,7 +40,7 @@ export default function Start({navigation}) {
 
     return (
         <>
-            {endQuiz?(<QuizMain navigation={navigation} end={endQuiz} timer={testTime}/>):(startQuiz ? (<QuizMain navigation={navigation} end={false} timer={testTime} />) :
+            {endQuiz?(<QuizMain navigation={navigation} end={endQuiz} timer={testTime} updateCompleted={updateCompleted} id={id}/>):(startQuiz ? (<QuizMain navigation={navigation} end={false} timer={testTime} updateCompleted={updateCompleted} id={id} />) :
                 (<SafeAreaView
                     style={{
                         alignItems: 'center', flexDirection: 'column'
