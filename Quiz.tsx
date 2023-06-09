@@ -1,12 +1,16 @@
 import { View } from "react-native";
 import QuizMain from "./Screens/QuizMain";
+<<<<<<< HEAD
 import Start from "./screens/Start";
 import * as SplashScreen from 'expo-splash-screen';
+=======
+import Start from "./Screens/Start";
+>>>>>>> 721d209bc97e2f9878b70fb8f512ad0ebb2ef8c9
 import { useFonts } from 'expo-font';
 import { useCallback } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from "./screens/Home";
+import Home from "./Screens/Home";
 
 
 
@@ -31,21 +35,22 @@ export default function Quiz() {
   //   return null;
   // }
 
+ 
+
+
   return (
-    //<View onLayout={handleOnLayout}>
     <>
-      <NavigationContainer independent={true}>
+      <NavigationContainer independent={true} >
         <Stack.Navigator
-          screenOptions={{headerShown:false}}
+          initialRouteName="Home"
+          screenOptions={{ headerShown: false }}
         >
-          
-          <Stack.Screen name="Home" component={Home}   />
+          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Start" component={Start} />
 
         </Stack.Navigator>
       </NavigationContainer>
     </>
- //   </View>
   )
 
 }

@@ -6,7 +6,6 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  StatusBar,
   Pressable,
   ActivityIndicator,
 } from 'react-native';
@@ -19,40 +18,101 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
-type ItemProps = {id:string, title: string,navigation:any,numberOfQuestions:number,teacher:string,completed:boolean,updateCompleted:any};
+type ItemProps = { id: string, title: string, navigation: any, numberOfQuestions: number, teacher: string, completed: boolean, updateCompleted: any };
 
-const Item = ({id,title,numberOfQuestions,teacher,navigation,completed,updateCompleted}: ItemProps,) => (
-    
-    <Pressable style={styles.item} onPress={()=>navigation.navigate('Start',{updateCompleted:updateCompleted,id:id})} disabled={!completed}>
+const Item = ({ id, title, numberOfQuestions, teacher, navigation, completed, updateCompleted }: ItemProps,) => (
+
+  <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id })} disabled={!completed}>
+    <Text style={styles.title}>Hello</Text>
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
     <Text style={styles.sub}>Uploaded By :{teacher}</Text>
     <Text style={styles.sub}>Time: 1 Hour</Text>
     {
-        completed?
+      completed ?
 
-        <Ionicons style={styles.icon} name="md-play-circle" size={32} color="white" />:
+        <Ionicons style={styles.icon} name="md-play-circle" size={32} color="white" /> :
         <Ionicons style={styles.icon} name="md-checkmark-circle" size={32} color="white" />
 
     }
   </Pressable>
-    
+
 );
 
 
 
 
-export default function Home ({navigation}){
+export default function Home({ navigation }) {
 
-  const [data, setData] = useState([]);
+  const DATA = [
+    {
+      id: "1",
+      pk: 1,
+      title: "Beginner Quiz",
+      numberOfQuestions: 10,
+      teacher: "Joe",
+      questions: {},
+      completed: true
+    },
+    {
+      id: "2",
+      pk: 2,
+      title: "Intermediate Quiz",
+      numberOfQuestions: 10,
+      teacher: "Hannah",
+      questions: {},
+      completed: true
+    },
+    {
+      id: "3",
+      pk: 3,
+      title: "Intermediate  # 2",
+      numberOfQuestions: 10,
+      teacher: "Hannah",
+      questions: {},
+      completed: true
+    },
+    {
+      id: "4",
+      pk: 4,
+      title: "Beginner Quiz #2",
+      numberOfQuestions: 10,
+      teacher: "Hannah",
+      questions: {},
+      completed: true
+    },
+    {
+      id: "5",
+      pk: 5,
+      title: "Adjectives/Adverbs Quiz",
+      numberOfQuestions: 10,
+      teacher: "Hannah",
+      questions: {},
+      completed: true
+    },
+    {
+      id: "6",
+      pk: 6,
+      title: "Adjectives/Adverbs Quiz",
+      numberOfQuestions: 10,
+      teacher: "Hannah",
+      questions: {},
+      completed: true
+    },
+    
+    
+  ];
+
+  const [data, setData] = useState(DATA);
   const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
     retrieveData();
+   //console.log(data)
   }, []);
 
-  
+
   const retrieveData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('DATA');
@@ -60,8 +120,9 @@ export default function Home ({navigation}){
       if (jsonValue !== null) {
         const parsedData = JSON.parse(jsonValue);
         setData(parsedData);
-        
-         
+        console.log('data found')
+
+
       } else {
         setData(DATA)
         console.log('No DATA found.');
@@ -72,7 +133,7 @@ export default function Home ({navigation}){
   };
 
 
-  const updateCompleted = (id:string, value:boolean) => {
+  const updateCompleted = (id: string, value: boolean) => {
     const updatedData = data.map(item => {
       if (item.id === id) {
         return { ...item, completed: value };
@@ -81,10 +142,10 @@ export default function Home ({navigation}){
     });
 
     setData(updatedData);
-    storeData(updatedData); 
+    storeData(updatedData);
   };
 
-  const storeData = async (data:any) => {
+  const storeData = async (data: any) => {
     try {
       const jsonValue = JSON.stringify(data);
       await AsyncStorage.setItem('DATA', jsonValue);
@@ -98,58 +159,6 @@ export default function Home ({navigation}){
 
 
 
-  const DATA = [
-    {
-      id:"1",
-      pk:1,
-      title:"Beginner Quiz",
-      numberOfQuestions:10,
-      teacher:"Joe",
-      questions:{ },
-      completed:true
-    },
-    {
-      id:"2",
-      pk:2,
-      title:"Intermediate Quiz",
-      numberOfQuestions:10,
-      teacher:"Hannah",
-      questions:{ },
-      completed:true
-    },
-    // {
-    //   id:"3",
-    //   title:"React Quiz",
-    //   numberOfQuestions:7,
-    //   teacher:"Furqan",
-    //   questions:{ },
-    //   completed:true
-    // },
-    // {
-    //   id:"4",
-    //   title:"Database Quiz",
-    //   numberOfQuestions:4,
-    //   teacher:"Anam",
-    //   questions:{ },
-    //   completed:false
-    // },
-    // {
-    //   id:"5",
-    //   title:".Net Quiz",
-    //   numberOfQuestions:9,
-    //   teacher:"Atif",
-    //   questions:{ },
-    //   completed:false
-    // },
-    // {
-    //   id:"5",
-    //   title:".Angular Quiz",
-    //   numberOfQuestions:9,
-    //   teacher:"Atif",
-    //   questions:{ },
-    //   completed:false
-    // },
-  ];
 
   if (isLoading) {
     return (
@@ -165,7 +174,7 @@ export default function Home ({navigation}){
     <SafeAreaView style={styles.container}>
       <FlatList
         data={data}
-        renderItem={({item}) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
+        renderItem={({ item }) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
         keyExtractor={item => item.id}
         numColumns={2}
       />
@@ -175,36 +184,36 @@ export default function Home ({navigation}){
 
 const styles = StyleSheet.create({
   container: {
-    height:'100%'
-   
+    height: '100%'
+
   },
   item: {
-    borderRadius:20,
-    padding:15,
+    borderRadius: 20,
+    padding: 15,
     flex: 1,
-    height:180,
-    width:110,
+    height: 180,
+    width: 110,
     margin: 10,
     backgroundColor: '#800000',
-    shadowColor:'grey',
-    shadowRadius:1,
-    shadowOpacity:1
-   
+    shadowColor: 'grey',
+    shadowRadius: 1,
+    shadowOpacity: 1
+
   },
   title: {
     fontSize: 20,
-    color:'white',
-    paddingBottom:30
+    color: 'white',
+    paddingBottom: 30
   },
-  sub:{
-    color:'rgba(255,255,255,0.8)',
-    fontSize:14
-    
+  sub: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 14
+
   },
-  icon:{
-    position:'absolute',
-    bottom:10,
-    right:10,
+  icon: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
   }
 });
 
