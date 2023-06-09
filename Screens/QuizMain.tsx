@@ -280,8 +280,11 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
                 <ScrollView >
                     <StatusBar style="auto" />
                     <>
+                    <View style={{}}>
+
                         <Timer time={timer} />
-                        <Text>Current Score={score}/{shuffle.length}</Text>
+                    </View>
+                        <Text style={{textAlign:"center",color:'grey',fontWeight:'400'}}>Current Score {score} out of {shuffle.length}</Text>
                         <Answerquestions
                             collect={collect}
                             index={index}

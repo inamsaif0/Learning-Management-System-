@@ -108,8 +108,8 @@ export default function Home({ navigation }) {
 
 
   useEffect(() => {
+    storeData(data)
     retrieveData();
-   //console.log(data)
   }, []);
 
 
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: 'white',
-    paddingBottom: 30
+    paddingBottom: 10
   },
   sub: {
     color: 'rgba(255,255,255,0.8)',
