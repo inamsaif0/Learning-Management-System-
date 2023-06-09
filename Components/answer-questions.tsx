@@ -9,6 +9,8 @@ export type questionProps = {
     options: Array<string>;
     type: string;
     getSelected: (selected: any) => void;
+    getScore: (score: any) => void;
+    answer:string
 };
 
 
@@ -17,19 +19,17 @@ export type questionProps = {
 const Answerquestions: FC<questionProps> = (props): JSX.Element => {
     const tempArray:Array<boolean>=Array(props.options.length).fill(false)
 
-    const [value, onChangeText] = React.useState('Please enter your answer here');
 
-    const [selectIndex, setSelectIndex] = useState<number>(null)
 
     const [selected, setSelected] = useState({});
-    const [score, setScore] = useState({});
+    const [score, setScore] = useState(0);
 
     const [isEnabled, setIsEnabled] = useState<boolean[]>([...tempArray]);
     const toggleSwitch = (i:number) => {
         const updateCheck:Array<boolean>=[...isEnabled]
         updateCheck[i]=!updateCheck[i]
-        console.log(i);
-        console.log(isEnabled)
+        //console.log(i);
+        //console.log(isEnabled)
         setIsEnabled(updateCheck);
         setSelected({...selected,[props.index]:[...isEnabled]})
     }
@@ -44,6 +44,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
         }
         else {
             props.getSelected(selected)
+            props.getScore(score)
 
 
         }
@@ -52,6 +53,11 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
 
     const handleNext = async (selectedAns: any) => {
         setSelected({ ...selected, [props.index]: selectedAns });
+        if(props.options[selectedAns]===props.answer)
+        {
+            console.log("Correct answer")
+            setScore(score+1)
+        }
 
     }
 
