@@ -458,7 +458,7 @@ const test6:Itest[]=[
 
 
 export default function Start({ navigation, route }) {
-    const { updateCompleted, id } = route.params;
+    const { updateCompleted, id ,completed} = route.params;
 
     const testTime = '1:00:00';
     function StringToTime(time: string): number {

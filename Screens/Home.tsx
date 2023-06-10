@@ -22,7 +22,7 @@ type ItemProps = { id: string, title: string, navigation: any, numberOfQuestions
 
 const Item = ({ id, title, numberOfQuestions, teacher, navigation, completed, updateCompleted }: ItemProps,) => (
 
-  <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id })} disabled={!completed}>
+  <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id ,completed:completed})} >
    
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
@@ -108,24 +108,23 @@ export default function Home({ navigation }) {
 
 
   useEffect(() => {
-    storeData(data)
     retrieveData();
   }, []);
 
 
   const retrieveData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('DATA');
+      const jsonValue = await AsyncStorage.getItem('DATA')
+      const parsedData = JSON.parse(jsonValue);
       setIsLoading(false);
-      if (jsonValue !== null) {
-        const parsedData = JSON.parse(jsonValue);
+      if (parsedData !== null && parsedData !== "") {   
+        console.log(jsonValue);     
         setData(parsedData);
         console.log('data found')
-
-
       } else {
         setData(DATA)
         console.log('No DATA found.');
+        storeData(DATA)
       }
     } catch (error) {
       console.log('Error retrieving DATA:', error);
