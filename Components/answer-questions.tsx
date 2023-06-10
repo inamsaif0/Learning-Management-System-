@@ -136,7 +136,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                                 borderWidth: 1,
                                 marginVertical: 10,
                                 borderRadius: 30,
-                                backgroundColor: "black",
+                                backgroundColor: "#800000",
 
 
                             } : {
