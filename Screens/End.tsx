@@ -25,21 +25,16 @@ export default function End({ navigation, pass, score, total }) {
             >
                 {pass ? (<View style={{justifyContent:"center",alignItems:"center",backgroundColor:"white",padding:30,margin:20,borderRadius:10}}>
                     {shoot ? (
-                        <ConfettiCannon count={400} origin={{ x: -10, y: -10 }} />
+                        <ConfettiCannon count={200} origin={{ x: -10, y: -10 }} />
                     ) : null}
                     <View style={{ backgroundColor: "#800000", width: 244, height: 244, borderRadius: 244 / 2, justifyContent: "center",alignItems:"center" }}>
-
-
                         <FontAwesome5 name="trophy" size={120} color="#F6C256" style={{ paddingTop: 30 }} />
-
-
-
                     </View>
                         <Text style={{ color: "black", fontSize: 30, textAlign: "center", paddingVertical: 20 }}>
                             Conratulations You Passed
                         </Text>
                         <Text style={{color:"grey"}}>
-                            Score Of {score} Out Of {total}
+                            Score {score} Out Of {total}
                         </Text>
                 </View>
                 ) :
@@ -57,7 +52,7 @@ export default function End({ navigation, pass, score, total }) {
                             Please Try Again
                         </Text>
                         <Text style={{color:"grey"}}>
-                            Score Of {score} Out Of {total}
+                            Score {score} Out Of {total}
                         </Text>
                 </View>)
                 }

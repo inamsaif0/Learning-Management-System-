@@ -460,7 +460,7 @@ const test6:Itest[]=[
 export default function Start({ navigation, route }) {
     const { updateCompleted, id ,completed} = route.params;
 
-    const testTime = '1:00:00';
+    const testTime = '0:01:00';
     function StringToTime(time: string): number {
         let timeSplit = time.split(':')
         let h = parseInt(timeSplit[0])
