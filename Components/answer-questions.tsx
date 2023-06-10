@@ -119,7 +119,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                             >
                                 {String.fromCharCode((i % 26) + 65)}
                             </Text>
-                            <Text style={(selected[props.index] != null && selected[props.index] === i) ? { marginLeft: 10, color: "white" } : { marginLeft: 10, color: "black" }}>
+                            <Text style={(props.answer===option) ? { marginLeft: 10, color: "white" } : { marginLeft: 10, color: "black" }}>
                                 {option}
                             </Text>
                             </Pressable>

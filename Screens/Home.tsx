@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
@@ -155,7 +156,10 @@ export default function Home({ navigation }) {
   };
 
 
-
+function handleRestart(){
+  setData(DATA);
+  storeData(data);
+}
 
 
 
@@ -171,6 +175,7 @@ export default function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Pressable onPress={()=>handleRestart()} style={{flexDirection:"row",justifyContent:'center',alignItems:"center",backgroundColor:"green",borderRadius:20,padding:10,margin:10}}><MaterialCommunityIcons name="restart" size={24} color="white" /><Text style={{padding:10,color:"white",fontWeight:"600"}}>Restart All Questions</Text></Pressable>
       <FlatList
         data={data}
         renderItem={({ item }) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
