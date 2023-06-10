@@ -546,7 +546,7 @@ export default function Start({ navigation, route }) {
 
     return (
         <>
-            {endQuiz ? (<QuizMain navigation={navigation} end={endQuiz} timer={testTime} updateCompleted={updateCompleted} id={id} shuffleProp={shuffle} />) : (startQuiz ? (<QuizMain navigation={navigation} end={false} timer={testTime} updateCompleted={updateCompleted} id={id} shuffleProp={shuffle} />) :
+            {endQuiz ? (<QuizMain navigation={navigation} end={endQuiz} timer={testTime} updateCompleted={updateCompleted} id={id} shuffleProp={shuffle} completed={completed}/>) : (startQuiz ? (<QuizMain navigation={navigation} end={false} timer={testTime} updateCompleted={updateCompleted} id={id} shuffleProp={shuffle} completed={completed} />) :
                 (<SafeAreaView
                     style={{
                         alignItems: 'center', flexDirection: 'column'

@@ -11,6 +11,7 @@ export type questionProps = {
     getSelected: (selected: any) => void;
     getScore: (score: any) => void;
     answer:string
+    completed:boolean
 };
 
 
@@ -80,9 +81,53 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
             {props.type === 'Radio' ?
                 props.options.map((option, i) => {
                     return (
+                        !props.completed ? (
+                            <Pressable
+                              key={i}
+                              style={
+                                props.answer === option
+                                  ? {
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      borderWidth: 1,
+                                      marginVertical: 10,
+                                      borderRadius: 30,
+                                      backgroundColor: "green",
+                                    }
+                                  : {
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      borderWidth: 1,
+                                      marginVertical: 10,
+                                      borderRadius: 30,
+                                    }
+                              }
+                            >
+                            <Text
+                                style={{
+                                    textAlign: "center",
+                                    width: 30,
+                                    height: 30,
+                                    padding: 8,
+                                    borderRadius: 15,
+                                    margin: 9,
+                                    backgroundColor: '#800000',
+                                    color: 'white',
+                                    overflow: "hidden"
+
+                                }}
+                            >
+                                {String.fromCharCode((i % 26) + 65)}
+                            </Text>
+                            <Text style={(selected[props.index] != null && selected[props.index] === i) ? { marginLeft: 10, color: "white" } : { marginLeft: 10, color: "black" }}>
+                                {option}
+                            </Text>
+                            </Pressable>
+                          ) :
                         <Pressable
                             onPress={() => handleNext(i)}
                             key={i}
+                            
                             style={(selected[props.index] != null && selected[props.index] === i) ? {
 
                                 flexDirection: "row",
@@ -99,7 +144,8 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                                 borderWidth: 1,
                                 marginVertical: 10,
                                 borderRadius: 30,
-                            }}
+                            }
+                        }
                         >
                             <Text
                                 style={{

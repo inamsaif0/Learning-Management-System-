@@ -141,7 +141,7 @@ const test: Itest[] = [
     }
 ];
 
-export default function QuizMain({ timer, end, navigation, updateCompleted, id ,shuffleProp }) {
+export default function QuizMain({ timer, end, navigation, updateCompleted, id ,shuffleProp,completed }) {
 
     const [index, setIndex] = useState<number>(0);
     const [selected, setSelected] = useState({});
@@ -295,6 +295,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
                             answer={shuffle[index].answer}
                             getSelected={getSelected}
                             getScore={getScore}
+                            completed={completed}
                         />
                         {
                             submit ?

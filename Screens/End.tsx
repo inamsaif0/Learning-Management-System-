@@ -14,7 +14,7 @@ export default function End({ navigation, pass, score, total }) {
         //Time out to fire the cannon
         setTimeout(() => {
             setShoot(true);
-        }, 100);
+        }, 10);
     }, []);
     return (
         <>
