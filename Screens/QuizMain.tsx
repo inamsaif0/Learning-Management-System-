@@ -150,6 +150,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
     const [shuffle, setShuffle] = useState(shuffleProp);
     const [score,setScore]=useState(0);
     const [pass,setPass]=useState(false);
+    
 
 
     //Beginner level Quiz
@@ -230,6 +231,12 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
         updateCompleted(id, false)
     }
 
+    useEffect(()=>{
+        if(end){
+            updateServer();
+        }
+    },[end])
+
 
 
     function createFinalObject(questionPaper: Array<Itest>, selected: any) {
@@ -284,6 +291,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
 
                         <Timer time={timer} />
                     </View>
+                        <Text style={{textAlign:"center",color:'grey',fontWeight:'400'}}><Text>Question Number : {index + 1}</Text></Text>
                         <Text style={{textAlign:"center",color:'grey',fontWeight:'400'}}>Current Score {score} out of {shuffle.length}</Text>
                         <Answerquestions
                             collect={collect}
