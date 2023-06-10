@@ -6,6 +6,7 @@ import postDataToServer from '../services/api'
 import End from './End';
 import Timer from '../Components/Timer';
 import { AntDesign } from '@expo/vector-icons';
+import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 interface Itest {
     questionNumber: number,
@@ -338,6 +339,12 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                         </Modal>:null
                                         }
                         <View style={{}}>
+                            {!completed?<Pressable style={{padding:30,justifyContent:"center",margin:10, backgroundColor:'#800000'}} onPress={()=>navigation.navigate('Home')}>
+                                <Text style={{textAlign:"center", color:"white",fontWeight:"600"}}>
+                                    Home
+                                </Text>
+
+                            </Pressable>:null}
                             {completed ?
                                 <Timer time={timer} /> : null
                             }

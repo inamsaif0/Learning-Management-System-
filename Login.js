@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import adaptiveicon from './assets/adaptive-icon.png'
+import adaptiveicon from './assets/adaptive-Icon.png'
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
