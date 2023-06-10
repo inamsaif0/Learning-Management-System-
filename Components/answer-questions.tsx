@@ -12,6 +12,7 @@ export type questionProps = {
     getScore: (score: any) => void;
     answer:string
     completed:boolean
+    end:boolean
 };
 
 
@@ -50,7 +51,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
 
         }
 
-    }, [props.index, props.collect])
+    }, [props.index, props.collect,props.end])
 
     const handleNext = async (selectedAns: any) => {
         setSelected({ ...selected, [props.index]: selectedAns });

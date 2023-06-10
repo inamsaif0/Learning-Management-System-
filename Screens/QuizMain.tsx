@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Modal } from 'react-native';
 import Answerquestions from '../Components/answer-questions';
 import { SetStateAction, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import postDataToServer from '../services/api'
 import End from './End';
 import Timer from '../Components/Timer';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Itest {
     questionNumber: number,
@@ -141,19 +142,21 @@ const test: Itest[] = [
     }
 ];
 
-export default function QuizMain({ timer, end, navigation, updateCompleted, id ,shuffleProp,completed }) {
+export default function QuizMain({ timer, end, navigation, updateCompleted, id, shuffleProp, completed }) {
 
     const [index, setIndex] = useState<number>(0);
     const [selected, setSelected] = useState({});
     const [submit, setSubmit] = useState(false);
     const [collect, setCollect] = useState(false);
     const [shuffle, setShuffle] = useState(shuffleProp);
-    const [score,setScore]=useState(0);
-    const [pass,setPass]=useState(false);
-    
+    const [score, setScore] = useState(0);
+    const [pass, setPass] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
 
-    //Beginner level Quiz
+
+
+
 
 
 
@@ -216,26 +219,22 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
         setSelected(selected);
     }
 
-    const getScore= (score: SetStateAction<number>)=>{
+    const getScore = (score: SetStateAction<number>) => {
         setScore(score)
     }
 
     function updateServer() {
-        if((score/shuffle.length)*100>40)
-        {
+        if ((score / shuffle.length) * 100 > 40) {
             setPass(true)
         }
-        console.log(createFinalObject(shuffle, selected))
-        postDataToServer(createFinalObject(shuffle, selected))
         setCollect(true);
+
+        console.log(createFinalObject(shuffle, selected))
+        // postDataToServer(createFinalObject(shuffle, selected))
         updateCompleted(id, false)
     }
 
-    useEffect(()=>{
-        if(end){
-            updateServer();
-        }
-    },[end])
+
 
 
 
@@ -272,6 +271,10 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
         return finalObject
 
     }
+    function handleModal(){
+        setSubmit(true)
+        updateServer()
+    }
 
 
 
@@ -279,20 +282,71 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
         submitHandler()
     }, [index])
 
-  
+
 
     return (
         <>
-            {end || collect ? <End navigation={navigation} pass={pass} score={score} total={shuffle.length} /> :
+            {collect && completed ? <End navigation={navigation} pass={pass} score={score} total={shuffle.length} /> :
                 <ScrollView >
                     <StatusBar style="auto" />
                     <>
-                    <View style={{}}>
+                       {!collect?
 
-                        <Timer time={timer} />
-                    </View>
-                        <Text style={{textAlign:"center",color:'grey',fontWeight:'400'}}><Text>Question Number : {index + 1}</Text></Text>
-                        <Text style={{textAlign:"center",color:'grey',fontWeight:'400'}}>Current Score {score} out of {shuffle.length}</Text>
+                           <Modal animationType='slide' transparent={true} visible={end}>
+                            <View style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginTop: 22,
+                                backgroundColor:"rgba(0,0,0,0.6)"
+                            }}>
+                                <View style={{
+                                    margin: 20,
+                                    backgroundColor: 'white',
+                                    borderRadius: 20,
+                                    padding: 35,
+                                    alignItems: 'center',
+                                    shadowColor: '#000',
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                    elevation: 5,
+                                }}>
+                                    <AntDesign name="clockcircleo" size={104} color="#800000" />
+                                    <Text style={{
+                                        fontWeight:"600",
+                                        paddingVertical:20,
+                                        marginBottom: 15,
+                                        textAlign: 'center',
+                                    }}>
+                                        Your Time Has Ended Click The Below Button To View Results
+
+                                    </Text>
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => handleModal()}>
+                                        <Text style={styles.textStyle}>Show Results</Text>
+                                    </Pressable>
+
+                                </View>
+
+                            </View>
+
+                        </Modal>:null
+                                        }
+                        <View style={{}}>
+                            {completed ?
+                                <Timer time={timer} /> : null
+                            }
+                        </View>
+                        <Text style={{ textAlign: "center", color: 'grey', fontWeight: '400' }}><Text>Question Number : {index + 1}</Text></Text>
+                        {completed ?
+                            <Text style={{ textAlign: "center", color: 'grey', fontWeight: '400' }}>Current Score {score} out of {shuffle.length}</Text> : null
+
+                        }
                         <Answerquestions
                             collect={collect}
                             index={index}
@@ -304,9 +358,10 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
                             getSelected={getSelected}
                             getScore={getScore}
                             completed={completed}
+                            end={end}
                         />
                         {
-                            submit ?
+                            submit && completed ?
                                 <View style={{ flexDirection: "row", justifyContent: "space-around", paddingTop: 10 }}>
 
 
@@ -356,6 +411,24 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id ,
 }
 
 const styles = StyleSheet.create({
-    container: {
+    
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
     },
-});
+    buttonOpen: {
+        padding:20,
+      backgroundColor: '#800000',
+    },
+    buttonClose: {
+        padding:20,
+      backgroundColor: '#800000',
+    },
+    textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    
+  });
