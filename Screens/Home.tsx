@@ -23,7 +23,7 @@ type ItemProps = { id: string, title: string, navigation: any, numberOfQuestions
 const Item = ({ id, title, numberOfQuestions, teacher, navigation, completed, updateCompleted }: ItemProps,) => (
 
   <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id })} disabled={!completed}>
-    <Text style={styles.title}>Hello</Text>
+    {/* <Text style={styles.title}>Hello</Text> */}
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
     <Text style={styles.sub}>Uploaded By :{teacher}</Text>
@@ -173,10 +173,11 @@ export default function Home({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={data}
+        data={DATA}
         renderItem={({ item }) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
         keyExtractor={item => item.id}
         numColumns={2}
+        
       />
     </SafeAreaView>
   );
@@ -184,12 +185,13 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:22,
     height: '100%'
 
   },
   item: {
     borderRadius: 20,
-    padding: 15,
+    padding: 10,
     flex: 1,
     height: 180,
     width: 110,

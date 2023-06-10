@@ -1,11 +1,8 @@
 import { View } from "react-native";
 import QuizMain from "./Screens/QuizMain";
-<<<<<<< HEAD
-import Start from "./screens/Start";
+// import Start from "./screens/Start";
 import * as SplashScreen from 'expo-splash-screen';
-=======
 import Start from "./Screens/Start";
->>>>>>> 721d209bc97e2f9878b70fb8f512ad0ebb2ef8c9
 import { useFonts } from 'expo-font';
 import { useCallback } from "react";
 import { NavigationContainer } from '@react-navigation/native';
