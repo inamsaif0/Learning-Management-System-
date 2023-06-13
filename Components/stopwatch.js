@@ -1,34 +1,37 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 
-const Stopwatch = ({start}) => {
+const Stopwatch = ({ start, pause }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const intervalRef = useRef(null);
 
-useEffect(()=>{
-    if(start){
-        startStopwatch()
+  useEffect(() => {
+    if (start && !isRunning) {
+      startStopwatch();
     }
-    else{
+    if (pause && isRunning) {
+      pauseStopwatch();
+    }
+    if(!start)
+    {
         resetStopwatch()
-
     }
-},start)
+  }, [start, pause]);
 
   const startStopwatch = () => {
-    if (isRunning) {
-      clearInterval(intervalRef.current);
-      setIsRunning(false);
-    } else {
-      const startTime = Date.now() - elapsedTime;
-      intervalRef.current = setInterval(() => {
-        const now = Date.now();
-        const updatedElapsedTime = now - startTime;
-        setElapsedTime(updatedElapsedTime);
-      }, 10);
-      setIsRunning(true);
-    }
+    const startTime = Date.now() - elapsedTime;
+    intervalRef.current = setInterval(() => {
+      const now = Date.now();
+      const updatedElapsedTime = now - startTime;
+      setElapsedTime(updatedElapsedTime);
+    }, 10);
+    setIsRunning(true);
+  };
+
+  const pauseStopwatch = () => {
+    clearInterval(intervalRef.current);
+    setIsRunning(false);
   };
 
   const resetStopwatch = () => {
@@ -41,7 +44,7 @@ useEffect(()=>{
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    const millisecondsFormatted = Math.floor(milliseconds % 1000 / 10)
+    const millisecondsFormatted = Math.floor((milliseconds % 1000) / 10)
       .toString()
       .padStart(2, '0');
 
@@ -52,11 +55,14 @@ useEffect(()=>{
 
   return (
     <View>
-      <Text style={{
-            fontSize:70,
-            paddingVertical:30
-        }}>{formatTime(elapsedTime)}</Text>
-     
+      <Text
+        style={{
+          fontSize: 70,
+          paddingVertical: 30,
+        }}
+      >
+        {formatTime(elapsedTime)}
+      </Text>
     </View>
   );
 };
