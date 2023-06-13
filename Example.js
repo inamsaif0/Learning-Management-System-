@@ -16,6 +16,7 @@ import Listpdf from './Listpdf'
 import pdf from './assets/pdf.png'
 import Listaudio from './Listaudio';
 import Quiz from './Quiz';
+import Record from './Screens/Record';
 
 function Example() {
 
@@ -41,7 +42,7 @@ function Example() {
         <TabScreen label="Audio" icon="music">
           {/* <FlatList/> */}
           {/* <FlatListDemo/> */}
-          <Listaudio />
+          <Record />
         </TabScreen>
         <TabScreen
           label="Quiz"

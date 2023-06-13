@@ -147,7 +147,7 @@ export default class Listaudio extends React.Component {
         });
 
         const { recording } = await Audio.Recording.createAsync(
-          Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
         );
 
         this.setState({ recording });
@@ -314,6 +314,7 @@ export default class Listaudio extends React.Component {
           )}
           keyExtractor={item => item._key}
         />
+        
       </View>
     );
   }
