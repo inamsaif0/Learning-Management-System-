@@ -36,24 +36,7 @@ export default function ListRecordings() {
             console.error('Error clearing AsyncStorage:', error);
         }
     };
-    const deleteObject = async (index) => {
-        try {
-          const existingArray = await AsyncStorage.getItem('RECORDING');
-          if (existingArray) {
-            const parsedArray = JSON.parse(existingArray);
-      
-            // Remove the object at the specified index
-            parsedArray.splice(index, 1);
-      
-            // Save the updated array back to AsyncStorage
-            await AsyncStorage.setItem('RECORDING', JSON.stringify(parsedArray));
-            console.log('Object deleted successfully.');
-            setRecordings(parsedArray)
-          }
-        } catch (error) {
-          console.error('Error deleting object from AsyncStorage:', error);
-        }
-      };
+    
 
     React.useEffect(() => {
       // clearAsyncStorage()
@@ -64,7 +47,7 @@ export default function ListRecordings() {
     return  (
         <ScrollView style={{backgroundColor:"#F5F2F0",paddingTop:40}}>
           {recordings.map((recording, index) => (
-            <AudioPlayer title={recording.title} audioFile={recording.audio} key={index} getActive={getActive} index={index} active={active} deleteItem={deleteObject}/>
+            <AudioPlayer title={recording.title} audioFile={recording.audio} key={index} getActive={getActive} active={active}/>
           ))}
         </ScrollView>
       );

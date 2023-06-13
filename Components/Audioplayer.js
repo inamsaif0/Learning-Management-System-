@@ -5,7 +5,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const AudioPlayer = ({ audioFile, title,getActive,index,deleteItem }) => {
+const AudioPlayer = ({ audioFile, title,getActive }) => {
   //const title="maaz"
   const [sound, setSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -147,17 +147,13 @@ const AudioPlayer = ({ audioFile, title,getActive,index,deleteItem }) => {
         </Pressable>
         {
           isPlaying ?
-          (<Pressable onPress={togglePlayback}>   
+           (<Pressable onPress={togglePlayback}>   
             <AntDesign name="pause" size={34} color="#800000" />
            </Pressable>):
             (<Pressable onPress={togglePlayback}>
             <AntDesign name="play" size={34} color="#800000" />
             </Pressable>)   
           }
-          <Pressable onPress={deleteItem(index)}>
-
-          <AntDesign name="delete" size={24} color="red" />
-          </Pressable>
         <Pressable onPress={()=>forward()}>
 
           <MaterialIcons name="forward-5" size={24} color="black" />
