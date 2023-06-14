@@ -1,0 +1,170 @@
+const express = require("express");
+const cors = require('cors')
+const mongoose = require('mongoose')
+const userList = require('./Models/userLists')
+const multer = require('multer');
+const path = require('path');
+const filesupload = require('./Models/fileupload');
+const fileupload = require("./Models/fileupload");
+// const SP = require('./Models/ServiceProvider.model')
+// const References = require('./Models/References')
+// const CompletedTransaction = require("./Models/CompletedTransactions");
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(cors());
+// const upload = multer({ dest: 'uploads/' });
+
+
+
+mongoose.connect("mongodb+srv://otp:inamsaif@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority",{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+    useNewUrlParser:true
+});()=>{
+    console.log("connected to DB") // should update
+}
+
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/');
+//   },
+//   filename: function (req, file, cb) {
+//     const ext = path.extname(file.originalname);
+//     cb(null, Date.now() + ext);
+//   }
+// });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, "upload")
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + "-" + Date.now() + ",jpg")
+    }
+  })
+}).single("file")
+// const upload = multer({ dest: "uploads/" });
+
+// app.post('/uploaddata', upload, (req, res) => {
+//     res.send('File upload')
+//   // return res.redirect("/");
+//   // File was uploaded successfully
+//   // res.send('File uploaded!');
+// });
+
+app.post('/uploadaudio/:id', upload, async (req, res) => {
+  try {
+    const documentId = req.params.id;
+    const file = req.file;
+
+    // Save the file information to the document in MongoDB
+    const document = await userList.findById(documentId);
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    document.audio.push({ file: file });
+    await document.save();
+
+    res.json({ message: 'File uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to upload file' });
+  }
+});
+
+
+// app.post('/upload', async (req, res) => {
+//   console.log('Hi')
+//   // try {
+//   //   if (!req.file) {
+//   //     return res.status(400).json({ error: 'No file uploaded' });
+//   //   }
+
+//   //   const { filename, path: filePath } = req.file;
+
+//   //   // Create a new recording document
+//   //   const recording = new fileupload({
+//   //     filename: filename,
+//   //     filepath: filePath,
+//   //   });
+
+//   //   // Save the recording to the database
+//   //   await recording.save();
+
+//   //   return res.status(200).json({ message: 'File uploaded successfully' });
+//   // } catch (error) {
+//   //   console.error(error);
+//   //   return res.status(500).json({ error: 'Failed to upload file' });
+//   // }
+// });
+
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const user = await userList.findOne({ studentId: email, password: password });
+      if (user) {
+        res.json({
+          success: true,
+          message: user
+        });
+      } else {
+        res.json({
+          success: false,
+          message: 'Invalid Email or Password'
+        });
+      }
+    } catch (err) {
+      res.json({
+        success: false,
+        message: err.message
+      });
+    }
+  });
+  
+
+  ///////////////////////////////////////////////////////////////////////
+  // app.post('/record', upload.single('audio'), (req, res) => {
+  //   const { originalname, duration, path: filePath } = req.file;
+  
+  //   // Save recording to the database
+  //   const recording = new fileupload({
+  //     name: originalname,
+  //     duration,
+  //     filePath,
+  //   });
+  
+  //   recording.save((err) => {
+  //     if (err) {
+  //       console.error('Error saving recording:', err);
+  //       res.status(500).json({ error: 'Error saving recording' });
+  //     } else {
+  //       res.status(200).json({ message: 'Recording saved successfully' });
+  //     }
+  //   });
+  // });
+  
+  // API endpoint for retrieving recordings
+  app.get('/recordings', (req, res) => {
+    Recording.find({}, (err, recordings) => {
+      if (err) {
+        console.error('Error retrieving recordings:', err);
+        res.status(500).json({ error: 'Error retrieving recordings' });
+      } else {
+        res.status(200).json(recordings);
+      }
+    });
+  });
+  
+  // Serve the uploaded files
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//
+app.listen(3000,()=>{
+    console.log("started")
+    console.log("connected to DB")
+})
+
