@@ -7,6 +7,7 @@ const multer = require('multer');
 const path = require('path');
 const filesupload = require('./Models/fileupload');
 const fileupload = require("./Models/fileupload");
+const { findDocuments,findNameByEmail } = require('./mongoGetDocs');
 // const SP = require('./Models/ServiceProvider.model')
 // const References = require('./Models/References')
 // const CompletedTransaction = require("./Models/CompletedTransactions");
@@ -48,6 +49,19 @@ mongoose.connect("mongodb+srv://otp:inamsaif@cluster0.jnbirzy.mongodb.net/?retry
 //     cb(null, Date.now() + ext);
 //   }
 // });
+
+  
+  
+
+app.get('/documents',async(req,res)=>{
+  const {email}=req.query;
+  studentName=await findNameByEmail('userlists',email) 
+  result=await findDocuments('uploadfiles', studentName);
+  res.json(result)
+
+
+
+})
 
 app.get('/audio',async(req,res)=>{
   const { email } = req.query;

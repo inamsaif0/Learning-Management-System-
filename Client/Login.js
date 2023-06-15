@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-import adaptiveicon from './assets/adaptive-icon.png'
+import adaptiveicon from './assets/adaptive-Icon.png'
 import { UserContext } from './App';
 
 export default function Login() {
@@ -27,6 +27,7 @@ export default function Login() {
     
     const [error,setError] = React.useState(false)
     const handleLogin = async () => {
+        navigation.navigate('Home')
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
@@ -47,8 +48,8 @@ export default function Login() {
             navigation.navigate(()=>'Home')
         } 
         else {
-            setUserEmail(email)
             navigation.navigate('Home')
+            setUserEmail(email)
 
             setError(true) 
             console.log(error)}
