@@ -1,3 +1,4 @@
+const AWS = require('aws-sdk');
 const express = require("express");
 const cors = require('cors')
 const mongoose = require('mongoose')
@@ -10,10 +11,22 @@ const fileupload = require("./Models/fileupload");
 // const References = require('./Models/References')
 // const CompletedTransaction = require("./Models/CompletedTransactions");
 
+
+const s3 = new AWS.S3({
+  accessKeyId: "AKIA5FUXJXFEIHM7O4FR",
+  secretAccessKey: "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",
+  region:'ap-northeast-1'
+  });
+
+  const BUCKET='otp';
+  
+
 const app = express();
-app.use(express.json());
+//app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
+app.use(express.json({limit: '25mb'}));
+app.use(express.urlencoded({limit: '25mb', extended: true}));
 // const upload = multer({ dest: 'uploads/' });
 
 
@@ -36,16 +49,65 @@ mongoose.connect("mongodb+srv://otp:inamsaif@cluster0.jnbirzy.mongodb.net/?retry
 //   }
 // });
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function(req, file, cb) {
-      cb(null, "upload")
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + "-" + Date.now() + ",jpg")
+app.get('/audio',async(req,res)=>{
+  const { email } = req.query;
+  const bucketName = 'otp-mobile';
+  const prefix = "otp-audio/"+email+"/";
+
+  try{
+    const params={
+      Bucket:bucketName,
+      Delimiter: '/',
+      Prefix: prefix
     }
-  })
-}).single("file")
+    const data = await s3.listObjects(params).promise();
+    const fileKeys = data.Contents.map(obj => obj.Key);
+    res.json(fileKeys);
+  }
+  catch (error) {
+    console.error('Error retrieving files:', error);
+    res.status(500).json({ error: 'Failed to retrieve files' });
+  }
+
+})
+const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size limit to 10MB
+
+app.post('/audio', upload.single('audio'),(req, res) => {
+  const { audio, time,email } = req.body;
+
+  const base64Data = audio.replace(/^data:audio\/(.*);base64,/, '');
+  const fileName = `audio_${time}.m4a`; // Generate a unique file name
+  const bucketName = 'otp-mobile'; // Replace with your S3 bucket name
+
+  const params = {
+    Bucket: bucketName,
+    Key: 'otp-audio/'+email+'/'+fileName,
+    Body: Buffer.from(base64Data, 'base64'),
+    ContentType: 'audio/m4a'
+  };
+
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.error('Error uploading audio file:', err);
+      res.status(500).json({ error: 'Failed to upload audio file' });
+    } else {
+      console.log('Audio file uploaded successfully:', data.Location);
+      res.json({ success: true });
+    }
+  });
+});
+
+
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination: function(req, file, cb) {
+//       cb(null, "upload")
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + "-" + Date.now() + ",jpg")
+//     }
+//   })
+// }).single("file")
 // const upload = multer({ dest: "uploads/" });
 
 // app.post('/uploaddata', upload, (req, res) => {
@@ -55,26 +117,26 @@ const upload = multer({
 //   // res.send('File uploaded!');
 // });
 
-app.post('/uploadaudio/:id', upload, async (req, res) => {
-  try {
-    const documentId = req.params.id;
-    const file = req.file;
+// app.post('/uploadaudio/:id', upload, async (req, res) => {
+//   try {
+//     const documentId = req.params.id;
+//     const file = req.file;
 
-    // Save the file information to the document in MongoDB
-    const document = await userList.findById(documentId);
-    if (!document) {
-      return res.status(404).json({ error: 'Document not found' });
-    }
+//     // Save the file information to the document in MongoDB
+//     const document = await userList.findById(documentId);
+//     if (!document) {
+//       return res.status(404).json({ error: 'Document not found' });
+//     }
 
-    document.audio.push({ file: file });
-    await document.save();
+//     document.audio.push({ file: file });
+//     await document.save();
 
-    res.json({ message: 'File uploaded successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to upload file' });
-  }
-});
+//     res.json({ message: 'File uploaded successfully' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Failed to upload file' });
+//   }
+// });
 
 
 // app.post('/upload', async (req, res) => {

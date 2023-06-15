@@ -3,16 +3,44 @@ import { Text, View, StyleSheet, Animated, Pressable, Easing } from 'react-nativ
 import { Audio } from 'expo-av';
 import Timer from '../Components/Timer';
 import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react'
+import { useState,useContext } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import Stopwatch from '../Components/stopwatch';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
+import { EmailContext } from '../Login';
+import { UserContext } from '../App';
 
+
+const sendAudioToServer = async (location,email) => {
+    try { 
+      // Read the audio file as binary data
+      const audioData = await FileSystem.readAsStringAsync(location, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      const time=new Date()
+  
+      // Send the audio file to the Node.js server
+      const response = await fetch('http://192.168.1.2:3000/audio', {
+        method: 'POST',
+        body: JSON.stringify({ audio: audioData,time:time,email:email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      console.log('Server Response:', response);
+    } catch (error) {
+      console.error('Error sending audio to server:', error);
+    }
+  };
 
 
 
 export default function Record() {
+    const email = useContext(UserContext);
+
     const navigation = useNavigation()
     const [recording, setRecording] = useState();
     const [pause, setPause] = useState();
@@ -56,6 +84,8 @@ export default function Record() {
     }
 
     async function stopRecording() {
+    try{
+
         scaleAnimation.stop()
         console.log('Stopping recording..');
         setRecording(undefined);
@@ -64,9 +94,14 @@ export default function Record() {
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
         });
+        console.log(recording)
         const uri = recording.getURI();
         setLocation(uri)
         console.log('Recording stopped and stored at', uri);
+    }
+    catch(error){
+        console.error(error)
+    }
     }
 
     async function pauseRecording() {
@@ -124,7 +159,8 @@ export default function Record() {
 
     React.useEffect(() => {
         if (location !== "") {
-            appendValue(location)
+            //appendValue(location)
+         sendAudioToServer(location,email.userEmail)
         }
     }, [location])
 
