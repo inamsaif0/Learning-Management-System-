@@ -27,7 +27,7 @@ export default function Login() {
     
     const [error,setError] = React.useState(false)
     const handleLogin = async () => {
-        navigation.navigate('Home')
+       // navigation.navigate('Home')
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
@@ -48,7 +48,7 @@ export default function Login() {
             navigation.navigate(()=>'Home')
         } 
         else {
-            navigation.navigate('Home')
+          //  navigation.navigate('Home')
             setUserEmail(email)
 
             setError(true) 

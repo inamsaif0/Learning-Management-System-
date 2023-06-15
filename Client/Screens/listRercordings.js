@@ -69,11 +69,7 @@ export default function ListRecordings() {
                           setUrls(result)
                     })
                     .then(()=>setLoading(false))
-                    .catch((error) => console.error('Error retrieving audio files:', error));
-
-                    
-                
-
+                    .catch((error) => console.error('Error retrieving audio files:', error));      
             }
             catch (error) {
                 console.error('Error getting audio from server:', error);

@@ -122,10 +122,16 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
   };
 
   const forward = () => {
-    setPlaybackPosition((playbackPosition + 5000))
+    if(playbackPosition+5000<playbackDuration){
+
+      setPlaybackPosition((playbackPosition + 5000))
+    }
   }
   const back = () => {
-    setPlaybackPosition((playbackPosition - 5000) % playbackDuration)
+    if(playbackPosition-5000>0){
+
+      setPlaybackPosition((playbackPosition - 5000))
+    }
   }
   return (
     

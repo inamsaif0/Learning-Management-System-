@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking,ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import pdf from './assets/pdf.png';
+import { UserContext } from './App';
 
 export default function Listpdf() {
+  const email = React.useContext(UserContext);
+
   const [docs, setDocs] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading,setIsloading]=useState(true)
@@ -19,7 +22,7 @@ export default function Listpdf() {
         console.log("Error getting documents", error);
       }
     }
-    getDocs("inamsaif@gmail.com");
+    getDocs(email);
   }, []);
 
   function openWebView(url) {
