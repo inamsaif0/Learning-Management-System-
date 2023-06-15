@@ -110,7 +110,7 @@ export default function Record() {
             return [];
         }
     };
-
+    // this is to append the recording in async storage so we can retrive it in future
     const appendValue = async (newValue) => {
         try {
             const existingArray = await retrieveData();
