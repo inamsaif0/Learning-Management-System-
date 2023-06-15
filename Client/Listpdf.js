@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking,ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import pdf from './assets/pdf.png';
 
 export default function Listpdf() {
   const [docs, setDocs] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isLoading,setIsloading]=useState(true)
 
   React.useEffect(() => {
     async function getDocs(email) {
       try {
-        const response = await fetch(`http://192.168.1.2:3000/documents?email=${email}`, { method: 'GET' });
+        const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' });
         const data = await response.json();
         setDocs(data);
+        setIsloading(false)
       } catch (error) {
         console.log("Error getting documents", error);
       }
@@ -23,10 +25,11 @@ export default function Listpdf() {
   function openWebView(url) {
     setSelectedItem(url);
   }
+  
 
   function renderListItem({ item }) {
     return (
-      <Pressable onPress={() => openWebView(item.fileUrl)} style={styles.listItem}>
+      <Pressable onPress={() => Linking.openURL(item.fileUrl)} style={styles.listItem}>
         <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
         <View style={{ alignItems: "center", flex: 1 }}>
           <Text style={{ fontWeight: "bold" }}>{item.filename}</Text>
@@ -34,6 +37,15 @@ export default function Listpdf() {
         </View>
       </Pressable>
     );
+  }
+
+  if(isLoading){
+    return(
+
+      <View style={{flex:1,justifyContent:'center'}}>
+      <ActivityIndicator size={'large'} color={'#800000'}/>
+    </View>
+      )
   }
 
   return (
@@ -44,14 +56,6 @@ export default function Listpdf() {
         renderItem={renderListItem}
         keyExtractor={(item) => item.filename}
       />
-
-      {selectedItem && (
-        <WebView
-          javaScriptEnabled={true}
-          source={{ uri: selectedItem }}
-          style={{ flex: 1 }}
-        />
-      )}
     </View>
   );
 }
