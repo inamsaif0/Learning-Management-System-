@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'native-base';
 import { Dimensions, ImageBackground, Image } from 'react-native';
@@ -10,11 +10,10 @@ import { TextInput, Button, HelperText } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-
-// import adaptiveicon from './assets/ad'
+import adaptiveicon from './assets/adaptive-icon.png'
+import { UserContext } from './App';
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
@@ -23,17 +22,20 @@ export default function Login() {
     const [passwordError, setPasswordError] = React.useState('');
     const [checked, setChecked] = React.useState(false);
     const navigation = useNavigation();
+    const { setUserEmail } = useContext(UserContext)
 
+    
     const [error,setError] = React.useState(false)
     const handleLogin = async () => {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-        const response = await axios.post('http://192.168.100.97:3000/login',{
+        const response = await axios.post('http://192.168.1.2:3000/login',{
             email :  email,
             password: password
         })
         if(response.data.success) {
+            setUserEmail(email)
             console.log(response.data)
             try {
                 await AsyncStorage.setItem('userId', response.data.message._id);
@@ -42,9 +44,12 @@ export default function Login() {
                 console.error('Failed to set user ID in AsyncStorage:', error);
               }
             console.log(response)
-            navigation.navigate('Home')
+            navigation.navigate(()=>'Home')
         } 
         else {
+            setUserEmail(email)
+            navigation.navigate('Home')
+
             setError(true) 
             console.log(error)}
     }
@@ -102,6 +107,7 @@ export default function Login() {
     //   };
 
     return (
+
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
             <ImageBackground source={require('./assets/backgroundimage.jpg')}
@@ -134,8 +140,8 @@ export default function Login() {
                             onBlur={validateEmail}
                             style={styles.input}
                             left={<TextInput.Icon icon="account" />}
-
-                        />
+                            
+                            />
                         <HelperText type="error" visible={!!emailError}>
                             {emailError}
                         </HelperText>
@@ -147,7 +153,7 @@ export default function Login() {
                             secureTextEntry
                             style={styles.input}
                             left={<TextInput.Icon icon="lock" />}
-                        />
+                            />
                         <HelperText type="error" visible={!!passwordError}>
                             {passwordError}
                         </HelperText>
@@ -155,10 +161,10 @@ export default function Login() {
                         <View style={styles.end}>
                             <Checkbox
                             theme={{ colors: { primary: '#800000' } }}
-                                status={checked ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                    setChecked(!checked);
-                                }}
+                            status={checked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setChecked(!checked);
+                            }}
                             />
                             <Text>Remember Me</Text>
                             {/* <Text style={{alignSelf:'flex-end'}}>Forgot Password</Text> */}

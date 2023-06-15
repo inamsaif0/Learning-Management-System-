@@ -1,4 +1,5 @@
 
+import {createContext,useState} from 'react'
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
@@ -15,16 +16,19 @@ import Listpdf from './Listpdf';
 import Recordings from './Recording';
 import ListRecordings from './Screens/listRercordings';
 import Record from './Screens/Record';
-
 const Stack = createStackNavigator();
+export const UserContext = createContext();
 
 export default function App() {
+  const [userEmail, setUserEmail] = useState('')
 
   return (
+    <UserContext.Provider value={{userEmail,setUserEmail}}>
+
     <NativeBaseProvider>
     <NavigationContainer>
-      <Stack.Navigator  initialRouteName="Home" screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="Login" component={Login} ></Stack.Screen> */}
+      <Stack.Navigator  initialRouteName="Login" screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Login" component={Login} ></Stack.Screen>
         <Stack.Screen name="Home" component={HomeScreen} ></Stack.Screen>
         <Stack.Screen name="Example" component={Example} ></Stack.Screen>
         <Stack.Screen name="MusicData" component={Music} ></Stack.Screen>
@@ -38,5 +42,6 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
     </NativeBaseProvider>
+    </UserContext.Provider>
   )
 };
