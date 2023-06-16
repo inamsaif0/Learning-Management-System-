@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-import adaptiveicon from './assets/adaptive-icon.png'
+import adaptiveicon from './assets/adaptive-Icon.png'
 import { UserContext } from './App';
 
 export default function Login({navigation}) {
@@ -29,7 +29,7 @@ export default function Login({navigation}) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-        const response = await axios.post('http://192.168.100.97:3000/login',{
+        const response = await axios.post('http://192.168.1.4:3000/login',{
             email :  email,
             password: password
         })
