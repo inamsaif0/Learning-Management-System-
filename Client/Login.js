@@ -45,7 +45,7 @@ export default function Login() {
                 console.error('Failed to set user ID in AsyncStorage:', error);
               }
             console.log(response)
-            navigation.navigate(()=>'Home')
+            navigation.navigate('Home')
         } 
         else {
           //  navigation.navigate('Home')

@@ -11,6 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import { EmailContext } from '../Login';
 import { UserContext } from '../App';
+// import * as Permissions from 'expo-permissions';
+
 
 
 const sendAudioToServer = async (location,email) => {
