@@ -13,8 +13,8 @@ export default function Listpdf() {
 
   React.useEffect(() => {
     async function getDocs(email) {
-      console.log(email)
       try {
+        console.log(email)
         const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' })
         .then((response)=>response.json())
         .then((data)=>setDocs(data))
@@ -25,7 +25,7 @@ export default function Listpdf() {
         console.log("Error getting documents", error);
       }
     }
-    getDocs(email);
+    getDocs(email.userEmail);
   }, []);
 
   function openWebView(url) {
