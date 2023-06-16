@@ -182,6 +182,7 @@ app.post('/audio', upload.single('audio'),(req, res) => {
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
+      console.log("login happening")
       const user = await userList.findOne({ studentId: email, password: password });
       if (user) {
         res.json({

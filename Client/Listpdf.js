@@ -13,11 +13,14 @@ export default function Listpdf() {
 
   React.useEffect(() => {
     async function getDocs(email) {
+      console.log(email)
       try {
-        const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' });
-        const data = await response.json();
-        setDocs(data);
-        setIsloading(false)
+        const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' })
+        .then((response)=>response.json())
+        .then((data)=>setDocs(data))
+        .then(()=>setIsloading(false))
+        .catch((error) => console.error('Error retrieving doc files:', error)); 
+        
       } catch (error) {
         console.log("Error getting documents", error);
       }
