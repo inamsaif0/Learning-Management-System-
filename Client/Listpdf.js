@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking,ActivityIndicator } from 'react-native';
+import {Modal,StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking,ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import pdf from './assets/pdf.png';
 import { UserContext } from './App';
-
+const PdfReader = ({ url: uri }) => <WebView javaScriptEnabled={true}  style={{ flex: 1 }} source={{ uri }} />
 export default function Listpdf() {
   const email = React.useContext(UserContext);
 
   const [docs, setDocs] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(false);
   const [isLoading,setIsloading]=useState(true)
 
   React.useEffect(() => {
@@ -33,15 +33,35 @@ export default function Listpdf() {
   }
   
 
+  
+
+  const [modalVisible, setModalVisible] = useState(false);
   function renderListItem({ item }) {
+
     return (
-      <Pressable onPress={() => Linking.openURL(item.fileUrl)} style={styles.listItem}>
+      <View>
+        <Modal animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+          <View>
+
+          <PdfReader url={item.fileUrl} />
+          </View>
+
+        </Modal>
+        
+      <Pressable onPress={() =>setModalVisible(true)} style={styles.listItem}>
         <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
         <View style={{ alignItems: "center", flex: 1 }}>
           <Text style={{ fontWeight: "bold" }}>{item.filename}</Text>
           <Text>{item.position}</Text>
         </View>
       </Pressable>
+      </View>
     );
   }
 

@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@config-plugins/react-native-blob-util": "^5.0.0",
+    "@config-plugins/react-native-pdf": "^5.0.0",
     "@eva-design/eva": "^2.2.0",
     "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-async-storage/async-storage": "^1.18.2",
@@ -26,10 +28,12 @@
     "expo-file-system": "^15.2.2",
     "expo-sharing": "~11.2.2",
     "expo-status-bar": "~1.4.4",
+    "fbjs": "^3.0.5",
     "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-background-gradient": "^0.0.2",
+    "react-native-blob-util": "^0.18.3",
     "react-native-confetti-cannon": "^1.5.2",
     "react-native-dropdown-picker": "3.7.1",
     "react-native-element": "^1.2.1",
@@ -40,14 +44,15 @@
     "react-native-pager-view": "6.1.2",
     "react-native-paper": "^5.8.0",
     "react-native-paper-tabs": "^0.7.0",
+    "react-native-pdf": "^6.6.2",
     "react-native-progress-circle": "^2.1.0",
     "react-native-reanimated": "^2.14.4",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-svg": "^12.5.1",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-webview": "11.26.0",
     "react-navigation": "^4.4.4",
-    "typescript": "^4.9.4",
-    "react-native-webview": "11.26.0"
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

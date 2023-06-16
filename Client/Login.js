@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React, { useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'native-base';
 import { Dimensions, ImageBackground, Image } from 'react-native';
@@ -14,7 +14,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import adaptiveicon from './assets/adaptive-Icon.png'
 import { UserContext } from './App';
 
-export default function Login({navigation}) {
+export default function Login({ navigation }) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [emailError, setEmailError] = React.useState('');
@@ -23,34 +23,35 @@ export default function Login({navigation}) {
     //const navigation = useNavigation();
     const { setUserEmail } = useContext(UserContext)
 
-    
-    const [error,setError] = React.useState(false)
+
+    const [error, setError] = React.useState(false)
     const handleLogin = async () => {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-        const response = await axios.post('http://192.168.1.4:3000/login',{
-            email :  email,
-            password: password
-        })
-        if(response.data.success) {
-            setUserEmail(email)
-            console.log(response.data)
-            try {
-                await AsyncStorage.setItem('userId', response.data.message._id);
-                console.log('User ID set in AsyncStorage:', response.data.message._id);
-              } catch (error) {
-                console.error('Failed to set user ID in AsyncStorage:', error);
-              }
-            console.log(response)
-            navigation.navigate('Home')
-        } 
-        else {
-            setUserEmail(email)
+            const response = await axios.post('http://192.168.1.4:3000/login', {
+                email: email,
+                password: password
+            })
+            if (response.data.success) {
+                setUserEmail(email)
+                console.log(response.data)
+                try {
+                    await AsyncStorage.setItem('userId', response.data.message._id);
+                    console.log('User ID set in AsyncStorage:', response.data.message._id);
+                } catch (error) {
+                    console.error('Failed to set user ID in AsyncStorage:', error);
+                }
+                console.log(response)
+                navigation.navigate('Home')
+            }
+            else {
+                setUserEmail(email)
 
-            setError(true) 
-            console.log(error)}
-    }
+                setError(true)
+                console.log(error)
+            }
+        }
     }
     // useEffect(()=>{
     //     router.prefetch('/users/userList')
@@ -93,12 +94,12 @@ export default function Login({navigation}) {
     //     // Handle Facebook login here
     //     console.log('Facebook login pressed');
     //   };
-    
+
     //   const handleTwitterLogin = () => {
     //     // Handle Twitter login here
     //     console.log('Twitter login pressed');
     //   };
-    
+
     //   const handleInstagramLogin = () => {
     //     // Handle Instagram login here
     //     console.log('Instagram login pressed');
@@ -116,18 +117,18 @@ export default function Login({navigation}) {
                         name="location-sharp"
                         style={{ color: "#ffff", fontSize: 100 }}
                     /> */}
-                    <Image source={adaptiveicon} style={{ height:150, width:300 }}></Image>
+                    <Image source={adaptiveicon} style={{ height: 150, width: 300 }}></Image>
 
                 </View>
             </ImageBackground>
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
-                    <Text style={{ fontSize: 34, color:'#800000' }} >Welcome</Text>
+                    <Text style={{ fontSize: 34, color: '#800000' }} >Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
                         Welcome to the Portal
                         <Text style={{ color: 'red', fontStyle: 'italic' }}>
                             {' '}
-                            
+
                         </Text>
                     </Text>
                     <View style={styles.bottomPart}>
@@ -138,8 +139,8 @@ export default function Login({navigation}) {
                             onBlur={validateEmail}
                             style={styles.input}
                             left={<TextInput.Icon icon="account" />}
-                            
-                            />
+
+                        />
                         <HelperText type="error" visible={!!emailError}>
                             {emailError}
                         </HelperText>
@@ -151,24 +152,27 @@ export default function Login({navigation}) {
                             secureTextEntry
                             style={styles.input}
                             left={<TextInput.Icon icon="lock" />}
-                            />
+                        />
                         <HelperText type="error" visible={!!passwordError}>
                             {passwordError}
                         </HelperText>
 
+                        {
+                            error ? (<Text style={{color:"red"}}>wrong credentials try again</Text>) : null
+                        }
                         <View style={styles.end}>
                             <Checkbox
-                            theme={{ colors: { primary: '#800000' } }}
-                            status={checked ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setChecked(!checked);
-                            }}
+                                theme={{ colors: { primary: '#800000' } }}
+                                status={checked ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setChecked(!checked);
+                                }}
                             />
                             <Text>Remember Me</Text>
                             {/* <Text style={{alignSelf:'flex-end'}}>Forgot Password</Text> */}
                         </View>
                     </View>
-                    <Button  onPress={handleLogin} style={styles.button} theme={{ colors: { primary: '#ffff' } }}>
+                    <Button onPress={handleLogin} style={styles.button} theme={{ colors: { primary: '#ffff' } }}>
                         Login
                     </Button>
 
@@ -209,9 +213,9 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        backgroundColor:'#800000',
-        fontColor:'#ffff',
-        marginBottom:80
+        backgroundColor: '#800000',
+        fontColor: '#ffff',
+        marginBottom: 80
     },
     bottomPart: {
         marginTop: 50,
@@ -223,37 +227,37 @@ const styles = StyleSheet.create({
     },
     socialButtonsContainer: {
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'space-evenly',
-        
+
         marginTop: 20,
-      },
-      socialButton: {
+    },
+    socialButton: {
         width: 40,
         marginTop: 10,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
-      },
-      socialButtonContent: {
-         // Adjust the width as per your requirement
+    },
+    socialButtonContent: {
+        // Adjust the width as per your requirement
         height: 36,
-      },
-      socialButtonLabel: {
+    },
+    socialButtonLabel: {
         fontSize: 14,
-      },
-      facebookButton: {
+    },
+    facebookButton: {
         backgroundColor: '#4267B2',
-      },
-      twitterButton: {
+    },
+    twitterButton: {
         backgroundColor: '#1DA1F2',
-      },
-      instagramButton: {
+    },
+    instagramButton: {
         backgroundColor: '#C13584',
-      },
-      socialIcon: {
+    },
+    socialIcon: {
         color: '#FFFFFF',
-        marginLeft:15
-      },
+        marginLeft: 15
+    },
 });
