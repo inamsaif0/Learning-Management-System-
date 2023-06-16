@@ -92,7 +92,8 @@ export default function ListRecordings() {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: "#F5F2F0", paddingTop: 10 }}>
+        <>
+        {/* //<SafeAreaView style={{ backgroundColor: "#F5F2F0", paddingTop: 10 }}> */}
             <Text style={{ fontSize: 45, padding: 15, fontWeight: 'bold' }}>
                 All Recordings
             </Text>
@@ -100,19 +101,20 @@ export default function ListRecordings() {
                 data={urls}
                 keyExtractor={(recording, index) => index.toString()}
                 renderItem={({ item, index }) => (
-
+                    
                     <AudioPlayer
-                        title={item.lastSection}
-                        audioFile={item.url}
-                        getActive={(isActive) => getActive(index, isActive)}
-                        index={index}
-                        active={active}
+                    title={item.lastSection}
+                    audioFile={item.url}
+                    getActive={(isActive) => getActive(index, isActive)}
+                    index={index}
+                    active={active}
+                    />
+                    
+                    )}
                     />
 
-                )}
-            />
-
-        </SafeAreaView>
+        {/* //</SafeAreaView> */}
+                    </>
     );
 }
 
