@@ -55,7 +55,7 @@ export default function ListRecordings() {
         //retrieveData()
         async function getAudio(email) {
             try {
-                const response = await fetch(`http://192.168.100.97:3000/audio?email=${email}`, { method: 'GET' })
+                const response = await fetch(`http://192.168.1.4:3000/audio?email=${email}`, { method: 'GET' })
                     .then((response) => response.json())
                     .then((data)=>{
                         const result = data.map(filePath => {

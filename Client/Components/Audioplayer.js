@@ -124,15 +124,29 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
   const forward = () => {
     if(playbackPosition+5000<playbackDuration){
 
-      setPlaybackPosition((playbackPosition + 5000))
+      handleSliderValueChange(playbackPosition+5000)
     }
   }
   const back = () => {
     if(playbackPosition-5000>0){
 
-      setPlaybackPosition((playbackPosition - 5000))
+      handleSliderValueChange(playbackPosition - 5000)
     }
   }
+
+  const handleSliderValueChange = async (value) => {
+  setPlaybackPosition(value);
+  if (sound) {
+    try{
+
+      await sound.setPositionAsync(Math.floor(value));
+    }
+    catch(error){
+      console.log("error seeking audio")
+    }
+  }
+};
+
   return (
     
     <View style={styles.container}>
@@ -164,7 +178,9 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
 
           <Slider
             value={playbackPosition}
-            onValueChange={value => setPlaybackPosition(value)}
+            onValueChange={value => 
+              handleSliderValueChange(value)
+            }
             maximumValue={playbackDuration}
             maximumTrackTintColor='gray'
             thumbTintColor='#800000'
