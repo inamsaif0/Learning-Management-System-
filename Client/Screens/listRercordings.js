@@ -97,6 +97,7 @@ export default function ListRecordings() {
                 All Recordings
             </Text>
             <FlatList
+                style={{height:640}}
                 data={urls}
                 keyExtractor={(recording, index) => index.toString()}
                 renderItem={({ item, index }) => (
