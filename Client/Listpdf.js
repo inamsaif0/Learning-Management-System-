@@ -14,7 +14,7 @@ export default function Listpdf() {
   React.useEffect(() => {
     async function getDocs(email) {
       try {
-        const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' });
+        const response = await fetch(`http://192.168.100.97:3000/documents?email=${email}`, { method: 'GET' });
         const data = await response.json();
         setDocs(data);
         setIsloading(false)
