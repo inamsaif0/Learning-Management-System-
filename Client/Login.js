@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-import adaptiveicon from './assets/adaptive-Icon.png'
+import adaptiveicon from './assets/adaptive-icon.png'
 import { UserContext } from './App';
 
 export default function Login({ navigation }) {
