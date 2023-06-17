@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-            const response = await axios.post('http://192.168.1.4:3000/login', {
+            const response = await axios.post('https://dhvkqhmb3lie1.cloudfront.net/login', {
                 email: email,
                 password: password
             })

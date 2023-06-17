@@ -1,4 +1,4 @@
-const apiUrl='http://192.168.100.97:3000/api';
+const apiUrl='https://dhvkqhmb3lie1.cloudfront.net/api';
 
 
 export default async function postDataToServer(data:object){
