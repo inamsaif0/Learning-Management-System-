@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-import adaptiveicon from './assets/adaptive-icon.png'
+import adaptiveicon from './assets/adaptive-icon_home.png'
 import { UserContext } from './App';
 
 export default function Login({ navigation }) {
@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-            const response = await axios.post('https://dhvkqhmb3lie1.cloudfront.net/login', {
+            const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
                 email: email,
                 password: password
             })
@@ -126,7 +126,7 @@ export default function Login({ navigation }) {
                     <Text style={{ fontSize: 34, color: '#800000' }} >Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
                         Welcome to the Portal
-                        <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                        <Text style={{ color: 'red' }}>
                             {' '}
 
                         </Text>
