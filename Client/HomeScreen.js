@@ -19,10 +19,12 @@ import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
 import doc from './assets/doc.png'
 import audio from './assets/audio.png'
+import {UserContext} from './App'
 
 import music from './assets/music.png';
 
 export default function App({navigation}) {
+  const email = React.useContext(UserContext);
   const [currentTab, setCurrentTab] = useState("Home");
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
@@ -43,19 +45,14 @@ export default function App({navigation}) {
     <SafeAreaView style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20 }}>
-        <Image source={profile} style={{
-          width: 60,
-          height: 60,
-          borderRadius: 10,
-          marginTop: 8
-        }}></Image>
+        
 
         <Text style={{
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: 'bold',
           color: 'white',
           marginTop: 20
-        }}>Jenna Ezarik</Text>
+        }}>{email.userEmail}</Text>
 
         <TouchableOpacity>
           <Text style={{

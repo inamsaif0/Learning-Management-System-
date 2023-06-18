@@ -216,7 +216,7 @@ export default function Record() {
                         </Text>}
             </Pressable>
                 </Animated.View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: '20', position: 'absolute', bottom: 140 }}>
+            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20, position: 'absolute', bottom: 140 }}>
                 <Pressable onPress={pause ? resumeRecording : pauseRecording}>
                     {pause ?
                         <AntDesign name="play" size={40} color="#800000" /> :
