@@ -207,7 +207,7 @@ export default function Record() {
                 <Animated.View style={{
                     transform: [{ scale: scaleValue }],
                 }}>
-            <Pressable onPress={recording ? stopRecording : startRecording} style={{ backgroundColor: '#800000', width: 200, height: 200, borderRadius: 200, justifyContent: 'center', alignItems: 'center' }}>
+            <Pressable onPress={recording ? stopRecording : startRecording} style={{ backgroundColor: '#5c0931', width: 200, height: 200, borderRadius: 200, justifyContent: 'center', alignItems: 'center' }}>
 
                     {recording ?
                         <Entypo name="controller-stop" size={44} color="white" /> :
@@ -219,8 +219,8 @@ export default function Record() {
             <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20, position: 'absolute', bottom: 140 }}>
                 <Pressable onPress={pause ? resumeRecording : pauseRecording}>
                     {pause ?
-                        <AntDesign name="play" size={40} color="#800000" /> :
-                        <AntDesign name="pausecircle" size={40} color="#800000" />
+                        <AntDesign name="play" size={40} color="#5c0931" /> :
+                        <AntDesign name="pausecircle" size={40} color="#5c0931" />
 
                     }
                 </Pressable>

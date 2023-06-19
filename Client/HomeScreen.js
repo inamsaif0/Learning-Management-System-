@@ -24,6 +24,7 @@ import music from './assets/music.png';
 
 export default function App({navigation}) {
   const [currentTab, setCurrentTab] = useState("Home");
+  const [tabId,setTabId]=useState(0);
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
   const navigationtodraw =  useNavigation();
@@ -33,7 +34,8 @@ export default function App({navigation}) {
   // Scale Intially must be One...
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
-  const handleClick = () => {
+  const handleClick = (tabId) => {
+    setTabId(tabId)
     setCurrentTab('Toptab');
   }
 
@@ -170,7 +172,7 @@ export default function App({navigation}) {
             {currentTab === "Home" ?  
           <ScrollView style={styles.box}>
               
-          <TouchableOpacity onPress={handleClick}>
+          <TouchableOpacity onPress={()=>handleClick(1)}>
           <ImageBackground source={photo} style={{
             width: '100%',
             height: 210,
@@ -210,7 +212,7 @@ export default function App({navigation}) {
           <Text style={{
           }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>*/}
           </TouchableOpacity> 
-          <TouchableOpacity onPress={handleClick} style={{borderRadius: 15}}>
+          <TouchableOpacity onPress={()=>handleClick(2)} style={{borderRadius: 15}}>
           <ImageBackground source={photo} style={{
             width: '100%',
             height: 210,
@@ -238,7 +240,7 @@ export default function App({navigation}) {
     
      </Card> */}
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleClick}>
+          <TouchableOpacity onPress={()=>handleClick(3)}>
 
           <ImageBackground source={photo} style={{
             width: '100%',
@@ -291,7 +293,7 @@ export default function App({navigation}) {
       : currentTab === "Search" ? <Text>Search</Text> 
       : currentTab === "Notifications" ? <Text>Notification</Text> 
       : currentTab === "Settings" ? <Text>Settings</Text> 
-      : currentTab === "Toptab" ? <View style={{height:700 }}><Example/></View>
+      : currentTab === "Toptab" ? <View style={{height:700 }}><Example tabId={tabId}/></View>
       : <Text>Not</Text>}
          </Animated.View>
     </Animated.View>
@@ -329,14 +331,14 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
 
         <Image source={image} style={{
           width: 25, height: 25,
-          tintColor: currentTab == title ? "#800000" : "white"
+          tintColor: currentTab == title ? "#5c0931" : "white"
         }}></Image>
 
         <Text style={{
           fontSize: 15,
           fontWeight: 'bold',
           paddingLeft: 15,
-          color: currentTab == title ? "#800000" : "white"
+          color: currentTab == title ? "#5c0931" : "white"
         }}>{title}</Text>
 
       </View>
@@ -347,7 +349,7 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#800000',
+    backgroundColor: '#5c0931',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },

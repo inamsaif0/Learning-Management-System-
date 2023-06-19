@@ -21,12 +21,12 @@ export default function App() {
 
     <NativeBaseProvider>
     <NavigationContainer>
-      <Stack.Navigator  initialRouteName="Login" screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} ></Stack.Screen>
         <Stack.Screen name="Home" component={HomeScreen} ></Stack.Screen>
         <Stack.Screen name="Example" component={Example} ></Stack.Screen>
         <Stack.Screen name="MusicData" component={Music} ></Stack.Screen>
-        <Stack.Screen name="listRecordings" component={ListRecordings} options={{headerShown: true}}></Stack.Screen>
+        <Stack.Screen name="listRecordings" component={ListRecordings} options={{headerShown: true,headerTitle:""}}></Stack.Screen>
         <Stack.Screen name="recordings" component={Record}></Stack.Screen>
         {/* <Stack.Screen name="Recordings" component={Recordings}></Stack.Screen> */}
 

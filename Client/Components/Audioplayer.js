@@ -5,7 +5,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const AudioPlayer = ({ audioFile, title, getActive,index }) => {
+const AudioPlayer = ({ audioFile, title, getActive, index, user }) => {
 
   const sliderAnimation = useState(new Animated.Value(0))[0];
 
@@ -24,10 +24,38 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
   const [playbackPosition, setPlaybackPosition] = useState(0);
   const [playbackDuration, setPlaybackDuration] = useState(0);
   const [active, setActive] = useState(null);
+  const [date,setDate]=useState();
+  const [time,setTime]=useState();
+  function Parsedate() {
+    const dateArray = title.split('_')
+    timestamp = dateArray[1].replace(".m4a", "");
 
+    
+    
+    const parsedDate = new Date(timestamp);
+    console.log(timestamp)
+    if (!isNaN(parsedDate)) {
+      const year = parsedDate.getFullYear();
+      const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(parsedDate.getDate()).padStart(2, "0");
+      const hours = String(parsedDate.getHours()).padStart(2, "0");
+      const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
+
+      const formattedTime=`${hours}:${minutes}`
+
+
+      const formattedDate = `${year}-${month}-${day}`;
+      console.log(formattedDate);
+      setDate(formattedDate)
+      setTime(formattedTime)
+    }
+
+  }
 
   useEffect(() => {
-    console.log(audioFile)
+    //console.log(audioFile)
+    Parsedate()
+
     // Load the audio file when the component mounts
     loadAudio();
 
@@ -43,13 +71,13 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
 
       if (status.isLoaded && status.isPlaying) {
         setPlaybackPosition(status.positionMillis);
-        getActive(index,true)
+        getActive(index, true)
       }
 
       if (status.isLoaded && status.positionMillis === status.durationMillis) {
         setPlaybackPosition(0);
-        setIsPlaying(!isPlaying);
-        getActive(index,false)
+        setIsPlaying(false);
+        getActive(index, false)
       }
     };
 
@@ -82,32 +110,32 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
   };
 
   const togglePlayback = async () => {
-    if(!active){
+    if (!active) {
 
       if (sound) {
         if (isPlaying) {
           await sound.pauseAsync();
         } else {
-        // Check if the playback position is at the end
-        const isAtEnd = playbackPosition === playbackDuration;
-        
-        // Reset the playback position to 0 if at the end
-        const position = isAtEnd ? 0 : playbackPosition;
-        
-        // Update the position before playing
-        await sound.setPositionAsync(position);
-        
-        await sound.playAsync();
+          // Check if the playback position is at the end
+          const isAtEnd = playbackPosition === playbackDuration;
 
-        // Call getActive with the updated isPlaying value
-        
-        
-        animateSlider(isPlaying ? 0 : 1);
+          // Reset the playback position to 0 if at the end
+          const position = isAtEnd ? 0 : playbackPosition;
+
+          // Update the position before playing
+          await sound.setPositionAsync(position);
+
+          await sound.playAsync();
+
+          // Call getActive with the updated isPlaying value
+
+
+          animateSlider(isPlaying ? 0 : 1);
+        }
+
+        // Toggle the isPlaying state
+        setIsPlaying(!isPlaying);
       }
-      
-      // Toggle the isPlaying state
-      setIsPlaying(!isPlaying);
-    }
     }
   };
 
@@ -122,38 +150,38 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
   };
 
   const forward = () => {
-    if(playbackPosition+5000<playbackDuration){
+    if (playbackPosition + 5000 < playbackDuration) {
 
-      handleSliderValueChange(playbackPosition+5000)
+      handleSliderValueChange(playbackPosition + 5000)
     }
   }
   const back = () => {
-    if(playbackPosition-5000>0){
+    if (playbackPosition - 5000 > 0) {
 
       handleSliderValueChange(playbackPosition - 5000)
     }
   }
 
   const handleSliderValueChange = async (value) => {
-  setPlaybackPosition(value);
-  if (sound) {
-    try{
+    setPlaybackPosition(value);
+    if (sound) {
+      try {
 
-      await sound.setPositionAsync(Math.floor(value));
+        await sound.setPositionAsync(Math.floor(value));
+      }
+      catch (error) {
+        console.log("error seeking audio")
+      }
     }
-    catch(error){
-      console.log("error seeking audio")
-    }
-  }
-};
+  };
 
   return (
-    
+
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
 
 
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{user}_{date} {time}_Recording</Text>
 
 
       </View>
@@ -176,16 +204,16 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
           >
 
 
-          <Slider
-            value={playbackPosition}
-            onValueChange={value => 
-              handleSliderValueChange(value)
-            }
-            maximumValue={playbackDuration}
-            maximumTrackTintColor='gray'
-            thumbTintColor='#800000'
+            <Slider
+              value={playbackPosition}
+              onValueChange={value =>
+                handleSliderValueChange(value)
+              }
+              maximumValue={playbackDuration}
+              maximumTrackTintColor='gray'
+              thumbTintColor='#5c0931'
             />
-            </Animated.View>
+          </Animated.View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.playbackText}>
               {formatTime(playbackPosition)}
@@ -207,10 +235,10 @@ const AudioPlayer = ({ audioFile, title, getActive,index }) => {
         {
           isPlaying ?
             (<Pressable onPress={togglePlayback}>
-              <AntDesign name="pause" size={34} color="#800000" />
+              <AntDesign name="pause" size={34} color="#5c0931" />
             </Pressable>) :
             (<Pressable onPress={togglePlayback}>
-              <AntDesign name="play" size={34} color="#800000" />
+              <AntDesign name="play" size={34} color="#5c0931" />
             </Pressable>)
         }
         <Pressable onPress={() => forward()}>

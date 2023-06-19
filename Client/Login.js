@@ -47,6 +47,7 @@ export default function Login({ navigation }) {
                 }
                 console.log(response)
                 navigation.navigate('Home')
+                
             }
             else {
                 if(response.data?.message==="blocked")
@@ -57,8 +58,8 @@ export default function Login({ navigation }) {
 
                     setUserEmail(email)
                     setError(true)
-                    console.log(error)
                 }
+                console.log(error)
             }
             
         }
@@ -136,7 +137,7 @@ export default function Login({ navigation }) {
                     </View>
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
-                    <Text style={{ fontSize: 34, color: '#800000' }} >Welcome</Text>
+                    <Text style={{ fontSize: 34, color: '#5c0931' }} >Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
                         Welcome to the Portal
                         <Text style={{ color: 'red' }}>
@@ -175,7 +176,7 @@ export default function Login({ navigation }) {
                         }
                         <View style={styles.end}>
                             <Checkbox
-                                theme={{ colors: { primary: '#800000' } }}
+                                theme={{ colors: { primary: '#5c0931' } }}
                                 status={checked ? 'checked' : 'unchecked'}
                                 onPress={() => {
                                     setChecked(!checked);
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        backgroundColor: '#800000',
+        backgroundColor: '#5c0931',
         fontColor: '#ffff',
         marginBottom: 80
     },

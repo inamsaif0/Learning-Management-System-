@@ -15,17 +15,18 @@ import pdf from './assets/pdf.png'
 import Quiz from './Quiz';
 import Record from './Screens/Record';
 
-function Example() {
+function Example({tabId}) {
 
     return (
       <Tabs
       style={{backgroundColor:'white', marginTop:5, borderRadius:10}} 
-      theme={{ colors: { primary: '#800000' } }}
+      theme={{ colors: { primary: '#5c0931' } }}
         uppercase={false}
         onChangeIndex={(newIndex) => {}}  
         disableSwipe={false} 
+        defaultIndex={tabId-1}
       >
-        <TabScreen label="Data" icon="file-document">
+        <TabScreen label="Content" icon="file-document">
            <Documents />
         </TabScreen>
         <TabScreen label="Audio" icon="record-rec">

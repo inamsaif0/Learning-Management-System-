@@ -560,7 +560,7 @@ export default function Start({ navigation, route }) {
                         Once You Press The Start Button The Timer Will Start
                     </Text>
                     <Pressable
-                        style={{ backgroundColor: "#800000", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
+                        style={{ backgroundColor: "#5c0931", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
                         onPress={() => handleStart()}
                     >
                         <Text

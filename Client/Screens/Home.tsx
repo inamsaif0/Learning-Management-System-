@@ -174,15 +174,15 @@ function handleRestart(){
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Pressable onPress={()=>handleRestart()} style={{flexDirection:"row",justifyContent:'center',alignItems:"center",backgroundColor:"green",borderRadius:20,padding:10,margin:10}}><MaterialCommunityIcons name="restart" size={24} color="white" /><Text style={{padding:10,color:"white",fontWeight:"600"}}>Restart All Questions</Text></Pressable>
       <FlatList
         data={data}
         renderItem={({ item }) => <Item id={item.id} title={item.title} navigation={navigation} numberOfQuestions={item.numberOfQuestions} teacher={item.teacher} completed={item.completed} updateCompleted={updateCompleted} />}
         keyExtractor={item => item.id}
         numColumns={2}
-      />
-    </SafeAreaView>
+        />
+        </>
   );
 };
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     height: 180,
     width: 110,
     margin: 10,
-    backgroundColor: '#800000',
+    backgroundColor: '#5c0931',
     shadowColor: 'grey',
     shadowRadius: 1,
     shadowOpacity: 1

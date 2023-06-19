@@ -63,7 +63,7 @@ export default function Listpdf() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <ActivityIndicator size={'large'} color={'#800000'} />
+        <ActivityIndicator size={'large'} color={'#5c0931'} />
       </View>
     );
   }
@@ -92,7 +92,7 @@ export default function Listpdf() {
             source={{ uri: selectedItemUrl }}
             style={{ flex: 1 }}
             onError={(error) => console.log(error)}
-            renderLoading={() => <ActivityIndicator style={{ flex: 1 }} size="large" color="#800000" />}
+            renderLoading={() => <ActivityIndicator style={{ flex: 1 }} size="large" color="#5c0931" />}
           />
         )}
       </Modal>
