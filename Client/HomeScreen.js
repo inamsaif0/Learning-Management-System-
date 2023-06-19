@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import profile from './assets/profile.png';
 // Tab ICons...
@@ -19,7 +19,7 @@ import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
 import doc from './assets/doc.png'
 import audio from './assets/audio.png'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import music from './assets/music.png';
 
 export default function App({navigation}) {
@@ -37,25 +37,38 @@ export default function App({navigation}) {
     setCurrentTab('Toptab');
   }
 
+  const [user,setUser] = useState('');
+
+  useEffect(()=>
+  {
+    async function startupGetter(){
+      
+      try{
+        const id=await AsyncStorage.getItem('userId').then((userid)=>setUser(userid))
+        return id
+      }
+      catch{
+        console.error('Failed to get user ID in AsyncStorage:', error);
+
+      }
+    }
+    startupGetter()
+  })
+
 
   return (
 
     <SafeAreaView style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20 }}>
-        <Image source={profile} style={{
-          width: 60,
-          height: 60,
-          borderRadius: 10,
-          marginTop: 8
-        }}></Image>
+        
 
         <Text style={{
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: 'bold',
           color: 'white',
           marginTop: 20
-        }}>Jenna Ezarik</Text>
+        }}>{user}</Text>
 
         <TouchableOpacity>
           <Text style={{

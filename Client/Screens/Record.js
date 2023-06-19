@@ -24,7 +24,7 @@ const sendAudioToServer = async (location,email) => {
       const time=new Date()
   
       // Send the audio file to the Node.js server
-      const response = await fetch('http://192.168.100.97:3000/audio', {
+      const response = await fetch('https://d7a5-3-35-175-207.ngrok-free.app/audio', {
         method: 'POST',
         body: JSON.stringify({ audio: audioData,time:time,email:email }),
         headers: {
@@ -216,7 +216,7 @@ export default function Record() {
                         </Text>}
             </Pressable>
                 </Animated.View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: '20', position: 'absolute', bottom: 140 }}>
+            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20, position: 'absolute', bottom: 140 }}>
                 <Pressable onPress={pause ? resumeRecording : pauseRecording}>
                     {pause ?
                         <AntDesign name="play" size={40} color="#800000" /> :

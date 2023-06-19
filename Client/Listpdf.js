@@ -4,19 +4,20 @@ import { WebView } from 'react-native-webview';
 import pdf from './assets/pdf.png';
 import { UserContext } from './App';
 import { AntDesign } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Listpdf() {
   const email = React.useContext(UserContext);
 
   const [docs, setDocs] = useState(null);
   const [selectedItem, setSelectedItem] = useState(false);
-  const [notPdf,setNonPdf]=useState(false);
+  const [notPdf, setNonPdf] = useState(false);
   const [isLoading, setIsloading] = useState(true)
 
   React.useEffect(() => {
     async function getDocs(email) {
       try {
         console.log(email)
-        const response = await fetch(`http://192.168.1.4:3000/documents?email=${email}`, { method: 'GET' })
+        const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/documents?email=${email}`, { method: 'GET' })
           .then((response) => response.json())
           .then((data) => setDocs(data))
           .then(() => setIsloading(false))
@@ -29,22 +30,22 @@ export default function Listpdf() {
     getDocs(email.userEmail);
   }, []);
 
-  function openWebView(url) {
-    setSelectedItem(url);
-  }
+ 
+  const webViewRef = React.useRef(null)
+  const onContentProcessDidTerminate = () => webViewRef.current?.reload()
 
-
-
+  React.useEffect(()=>{
+    console.log("trying to close")
+  },[modalVisible])
 
   const [modalVisible, setModalVisible] = useState(false);
   function renderListItem({ item }) {
-    if(!item.filename.split('.').pop()==="pdf")
-    {
+    if (!item.filename.split('.').pop() === "pdf") {
       setNonPdf(true)
     }
 
     return (
-      <View>
+      <SafeAreaView>
         <Modal animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -53,22 +54,22 @@ export default function Listpdf() {
             setModalVisible(!modalVisible);
           }}>
 
-          <Pressable style={{ padding: 20,alignItems:"flex-end" }} onPress={() => setModalVisible(false)}>
+          <Pressable style={{ padding: 20, alignItems: "flex-end" }} onPress={() => setModalVisible(false)}>
             <AntDesign name="closecircle" size={24} color="black" />
           </Pressable>
-
-
-          <WebView javaScriptEnabled={true} style={{ flex: 1 }} source={{ uri: item.fileUrl }} />
+            <WebView javaScriptEnabled={true} source={{ uri: item.fileUrl }} style={{flex:1}} ref={webViewRef} onError={(error)=>console.log(error)}
+    onContentProcessDidTerminate={onContentProcessDidTerminate}/>   
         </Modal>
-
-        <Pressable onPress={() => !notPdf?setModalVisible(true):Linking.openURL(item.fileUrl)} style={styles.listItem}>
+        <Pressable onPress={() =>{ !notPdf ? setModalVisible(true) : Linking.openURL(item.fileUrl)
+        console.log(item.fileUrl)
+        }} style={styles.listItem}>
           <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
           <View style={{ alignItems: "center", flex: 1 }}>
             <Text style={{ fontWeight: "bold" }}>{item.filename}</Text>
             <Text>{item.position}</Text>
           </View>
         </Pressable>
-      </View>
+      </SafeAreaView>
     );
   }
 
