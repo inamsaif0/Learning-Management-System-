@@ -11,7 +11,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
+<<<<<<< HEAD
+// import adaptiveicon from './assets/adaptive-Icon.png'
+// import adaptiveicon from './assets/adaptive-Icon.png'4
+import adaptiveicon from './assets/adaptive-icon.png'
+=======
 import adaptiveicon from './assets/adaptive-icon_home.png'
+>>>>>>> 51c4fefe5adc6fb1205bda6ee9d9b2f7bd17cc0c
 import { UserContext } from './App';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -30,7 +36,11 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
+<<<<<<< HEAD
+            const response = await axios.post('http://192.168.100.97:3000/login', {
+=======
             const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
+>>>>>>> 51c4fefe5adc6fb1205bda6ee9d9b2f7bd17cc0c
                 email: email,
                 password: password
             })
@@ -42,6 +52,7 @@ export default function Login({ navigation }) {
                     console.log('User ID set in AsyncStorage:', response.data.message._id);
                 } catch (error) {
                     console.error('Failed to set user ID in AsyncStorage:', error);
+                    // alert('Wrong Credentials')
                 }
                 console.log(response)
                 navigation.navigate('Home')
