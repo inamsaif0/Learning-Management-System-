@@ -19,6 +19,7 @@ import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
 import doc from './assets/doc.png'
 import audio from './assets/audio.png'
+import quiz from './assets/quiz.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import music from './assets/music.png';
 
@@ -221,7 +222,7 @@ export default function App({navigation}) {
             alignItems:'center', 
             justifyContent:'center'
             }}   imageStyle={{ borderRadius: 15}}
-            ><Image source={music} style={{width:'40%', height:'60%',}}></Image>
+            ><Image source={music} style={{width:'30%', height:'50%',}}></Image>
               <Text style={{fontSize:20, color:'white', marginTop:10}}>Audio</Text>
             </ImageBackground>
           {/* <Card
@@ -250,7 +251,7 @@ export default function App({navigation}) {
             alignItems:'center', 
             justifyContent:'center'
           }}   imageStyle={{ borderRadius: 15}}
-          ><Image source={doc} style={{width:'30%', height:'50%',}}></Image>
+          ><Image source={quiz} style={{width:'30%', height:'50%',}}></Image>
               <Text style={{fontSize:20, color:'white', marginTop:10}}>Quiz</Text>
             </ImageBackground>
           </TouchableOpacity>
