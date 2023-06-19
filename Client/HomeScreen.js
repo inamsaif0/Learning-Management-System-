@@ -293,7 +293,7 @@ export default function App({navigation}) {
       : currentTab === "Search" ? <Text>Search</Text> 
       : currentTab === "Notifications" ? <Text>Notification</Text> 
       : currentTab === "Settings" ? <Text>Settings</Text> 
-      : currentTab === "Toptab" ? <View style={{height:700 }}><Example tabId={tabId}/></View>
+      : currentTab === "Toptab" ? <View style={{height:"100%" }}><Example tabId={tabId}/></View>
       : <Text>Not</Text>}
          </Animated.View>
     </Animated.View>

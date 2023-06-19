@@ -32,11 +32,13 @@ export default function Listpdf() {
   const openModal = (itemUrl) => {
     setSelectedItemUrl(itemUrl);
     setModalVisible(true);
+
   };
 
   const closeModal = () => {
     setSelectedItemUrl(null);
     setModalVisible(false);
+    console.log('closing modal')
   };
 
   function renderListItem({ item }) {
@@ -45,7 +47,7 @@ export default function Listpdf() {
     }
 
     return (
-      <SafeAreaView>
+      <View>
         <Pressable onPress={() => {
           !notPdf ? openModal(item.fileUrl) : Linking.openURL(item.fileUrl);
           console.log(item.fileUrl);
@@ -56,7 +58,7 @@ export default function Listpdf() {
             <Text>{item.position}</Text>
           </View>
         </Pressable>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -71,7 +73,6 @@ export default function Listpdf() {
   return (
     <View style={styles.container}>
       <FlatList
-        style={{ flex: 1 }}
         data={docs}
         renderItem={renderListItem}
         keyExtractor={(item) => item.filename}
@@ -81,12 +82,12 @@ export default function Listpdf() {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={closeModal}
+        onRequestClose={()=>closeModal()}
       >
-        <Pressable style={{ padding: 20, alignItems: "flex-end" }} onPress={closeModal}>
+        <Pressable style={{ padding: 20,marginTop:20,zIndex:2, alignItems: "flex-end" }} onPress={()=>closeModal()}>
           <AntDesign name="closecircle" size={24} color="black" />
         </Pressable>
-        {selectedItemUrl && (
+        {modalVisible && (
           <WebView
             javaScriptEnabled={true}
             source={{ uri: selectedItemUrl }}
@@ -103,7 +104,7 @@ export default function Listpdf() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1.5,
+    flex: 1,
     backgroundColor: '#F7F7F7',
     marginTop: 20,
     borderRadius: 10,

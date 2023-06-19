@@ -18,13 +18,16 @@ import Record from './Screens/Record';
 function Example({tabId}) {
 
     return (
+      <>
+      
+
       <Tabs
       style={{backgroundColor:'white', marginTop:5, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
-        uppercase={false}
-        onChangeIndex={(newIndex) => {}}  
-        disableSwipe={false} 
-        defaultIndex={tabId-1}
+      uppercase={false}
+      onChangeIndex={(newIndex) => {}}  
+      disableSwipe={false} 
+      defaultIndex={tabId-1}
       >
         <TabScreen label="Content" icon="file-document">
            <Documents />
@@ -36,6 +39,8 @@ function Example({tabId}) {
            <Quiz/>
         </TabScreen>
       </Tabs>
+        </>
+    
     )
 }
 
