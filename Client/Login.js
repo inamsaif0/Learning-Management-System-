@@ -11,7 +11,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-import adaptiveicon from './assets/adaptive-Icon.png'
+// import adaptiveicon from './assets/adaptive-Icon.png'
+// import adaptiveicon from './assets/adaptive-Icon.png'4
+import adaptiveicon from './assets/adaptive-icon.png'
 import { UserContext } from './App';
 
 export default function Login({ navigation }) {
@@ -29,7 +31,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-            const response = await axios.post('http://192.168.1.4:3000/login', {
+            const response = await axios.post('http://192.168.100.97:3000/login', {
                 email: email,
                 password: password
             })
@@ -41,6 +43,7 @@ export default function Login({ navigation }) {
                     console.log('User ID set in AsyncStorage:', response.data.message._id);
                 } catch (error) {
                     console.error('Failed to set user ID in AsyncStorage:', error);
+                    // alert('Wrong Credentials')
                 }
                 console.log(response)
                 navigation.navigate('Home')
