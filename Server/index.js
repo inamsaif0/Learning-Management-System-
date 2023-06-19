@@ -184,12 +184,21 @@ app.post('/login', async (req, res) => {
     try {
       console.log("login happening")
       const user = await userList.findOne({ studentId: email, password: password });
-      if (user) {
+      console.log(user)
+      if (user.status===true) {
         res.json({
           success: true,
           message: user
         });
-      } else {
+      }
+      else if(user.status===false){
+        res.json({
+          success:false,
+          message:"blocked"
+        })
+
+      }
+      else {
         res.json({
           success: false,
           message: 'Invalid Email or Password'

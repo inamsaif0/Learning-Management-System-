@@ -21,6 +21,7 @@ export default function Login({ navigation }) {
     const [emailError, setEmailError] = React.useState('');
     const [passwordError, setPasswordError] = React.useState('');
     const [checked, setChecked] = React.useState(false);
+    const [block,setBlocker]=React.useState(false);
     //const navigation = useNavigation();
     const { setUserEmail } = useContext(UserContext)
 
@@ -30,7 +31,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-            const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
+            const response = await axios.post('http://192.168.1.4:3000/login', {
                 email: email,
                 password: password
             })
@@ -48,11 +49,18 @@ export default function Login({ navigation }) {
                 navigation.navigate('Home')
             }
             else {
-                setUserEmail(email)
+                if(response.data?.message==="blocked")
+                {
+                    setBlocker(true)
+                }
+                else{
 
-                setError(true)
-                console.log(error)
+                    setUserEmail(email)
+                    setError(true)
+                    console.log(error)
+                }
             }
+            
         }
     }
     // useEffect(()=>{
@@ -180,6 +188,9 @@ export default function Login({ navigation }) {
                     <Button onPress={handleLogin} style={styles.button} theme={{ colors: { primary: '#ffff' } }}>
                         Login
                     </Button>
+                    {
+                        block&&(<Text style={{color:'red'}}>your account has been deactivated</Text>)
+                    }
 
                 </View>
             </View>
