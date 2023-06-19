@@ -13,6 +13,7 @@ import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
 import adaptiveicon from './assets/adaptive-icon_home.png'
 import { UserContext } from './App';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Login({ navigation }) {
     const [email, setEmail] = React.useState('');
@@ -109,6 +110,8 @@ export default function Login({ navigation }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
+                <View style={{zIndex:0, height: Dimensions.get('window').height / 2.5, }}>
+
             <ImageBackground source={require('./assets/backgroundimage.jpg')}
                 style={{ height: Dimensions.get('window').height / 2.5, }}>
 
@@ -117,10 +120,11 @@ export default function Login({ navigation }) {
                         name="location-sharp"
                         style={{ color: "#ffff", fontSize: 100 }}
                     /> */}
-                    <Image source={adaptiveicon} style={{ height: 150, width: 300 }}></Image>
+                    <Image source={adaptiveicon} style={{ height: 200, width: 200 }}></Image>
 
                 </View>
             </ImageBackground>
+                    </View>
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
                     <Text style={{ fontSize: 34, color: '#800000' }} >Welcome</Text>
@@ -189,6 +193,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         opacity: 1,
+        paddingBottom:50
     },
     brandViewText: {
         color: "#ffff",
@@ -197,11 +202,12 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase'
     },
     bottomView: {
+        zIndex:1,
+        marginTop:-50,
         flex: 1,
-        backgroundColor: '#fff',
-        bottom: 50,
         borderTopStartRadius: 60,
-        borderTopEndRadius: 60
+        borderTopRightRadius: 60,
+        backgroundColor:'white',
     },
     container: {
         flex: 1,
