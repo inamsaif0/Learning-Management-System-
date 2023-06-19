@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import profile from './assets/profile.png';
 // Tab ICons...
@@ -19,12 +19,10 @@ import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
 import doc from './assets/doc.png'
 import audio from './assets/audio.png'
-import {UserContext} from './App'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import music from './assets/music.png';
 
 export default function App({navigation}) {
-  const email = React.useContext(UserContext);
   const [currentTab, setCurrentTab] = useState("Home");
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
@@ -39,6 +37,24 @@ export default function App({navigation}) {
     setCurrentTab('Toptab');
   }
 
+  const [user,setUser] = useState('');
+
+  useEffect(()=>
+  {
+    async function startupGetter(){
+      
+      try{
+        const id=await AsyncStorage.getItem('userId').then((userid)=>setUser(userid))
+        return id
+      }
+      catch{
+        console.error('Failed to get user ID in AsyncStorage:', error);
+
+      }
+    }
+    startupGetter()
+  })
+
 
   return (
 
@@ -52,7 +68,7 @@ export default function App({navigation}) {
           fontWeight: 'bold',
           color: 'white',
           marginTop: 20
-        }}>{email.userEmail}</Text>
+        }}>{user}</Text>
 
         <TouchableOpacity>
           <Text style={{

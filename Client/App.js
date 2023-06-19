@@ -1,21 +1,15 @@
 
 import {createContext,useState} from 'react'
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
 import Login from './Login';
 import HomeScreen from './HomeScreen'
-import TabBarAccessoriesShowcase from './Example'
 import { NativeBaseProvider } from 'native-base';
 import Example from './Example';
 import Music from './Music';
-// import FlatListDemo from './FlatList';
-import Listpdf from './Listpdf';
-import Recordings from './Recording';
-import ListRecordings from './Screens/listRercordings';
 import Record from './Screens/Record';
+import ListRecordings from './Screens/listRercordings';
 const Stack = createStackNavigator();
 export const UserContext = createContext();
 
