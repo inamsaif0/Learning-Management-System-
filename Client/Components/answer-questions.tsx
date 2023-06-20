@@ -70,7 +70,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
         <SafeAreaView style={styles.container}>
             <Text
                 style={{
-                    color: "#800000",
+                    color: "#5c0931",
                     fontSize: 20,
                     paddingBottom: 30,
 
@@ -112,7 +112,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                                     padding: 8,
                                     borderRadius: 15,
                                     margin: 9,
-                                    backgroundColor: '#800000',
+                                    backgroundColor: '#5c0931',
                                     color: 'white',
                                     overflow: "hidden"
 
@@ -136,7 +136,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                                 borderWidth: 1,
                                 marginVertical: 10,
                                 borderRadius: 30,
-                                backgroundColor: "#800000",
+                                backgroundColor: "#5c0931",
 
 
                             } : {
@@ -156,7 +156,7 @@ const Answerquestions: FC<questionProps> = (props): JSX.Element => {
                                     padding: 8,
                                     borderRadius: 15,
                                     margin: 9,
-                                    backgroundColor: '#800000',
+                                    backgroundColor: '#5c0931',
                                     color: 'white',
                                     overflow: "hidden"
 

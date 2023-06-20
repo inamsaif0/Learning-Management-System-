@@ -40,7 +40,7 @@ function Item({ item, recording, recordings , index}) {
       </View>
       <TouchableOpacity style={{ height: 50, width: 50, justifyContent: "center", alignItems: "center" }} onPress={togglePlay}>
 
-        <Ionicons name={isPlaying ? "pause" : "play"} size={32} color="#800000" />
+        <Ionicons name={isPlaying ? "pause" : "play"} size={32} color="#5c0931" />
     
         
       </TouchableOpacity>
@@ -58,7 +58,7 @@ function Item({ item, recording, recordings , index}) {
 //         <Text>Audio</Text>
 //       </View>
 //       <TouchableOpacity style={{ height: 50, width: 50, justifyContent: "center", alignItems: "center" }}>
-//         <Text><Button icon="play" theme={{ colors: { primary: '#800000' } }}  onPress={() => item.sound.replayAsync()} title="Play">
+//         <Text><Button icon="play" theme={{ colors: { primary: '#5c0931' } }}  onPress={() => item.sound.replayAsync()} title="Play">
 //         </Button>
 //         </Text>
 //       </TouchableOpacity>
@@ -272,7 +272,7 @@ export default class Listaudio extends React.Component {
             <Text>Audio</Text>
           </View>
           <TouchableOpacity style={{ height: 50, width: 50, justifyContent: "center", alignItems: "center" }} onPress={ () => {this.state.icon == 'play' ? setState({icon:'pause'}) : this.setState({icon:'play'})}}>
-            <Text><Button theme={{ colors: { primary: '#800000' } }} onPress={() => recordingLine.sound.replayAsync()} title="Play">
+            <Text><Button theme={{ colors: { primary: '#5c0931' } }} onPress={() => recordingLine.sound.replayAsync()} title="Play">
             </Button>
             </Text>
           </TouchableOpacity>
@@ -300,7 +300,7 @@ export default class Listaudio extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity>
-          <Button style={{ backgroundColor: '#800000', color: '#ffff' }} theme={{ colors: { primary: '#fff' } }}
+          <Button style={{ backgroundColor: '#5c0931', color: '#ffff' }} theme={{ colors: { primary: '#fff' } }}
 
             onPress={recording ? this.stopRecording : this.startRecording}
           >{recording ? 'Stop Recording' : 'Start Recording'}</Button>

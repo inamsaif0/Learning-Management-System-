@@ -316,7 +316,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                                     shadowRadius: 4,
                                     elevation: 5,
                                 }}>
-                                    <AntDesign name="clockcircleo" size={104} color="#800000" />
+                                    <AntDesign name="clockcircleo" size={104} color="#5c0931" />
                                     <Text style={{
                                         fontWeight:"600",
                                         paddingVertical:20,
@@ -339,7 +339,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                         </Modal>:null
                                         }
                         <View style={{}}>
-                            {!completed?<Pressable style={{padding:30,justifyContent:"center",margin:10, backgroundColor:'#800000'}} onPress={()=>navigation.navigate('Home')}>
+                            {!completed?<Pressable style={{padding:30,justifyContent:"center",margin:10, backgroundColor:'#5c0931'}} onPress={()=>navigation.navigate('Home')}>
                                 <Text style={{textAlign:"center", color:"white",fontWeight:"600"}}>
                                     Home
                                 </Text>
@@ -385,7 +385,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                         }
                         <View style={{ flexDirection: "row", justifyContent: "space-around", paddingTop: 20 }}>
                             <Pressable
-                                style={{ backgroundColor: "#800000", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
+                                style={{ backgroundColor: "#5c0931", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
 
 
 
@@ -397,7 +397,7 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                                 </Text>
                             </Pressable>
                             <Pressable
-                                style={{ backgroundColor: "#800000", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
+                                style={{ backgroundColor: "#5c0931", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
 
                                 onPress={() => next()}
                             ><Text
@@ -426,11 +426,11 @@ const styles = StyleSheet.create({
     },
     buttonOpen: {
         padding:20,
-      backgroundColor: '#800000',
+      backgroundColor: '#5c0931',
     },
     buttonClose: {
         padding:20,
-      backgroundColor: '#800000',
+      backgroundColor: '#5c0931',
     },
     textStyle: {
       color: 'white',

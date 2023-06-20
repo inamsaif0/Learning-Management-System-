@@ -9,20 +9,19 @@ export default function Listpdf() {
   const email = React.useContext(UserContext);
 
   const [docs, setDocs] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(false);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(null);
   const [notPdf, setNonPdf] = useState(false);
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   React.useEffect(() => {
     async function getDocs(email) {
       try {
-        console.log(email)
         const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/documents?email=${email}`, { method: 'GET' })
           .then((response) => response.json())
           .then((data) => setDocs(data))
-          .then(() => setIsloading(false))
+          .then(() => setIsLoading(false))
           .catch((error) => console.error('Error retrieving doc files:', error));
-
       } catch (error) {
         console.log("Error getting documents", error);
       }
@@ -30,38 +29,28 @@ export default function Listpdf() {
     getDocs(email.userEmail);
   }, []);
 
- 
-  const webViewRef = React.useRef(null)
-  const onContentProcessDidTerminate = () => webViewRef.current?.reload()
+  const openModal = (itemUrl) => {
+    setSelectedItemUrl(itemUrl);
+    setModalVisible(true);
 
-  React.useEffect(()=>{
-    console.log("trying to close")
-  },[modalVisible])
+  };
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const closeModal = () => {
+    setSelectedItemUrl(null);
+    setModalVisible(false);
+    console.log('closing modal')
+  };
+
   function renderListItem({ item }) {
     if (!item.filename.split('.').pop() === "pdf") {
-      setNonPdf(true)
+      setNonPdf(true);
     }
 
     return (
-      <SafeAreaView>
-        <Modal animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-          }}>
-
-          <Pressable style={{ padding: 20, alignItems: "flex-end" }} onPress={() => setModalVisible(false)}>
-            <AntDesign name="closecircle" size={24} color="black" />
-          </Pressable>
-            <WebView javaScriptEnabled={true} source={{ uri: item.fileUrl }} style={{flex:1}} ref={webViewRef} onError={(error)=>console.log(error)}
-    onContentProcessDidTerminate={onContentProcessDidTerminate}/>   
-        </Modal>
-        <Pressable onPress={() =>{ !notPdf ? setModalVisible(true) : Linking.openURL(item.fileUrl)
-        console.log(item.fileUrl)
+      <View>
+        <Pressable onPress={() => {
+          !notPdf ? openModal(item.fileUrl) : Linking.openURL(item.fileUrl);
+          console.log(item.fileUrl);
         }} style={styles.listItem}>
           <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
           <View style={{ alignItems: "center", flex: 1 }}>
@@ -69,34 +58,53 @@ export default function Listpdf() {
             <Text>{item.position}</Text>
           </View>
         </Pressable>
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (isLoading) {
     return (
-
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <ActivityIndicator size={'large'} color={'#800000'} />
+        <ActivityIndicator size={'large'} color={'#5c0931'} />
       </View>
-    )
+    );
   }
 
   return (
     <View style={styles.container}>
       <FlatList
-        style={{ flex: 1 }}
         data={docs}
         renderItem={renderListItem}
         keyExtractor={(item) => item.filename}
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={()=>closeModal()}
+      >
+        <Pressable style={{ padding: 20,marginTop:20,zIndex:2, alignItems: "flex-end" }} onPress={()=>closeModal()}>
+          <AntDesign name="closecircle" size={24} color="black" />
+        </Pressable>
+        {modalVisible && (
+          <WebView
+            javaScriptEnabled={true}
+            source={{ uri: selectedItemUrl }}
+            style={{ flex: 1 }}
+            onError={(error) => console.log(error)}
+            renderLoading={() => <ActivityIndicator style={{ flex: 1 }} size="large" color="#5c0931" />}
+          />
+        )}
+      </Modal>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1.5,
+    flex: 1,
     backgroundColor: '#F7F7F7',
     marginTop: 20,
     borderRadius: 10,

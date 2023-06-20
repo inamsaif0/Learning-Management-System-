@@ -11,10 +11,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
+<<<<<<< HEAD
 // import adaptiveicon from './assets/adaptive-Icon.png'
 // import adaptiveicon from './assets/adaptive-Icon.png'4
 import adaptiveicon from './assets/adaptive-icon.png'
+=======
+import adaptiveicon from './assets/adaptive-icon_home.png'
+>>>>>>> bcc2fa825e17d9a521c5b5a9299ab3d5c8f2b596
 import { UserContext } from './App';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Login({ navigation }) {
     const [email, setEmail] = React.useState('');
@@ -22,6 +27,7 @@ export default function Login({ navigation }) {
     const [emailError, setEmailError] = React.useState('');
     const [passwordError, setPasswordError] = React.useState('');
     const [checked, setChecked] = React.useState(false);
+    const [block,setBlocker]=React.useState(false);
     //const navigation = useNavigation();
     const { setUserEmail } = useContext(UserContext)
 
@@ -31,7 +37,11 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
+<<<<<<< HEAD
             const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
+=======
+            const response = await axios.post('http://192.168.1.4:3000/login', {
+>>>>>>> bcc2fa825e17d9a521c5b5a9299ab3d5c8f2b596
                 email: email,
                 password: password
             })
@@ -47,13 +57,21 @@ export default function Login({ navigation }) {
                 }
                 console.log(response)
                 navigation.navigate('Home')
+                
             }
             else {
-                setUserEmail(email)
+                if(response.data?.message==="blocked")
+                {
+                    setBlocker(true)
+                }
+                else{
 
-                setError(true)
+                    setUserEmail(email)
+                    setError(true)
+                }
                 console.log(error)
             }
+            
         }
     }
     // useEffect(()=>{
@@ -112,6 +130,8 @@ export default function Login({ navigation }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
+                <View style={{zIndex:0, height: Dimensions.get('window').height / 2.5, }}>
+
             <ImageBackground source={require('./assets/backgroundimage.jpg')}
                 style={{ height: Dimensions.get('window').height / 2.5, }}>
 
@@ -120,13 +140,14 @@ export default function Login({ navigation }) {
                         name="location-sharp"
                         style={{ color: "#ffff", fontSize: 100 }}
                     /> */}
-                    <Image source={adaptiveicon} style={{ height: 150, width: 300 }}></Image>
+                    <Image source={adaptiveicon} style={{ height: 200, width: 200 }}></Image>
 
                 </View>
             </ImageBackground>
+                    </View>
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
-                    <Text style={{ fontSize: 34, color: '#800000' }} >Welcome</Text>
+                    <Text style={{ fontSize: 34, color: '#5c0931' }} >Welcome</Text>
                     <Text style={{ marginTop: 20 }}>
                         Welcome to the Portal
                         <Text style={{ color: 'red' }}>
@@ -165,7 +186,7 @@ export default function Login({ navigation }) {
                         }
                         <View style={styles.end}>
                             <Checkbox
-                                theme={{ colors: { primary: '#800000' } }}
+                                theme={{ colors: { primary: '#5c0931' } }}
                                 status={checked ? 'checked' : 'unchecked'}
                                 onPress={() => {
                                     setChecked(!checked);
@@ -178,6 +199,9 @@ export default function Login({ navigation }) {
                     <Button onPress={handleLogin} style={styles.button} theme={{ colors: { primary: '#ffff' } }}>
                         Login
                     </Button>
+                    {
+                        block&&(<Text style={{color:'red'}}>your account has been deactivated</Text>)
+                    }
 
                 </View>
             </View>
@@ -192,6 +216,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         opacity: 1,
+        paddingBottom:50
     },
     brandViewText: {
         color: "#ffff",
@@ -200,11 +225,12 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase'
     },
     bottomView: {
+        zIndex:1,
+        marginTop:-50,
         flex: 1,
-        backgroundColor: '#fff',
-        bottom: 50,
         borderTopStartRadius: 60,
-        borderTopEndRadius: 60
+        borderTopRightRadius: 60,
+        backgroundColor:'white',
     },
     container: {
         flex: 1,
@@ -216,7 +242,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        backgroundColor: '#800000',
+        backgroundColor: '#5c0931',
         fontColor: '#ffff',
         marginBottom: 80
     },

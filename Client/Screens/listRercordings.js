@@ -17,6 +17,7 @@ export default function ListRecordings() {
     const [active, setActive] = React.useState({});
     const [urls,setUrls]=React.useState();
     const [loading,setLoading]=React.useState(true);
+    const [user,setUser]=React.useState()
 
 
 
@@ -74,10 +75,14 @@ export default function ListRecordings() {
             catch (error) {
                 console.error('Error getting audio from server:', error);
             }
+            const id=await AsyncStorage.getItem('userId').then((userid)=>setUser(userid))
+
 
         }
         console.log(email.userEmail)
         getAudio(email.userEmail)
+
+        
         
            }, [])
 
@@ -85,7 +90,7 @@ export default function ListRecordings() {
             return(
                 <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
                     
-                <ActivityIndicator size="large" color="#800000" />
+                <ActivityIndicator size="large" color="#5c0931" />
                 </View>
             )
            }
@@ -98,11 +103,12 @@ export default function ListRecordings() {
                 All Recordings
             </Text>
             <FlatList
-                data={urls}
+                data={urls.reverse()}
                 keyExtractor={(recording, index) => index.toString()}
                 renderItem={({ item, index }) => (
                     
                     <AudioPlayer
+                    user={user}
                     title={item.lastSection}
                     audioFile={item.url}
                     getActive={(isActive) => getActive(index, isActive)}
