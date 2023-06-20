@@ -202,6 +202,8 @@ export default function Record() {
 
 
     return (
+        <View style={styles.Parent}>
+
         <View style={styles.container}>
             <Stopwatch start={recording} pause={pause} />
                 <Animated.View style={{
@@ -216,12 +218,12 @@ export default function Record() {
                         </Text>}
             </Pressable>
                 </Animated.View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20, position: 'absolute', bottom: 140 }}>
+            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20 }}>
                 <Pressable onPress={pause ? resumeRecording : pauseRecording}>
                     {pause ?
                         <AntDesign name="play" size={40} color="#5c0931" /> :
                         <AntDesign name="pausecircle" size={40} color="#5c0931" />
-
+                        
                     }
                 </Pressable>
                 {
@@ -237,17 +239,24 @@ export default function Record() {
             {/* <Button
         title={recording ? 'Stop Recording' : 'Start Recording'}
         onPress={recording ? stopRecording : startRecording}
-      /> */}
+    /> */}
         </View>
+    </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0.89,
-        backgroundColor: '#ecf0f1',
+        flex: 0.8,
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent:'space-between'
 
     },
+    Parent:{
+        flex:1,
+        backgroundColor: '#ecf0f1',
+
+        
+    }
 });

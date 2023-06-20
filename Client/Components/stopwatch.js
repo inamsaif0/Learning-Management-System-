@@ -58,7 +58,7 @@ const Stopwatch = ({ start, pause }) => {
       <Text
         style={{
           fontSize: 70,
-          paddingVertical: 30,
+          paddingTop:10
         }}
       >
         {formatTime(elapsedTime)}

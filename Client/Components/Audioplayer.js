@@ -5,7 +5,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const AudioPlayer = ({ audioFile, title, getActive, index, user }) => {
+const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
 
   const sliderAnimation = useState(new Animated.Value(0))[0];
 
@@ -23,7 +23,6 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackPosition, setPlaybackPosition] = useState(0);
   const [playbackDuration, setPlaybackDuration] = useState(0);
-  const [active, setActive] = useState(null);
   const [date,setDate]=useState();
   const [time,setTime]=useState();
   function Parsedate() {
@@ -71,13 +70,13 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user }) => {
 
       if (status.isLoaded && status.isPlaying) {
         setPlaybackPosition(status.positionMillis);
-        getActive(index, true)
+        //getActive(index, true)
       }
 
       if (status.isLoaded && status.positionMillis === status.durationMillis) {
         setPlaybackPosition(0);
         setIsPlaying(false);
-        getActive(index, false)
+        //getActive(index, false)
       }
     };
 
@@ -108,35 +107,44 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user }) => {
       setPlaybackDuration(status.durationMillis);
     }
   };
+  const [use,setUse]=useState(false)
+
+  useEffect(()=>{
+    if(isPlaying){
+      togglePlayback()
+    }
+  },[active])
+  
 
   const togglePlayback = async () => {
-    if (!active) {
+    
 
       if (sound) {
         if (isPlaying) {
           await sound.pauseAsync();
         } else {
+          getActive(!active)
           // Check if the playback position is at the end
           const isAtEnd = playbackPosition === playbackDuration;
 
           // Reset the playback position to 0 if at the end
           const position = isAtEnd ? 0 : playbackPosition;
-
+          
           // Update the position before playing
           await sound.setPositionAsync(position);
-
+          
           await sound.playAsync();
-
+          
           // Call getActive with the updated isPlaying value
-
-
+          
+          
           animateSlider(isPlaying ? 0 : 1);
         }
 
         // Toggle the isPlaying state
         setIsPlaying(!isPlaying);
       }
-    }
+    
   };
 
 

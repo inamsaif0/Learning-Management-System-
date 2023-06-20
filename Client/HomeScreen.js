@@ -63,14 +63,16 @@ export default function App({navigation}) {
 
     <SafeAreaView style={styles.container}>
 
-      <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20 }}>
+      <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20, }}>
+        <Image source={profile}/>
         
 
         <Text style={{
           fontSize: 15,
           fontWeight: 'bold',
           color: 'white',
-          marginTop: 20
+          marginTop: 10,
+          paddingLeft:30
         }}>{user}</Text>
 
 

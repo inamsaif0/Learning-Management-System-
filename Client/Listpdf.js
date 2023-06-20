@@ -49,7 +49,7 @@ export default function Listpdf() {
     return (
       <View>
         <Pressable onPress={() => {
-          !notPdf ? openModal(item.fileUrl) : Linking.openURL(item.fileUrl);
+          !notPdf ? openModal("http://docs.google.com/gview?embedded=true&url="+item.fileUrl) : Linking.openURL(item.fileUrl);
           console.log(item.fileUrl);
         }} style={styles.listItem}>
           <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
@@ -93,7 +93,7 @@ export default function Listpdf() {
             source={{ uri: selectedItemUrl }}
             style={{ flex: 1 }}
             onError={(error) => console.log(error)}
-            renderLoading={() => <ActivityIndicator style={{ flex: 1 }} size="large" color="#5c0931" />}
+            renderLoading={() => <ActivityIndicator style={{ flex: 1,zIndex:3 }} size="large" color="#5c0931" />}
           />
         )}
       </Modal>
