@@ -104,10 +104,11 @@ export default function Listpdf() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.88,
     backgroundColor: '#F7F7F7',
-    marginTop: 20,
+    // marginTop: 20,
     borderRadius: 10,
+  
   },
   listItem: {
     margin: 10,

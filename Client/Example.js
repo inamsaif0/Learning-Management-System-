@@ -22,7 +22,7 @@ function Example({tabId}) {
       
 
       <Tabs
-      style={{backgroundColor:'white', marginTop:5, borderRadius:10}} 
+      style={{backgroundColor:'white', marginTop:15, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
       uppercase={false}
       onChangeIndex={(newIndex) => {}}  

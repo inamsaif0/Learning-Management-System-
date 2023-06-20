@@ -244,7 +244,7 @@ export default function Record() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 0.89,
         backgroundColor: '#ecf0f1',
         alignItems: 'center',
         flexDirection: 'column'

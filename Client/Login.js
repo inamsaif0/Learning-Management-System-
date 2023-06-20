@@ -11,13 +11,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { createStackNavigator } from '@react-navigation/stack';
-<<<<<<< HEAD
 // import adaptiveicon from './assets/adaptive-Icon.png'
 // import adaptiveicon from './assets/adaptive-Icon.png'4
 import adaptiveicon from './assets/adaptive-icon.png'
-=======
-import adaptiveicon from './assets/adaptive-icon_home.png'
->>>>>>> bcc2fa825e17d9a521c5b5a9299ab3d5c8f2b596
 import { UserContext } from './App';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -37,11 +33,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-<<<<<<< HEAD
             const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
-=======
-            const response = await axios.post('http://192.168.1.4:3000/login', {
->>>>>>> bcc2fa825e17d9a521c5b5a9299ab3d5c8f2b596
                 email: email,
                 password: password
             })
@@ -132,7 +124,7 @@ export default function Login({ navigation }) {
             showsVerticalScrollIndicator={false}>
                 <View style={{zIndex:0, height: Dimensions.get('window').height / 2.5, }}>
 
-            <ImageBackground source={require('./assets/backgroundimage.jpg')}
+            <ImageBackground source={require('./adaptive-icon_home.png')}
                 style={{ height: Dimensions.get('window').height / 2.5, }}>
 
                 <View style={styles.brandView}>

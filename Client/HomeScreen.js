@@ -73,12 +73,7 @@ export default function App({navigation}) {
           marginTop: 20
         }}>{user}</Text>
 
-        <TouchableOpacity>
-          <Text style={{
-            marginTop: 6,
-            color: 'white'
-          }}>View Profile</Text>
-        </TouchableOpacity>
+
 
         <View style={{ flexGrow: 1, marginTop: 50 }}>
           {
@@ -86,9 +81,6 @@ export default function App({navigation}) {
           }
 
           {TabButton(currentTab, setCurrentTab, "Home", home)}
-          {TabButton(currentTab, setCurrentTab, "Search", search)}
-          {TabButton(currentTab, setCurrentTab, "Notifications", notifications)}
-          {TabButton(currentTab, setCurrentTab, "Settings", settings)}
 
         </View>
 
