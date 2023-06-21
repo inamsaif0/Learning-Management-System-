@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function ListRecordings() {
     const email = React.useContext(UserContext);
-    const navigation=useNavigation();
+    const navigation = useNavigation();
 
     const [recordings, setRecordings] = React.useState([])
     const [active, setActive] = React.useState(false);
@@ -67,7 +67,7 @@ export default function ListRecordings() {
                         const result = data.map(filePath => {
                             const sections = filePath.split('/');
                             const lastSection = sections[sections.length - 1];
-                            console.log(lastSection +"maaz")
+                            console.log(lastSection + "maaz")
                             return {
                                 lastSection,
                                 url: `https://otp-mobile.s3.amazonaws.com/${filePath}`
@@ -106,13 +106,19 @@ export default function ListRecordings() {
         <>
             {/* //<SafeAreaView style={{ backgroundColor: "#F5F2F0", paddingTop: 10 }}> */}
             <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', paddingTop: 5, width: "95%" }}>
-                <Pressable onPress={()=>navigation.navigate('recordings')}>
+                <Pressable onPress={() => navigation.navigate('recordings')}>
                     <AntDesign name="plus" size={30} color="#5c0931" />
                 </Pressable>
                 <Text style={{ fontSize: 25, padding: 15, fontWeight: 'bold' }}>
                     All Recordings
                 </Text>
             </View>
+            {
+                !urls ? <Text style={{textAlign:'center',}}>
+                    “Oops! No recording yet! Add your
+                    recording now!”
+                </Text>:null
+            }
 
             <FlatList
                 data={urls}
