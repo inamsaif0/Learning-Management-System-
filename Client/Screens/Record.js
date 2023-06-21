@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Animated, Pressable, Easing } from 'react-nativ
 import { Audio } from 'expo-av';
 import Timer from '../Components/Timer';
 import { AntDesign } from '@expo/vector-icons';
-import { useState,useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Entypo } from '@expo/vector-icons';
 import Stopwatch from '../Components/stopwatch';
 import { useNavigation } from '@react-navigation/native';
@@ -11,32 +11,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import { EmailContext } from '../Login';
 import { UserContext } from '../App';
+import { TextInput } from 'react-native';
+import AudioPlayer from '../Components/Audioplayer';
 // import * as Permissions from 'expo-permissions';
 
 
 
-const sendAudioToServer = async (location,email) => {
-    try { 
-      // Read the audio file as binary data
-      const audioData = await FileSystem.readAsStringAsync(location, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      const time=new Date()
-  
-      // Send the audio file to the Node.js server
-      const response = await fetch('https://d7a5-3-35-175-207.ngrok-free.app/audio', {
-        method: 'POST',
-        body: JSON.stringify({ audio: audioData,time:time,email:email }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      console.log('Server Response:', response);
+const sendAudioToServer = async (location, email, fileName) => {
+    try {
+        // Read the audio file as binary data
+        const audioData = await FileSystem.readAsStringAsync(location, {
+            encoding: FileSystem.EncodingType.Base64,
+        });
+        const time = new Date()
+
+        // Send the audio file to the Node.js server
+        const response = await fetch('https://d7a5-3-35-175-207.ngrok-free.app/audio', {
+            method: 'POST',
+            body: JSON.stringify({ audio: audioData, time: time, email: email, name: fileName }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Server Response:', response);
     } catch (error) {
-      console.error('Error sending audio to server:', error);
+        console.error('Error sending audio to server:', error);
     }
-  };
+};
 
 
 
@@ -44,10 +46,13 @@ export default function Record() {
     const email = useContext(UserContext);
 
     const navigation = useNavigation()
+
     const [recording, setRecording] = useState();
+    const [fileName, setFileName] = useState('');
     const [pause, setPause] = useState();
     const [location, setLocation] = useState("");
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
+    const [clear,setClear]=useState(false)
 
     const cancelRecording = async () => {
 
@@ -59,6 +64,9 @@ export default function Record() {
             });
             setRecording(null);
         }
+        setLocation("")
+        setClear(!clear)
+        setFileName("")
 
     };
 
@@ -86,24 +94,24 @@ export default function Record() {
     }
 
     async function stopRecording() {
-    try{
+        try {
 
-        scaleAnimation.stop()
-        console.log('Stopping recording..');
-        setRecording(undefined);
-        setPause(false)
-        await recording.stopAndUnloadAsync();
-        await Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-        });
-        console.log(recording)
-        const uri = recording.getURI();
-        setLocation(uri)
-        console.log('Recording stopped and stored at', uri);
-    }
-    catch(error){
-        console.error(error)
-    }
+            scaleAnimation.stop()
+            console.log('Stopping recording..');
+            setRecording(undefined);
+            setPause(false)
+            await recording.stopAndUnloadAsync();
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: false,
+            });
+            console.log(recording)
+            const uri = recording.getURI();
+            setLocation(uri)
+            console.log('Recording stopped and stored at', uri);
+        }
+        catch (error) {
+            console.error(error)
+        }
     }
 
     async function pauseRecording() {
@@ -159,12 +167,10 @@ export default function Record() {
         }
     };
 
-    React.useEffect(() => {
-        if (location !== "") {
-            //appendValue(location)
-         sendAudioToServer(location,email.userEmail)
-        }
-    }, [location])
+    function handleUpload() {
+        sendAudioToServer(location, email.userEmail, fileName)
+        cancelRecording()
+    }
 
     const scaleValue = React.useRef(new Animated.Value(1)).current;
     const opacityValue = React.useRef(new Animated.Value(1)).current;
@@ -178,85 +184,113 @@ export default function Record() {
                 duration: 300,
                 easing: Easing.in(Easing.ease),
                 useNativeDriver: true,
-              }),
-              Animated.timing(scaleValue, {
+            }),
+            Animated.timing(scaleValue, {
                 toValue: 1,
                 duration: 500,
                 easing: Easing.out(Easing.ease),
                 useNativeDriver: true,
-              }),
-              Animated.timing(opacityValue, {
+            }),
+            Animated.timing(opacityValue, {
                 toValue: 0,
                 duration: 200,
                 useNativeDriver: true,
-              }),
-              Animated.timing(opacityValue, {
+            }),
+            Animated.timing(opacityValue, {
                 toValue: 1,
                 duration: 0,
                 useNativeDriver: true,
-              }),
-        
-        
+            }),
+
+
         ])
     );
 
 
+
     return (
         <View style={styles.Parent}>
+            <View style={{ width: "100%" }}>
 
-        <View style={styles.container}>
-            <Stopwatch start={recording} pause={pause} />
+                {
+
+
+                    location && <AudioPlayer audioFile={location} />
+                }
+            </View>
+
+            <View style={styles.container}>
+                <TextInput
+                    style={{
+                        
+                        margin: 0,
+                        padding: 5,
+                        width: "90%",
+                        borderBottomColor: '#5c0931',
+                        borderBottomWidth: 2,
+
+                    }}
+                    onChangeText={setFileName}
+                    value={fileName}
+                    placeholder='Enter Filename'
+                />
+
+                <Stopwatch start={recording} clear={clear} pause={pause} />
                 <Animated.View style={{
                     transform: [{ scale: scaleValue }],
                 }}>
-            <Pressable onPress={recording ? stopRecording : startRecording} style={{ backgroundColor: '#5c0931', width: 200, height: 200, borderRadius: 200, justifyContent: 'center', alignItems: 'center' }}>
+                    <Pressable onPress={recording ? stopRecording : startRecording} style={{ backgroundColor: '#5c0931', width: 200, height: 200, borderRadius: 200, justifyContent: 'center', alignItems: 'center' }}>
 
-                    {recording ?
-                        <Entypo name="controller-stop" size={44} color="white" /> :
-                        <Text style={{ color: 'white', fontSize: 30 }}>
-                            RECORD
-                        </Text>}
-            </Pressable>
+                        {recording ?
+                            <Entypo name="controller-stop" size={44} color="white" /> :
+                            <Text style={{ color: 'white', fontSize: 30 }}>
+                                RECORD
+                            </Text>}
+                    </Pressable>
                 </Animated.View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20 }}>
-                <Pressable onPress={pause ? resumeRecording : pauseRecording}>
-                    {pause ?
-                        <AntDesign name="play" size={40} color="#5c0931" /> :
-                        <AntDesign name="pausecircle" size={40} color="#5c0931" />
-                        
-                    }
-                </Pressable>
-                {
-                    recording && (<Pressable onPress={() => cancelRecording()}>
-                        <AntDesign name="closecircle" size={40} color="red" />
-                    </Pressable>)
-                }
-                <Pressable onPress={() => navigation.navigate('listRecordings')}>
-                    <Entypo name="list" size={40} color="black" style={{}} />
-                </Pressable>
 
-            </View>
-            {/* <Button
+                <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: "space-around", alignItems: "center", width: "95%", height: 70, borderRadius: 20 }}>
+                    <Pressable onPress={() => handleUpload()} disabled={location === ""}>
+                        <Entypo name="check" size={40} color="#5c0931" />
+                    </Pressable>
+                    <Pressable onPress={pause ? resumeRecording : pauseRecording}>
+                        {pause ?
+                            <AntDesign name="play" size={40} color="black" /> :
+                            <AntDesign name="pausecircle" size={40} color="black" />
+
+                        }
+                    </Pressable>
+
+                    <Pressable onPress={() => navigation.navigate('listRecordings')}>
+                        <Entypo name="list" size={40} color="black" style={{}} />
+                    </Pressable>
+
+                    <Pressable onPress={() => cancelRecording()}>
+                        <Entypo name="cross" size={40} color="#5c0931" style={{}} />
+                    </Pressable>
+                </View>
+                {/* <Button
         title={recording ? 'Stop Recording' : 'Start Recording'}
         onPress={recording ? stopRecording : startRecording}
     /> */}
+            </View>
         </View>
-    </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0.8,
+        flex: 1,
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent:'space-between'
+        justifyContent: 'space-between',
+        padding: 20
 
     },
-    Parent:{
-        flex:1,
+    Parent: {
+        flex: 1,
         backgroundColor: '#ecf0f1',
 
-        
+
     }
 });

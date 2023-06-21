@@ -25,35 +25,47 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
   const [playbackDuration, setPlaybackDuration] = useState(0);
   const [date,setDate]=useState();
   const [time,setTime]=useState();
+  const [exists,setExists]=useState();
   function Parsedate() {
-    const dateArray = title.split('_')
-    timestamp = dateArray[1].replace(".m4a", "");
+    if(title){
 
-    
-    
-    const parsedDate = new Date(timestamp);
-    console.log(timestamp)
-    if (!isNaN(parsedDate)) {
-      const year = parsedDate.getFullYear();
-      const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
-      const day = String(parsedDate.getDate()).padStart(2, "0");
-      const hours = String(parsedDate.getHours()).padStart(2, "0");
-      const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
+      const dateArray = title.split('_')
+      timestamp = dateArray[1].replace(".m4a", "");
+      const parsedDate = new Date(timestamp);
+      if(!Object.prototype.toString.call(parsedDate) === '[object Date]')
+      {
+        setExists(true)
+      }
 
-      const formattedTime=`${hours}:${minutes}`
-
-
-      const formattedDate = `${year}-${month}-${day}`;
-      console.log(formattedDate);
-      setDate(formattedDate)
-      setTime(formattedTime)
+      
+      
+      
+      
+      console.log(timestamp)
+      if (!isNaN(parsedDate)) {
+        const year = parsedDate.getFullYear();
+        const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+        const day = String(parsedDate.getDate()).padStart(2, "0");
+        const hours = String(parsedDate.getHours()).padStart(2, "0");
+        const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
+        
+        const formattedTime=`${hours}:${minutes}`
+        
+        
+        const formattedDate = `${year}-${month}-${day}`;
+        console.log(formattedDate);
+        setDate(formattedDate)
+        setTime(formattedTime)
+      }
     }
-
-  }
+      
+    }
 
   useEffect(() => {
     //console.log(audioFile)
-    Parsedate()
+    
+      Parsedate()
+    
 
     // Load the audio file when the component mounts
     loadAudio();
@@ -123,7 +135,11 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
         if (isPlaying) {
           await sound.pauseAsync();
         } else {
-          getActive(!active)
+          if(getActive)
+          {
+            getActive(!active)
+
+          }
           // Check if the playback position is at the end
           const isAtEnd = playbackPosition === playbackDuration;
 
@@ -189,7 +205,7 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
 
 
-        <Text style={styles.title}>{user}_{date} {time}_Recording</Text>
+       {title && <Text style={styles.title}>{title}</Text>}
 
 
       </View>

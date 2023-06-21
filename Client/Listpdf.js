@@ -5,6 +5,7 @@ import pdf from './assets/pdf.png';
 import { UserContext } from './App';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from 'native-base';
 export default function Listpdf() {
   const email = React.useContext(UserContext);
 
@@ -13,6 +14,13 @@ export default function Listpdf() {
   const [notPdf, setNonPdf] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [arrow,setArrow]=useState()
+
+  const toggleSort = () => {
+    setDocs([...docs].reverse());
+    setArrow(prevState => !prevState); 
+  };
+
 
   React.useEffect(() => {
     async function getDocs(email) {
@@ -46,6 +54,7 @@ export default function Listpdf() {
       setNonPdf(true);
     }
 
+
     return (
       <View>
         <Pressable onPress={() => {
@@ -72,6 +81,15 @@ export default function Listpdf() {
 
   return (
     <View style={styles.container}>
+      <Pressable onPress={()=>toggleSort()} style={{margin:10,backgroundColor:'#5c0931',flexDirection:'row',alignItems:'center',justifyContent:'space-between',borderRadius:10,padding:10}}>
+        <Text style={{color:'white',fontWeight:600,}}>
+          Sort By Date
+        </Text>
+        {
+          arrow?(<AntDesign name="up" size={24} color="white" />):(<AntDesign name="down" size={24} color="white" />)
+
+        }
+      </Pressable>
       <FlatList
         data={docs}
         renderItem={renderListItem}

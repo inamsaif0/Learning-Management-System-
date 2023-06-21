@@ -42,13 +42,16 @@ export default function Login({ navigation }) {
                 console.log(response.data)
                 try {
                     await AsyncStorage.setItem('userId', response.data.message.studentName);
+                    await AsyncStorage.setItem('email', response.data.message.studentId);
+                    await AsyncStorage.setItem('level', response.data.message.level);
                     console.log('User ID set in AsyncStorage:', response.data.message._id);
                 } catch (error) {
                     console.error('Failed to set user ID in AsyncStorage:', error);
                     // alert('Wrong Credentials')
                 }
                 console.log(response)
-                navigation.navigate('Home')
+                navigation.replace('Home')
+                
                 
             }
             else {
@@ -137,13 +140,7 @@ export default function Login({ navigation }) {
             <View style={styles.bottomView}>
                 <View style={{ padding: 40 }}>
                     <Text style={{ fontSize: 34, color: '#5c0931' }} >Welcome</Text>
-                    <Text style={{ marginTop: 20 }}>
-                        Welcome to the Portal
-                        <Text style={{ color: 'red' }}>
-                            {' '}
-
-                        </Text>
-                    </Text>
+                    
                     <View style={styles.bottomPart}>
                         <TextInput
                             label="Email"
@@ -174,7 +171,8 @@ export default function Login({ navigation }) {
                             error ? (<Text style={{color:"red"}}>wrong credentials try again</Text>) : null
                         }
                         <View style={styles.end}>
-                            <Checkbox
+                            <Checkbox.Android
+                                style={{}}
                                 theme={{ colors: { primary: '#5c0931' } }}
                                 status={checked ? 'checked' : 'unchecked'}
                                 onPress={() => {
@@ -236,7 +234,7 @@ const styles = StyleSheet.create({
         marginBottom: 80
     },
     bottomPart: {
-        marginTop: 50,
+        marginTop: 30,
     },
     end: {
         flexDirection: 'row',

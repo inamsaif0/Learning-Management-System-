@@ -87,11 +87,17 @@ app.get('/audio',async(req,res)=>{
 const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size limit to 10MB
 
 app.post('/audio', upload.single('audio'),(req, res) => {
-  const { audio, time,email } = req.body;
+  const { audio, time,email,name } = req.body;
 
   const base64Data = audio.replace(/^data:audio\/(.*);base64,/, '');
-  const fileName = `audio_${time}.m4a`; // Generate a unique file name
+  let fileName = `audio_${time}.m4a`; // Generate a unique file name
+  const alternateName=`${name}.m4a`;
   const bucketName = 'otp-mobile'; // Replace with your S3 bucket name
+
+  if(name)
+  {
+    fileName=alternateName
+  }
 
   const params = {
     Bucket: bucketName,

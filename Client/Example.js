@@ -14,8 +14,22 @@ import Listpdf from './Listpdf'
 import pdf from './assets/pdf.png'
 import Quiz from './Quiz';
 import Record from './Screens/Record';
+import ListRecordings from './Screens/listRercordings';
+import React from 'react';
 
 function Example({tabId}) {
+
+  const [currentTab, setCurrentTab] = React.useState(tabId - 1);
+  const goTo = useTabNavigation();
+  const index = useTabIndex();
+
+
+  React.useEffect(() => {
+
+    setCurrentTab(tabId - 1);
+    
+  }, [tabId]);
+
 
     return (
       <>
@@ -25,15 +39,17 @@ function Example({tabId}) {
       style={{backgroundColor:'white', marginTop:15, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
       uppercase={false}
-      onChangeIndex={(newIndex) => {}}  
+      defaultIndex={currentTab}
       disableSwipe={false} 
-      defaultIndex={tabId-1}
       >
         <TabScreen label="Content" icon="file-document">
            <Documents />
         </TabScreen>
         <TabScreen label="Audio" icon="record-rec">
-          <Record />
+          <View style={{flex:0.9}}>
+
+          <ListRecordings />
+          </View>
         </TabScreen>
         <TabScreen label="Quiz" icon="head-question">
            <Quiz/>
@@ -53,16 +69,6 @@ function Documents() {
     </View>
   );
 }
-function Recordings() {
-  const goTo = useTabNavigation();
-  const index = useTabIndex();
-  return (
-    <View style={{ flex:1 }}>
-      <Title>Explore</Title>
-      <Paragraph>Index: {index}</Paragraph>
-      <Button onPress={() => goTo(1)}>Go to Flights</Button>
-    </View>
-  );
-}
+
 
 export default Example;

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 
-const Stopwatch = ({ start, pause }) => {
+const Stopwatch = ({ start, pause,clear }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const intervalRef = useRef(null);
@@ -15,9 +15,14 @@ const Stopwatch = ({ start, pause }) => {
     }
     if(!start)
     {
-        resetStopwatch()
+        pauseStopwatch()
     }
+   
   }, [start, pause]);
+
+  useEffect(()=>{
+    resetStopwatch()
+  },[clear])
 
   const startStopwatch = () => {
     const startTime = Date.now() - elapsedTime;
@@ -58,7 +63,7 @@ const Stopwatch = ({ start, pause }) => {
       <Text
         style={{
           fontSize: 70,
-          paddingTop:10
+          paddingTop:0
         }}
       >
         {formatTime(elapsedTime)}

@@ -288,7 +288,9 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
     return (
         <>
             {collect && completed ? <End navigation={navigation} pass={pass} score={score} total={shuffle.length} /> :
-                <ScrollView >
+                <View style={{ flex: 1}}>
+
+                <ScrollView contentContainerStyle={{ }}                >
                     <StatusBar style="auto" />
                     <>
                        {!collect?
@@ -396,22 +398,28 @@ export default function QuizMain({ timer, end, navigation, updateCompleted, id, 
                                     Previous
                                 </Text>
                             </Pressable>
-                            <Pressable
-                                style={{ backgroundColor: "#5c0931", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
+                            {
 
+
+                                !submit&&<Pressable
+                                style={{ backgroundColor: "#5c0931", height: 50, borderRadius: 10, width: 100, justifyContent: "center", alignItems: 'center' }}
+                                
                                 onPress={() => next()}
-                            ><Text
+                                ><Text
                                 style={{ color: "white" }}
-                            >
+                                >
                                     Next
                                 </Text>
                             </Pressable>
+                            }
                         </View></>
 
 
 
+                        <View style={{height:100}} />
 
                 </ScrollView>
+                </View>
             }
         </>
     );

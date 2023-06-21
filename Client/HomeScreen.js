@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import profile from './assets/profile.png';
 // Tab ICons...
 import home from './assets/home.png';
@@ -14,6 +14,7 @@ import close from './assets/close.png';
 import { useNavigation } from '@react-navigation/native';
 import { Card, Button } from 'react-native-paper';
 // Photo
+import logo from './assets/adaptive-icon.png'
 import photo from './assets/photo.jpg';
 import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
@@ -22,13 +23,19 @@ import audio from './assets/audio.png'
 import quiz from './assets/quiz.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import music from './assets/music.png';
+import * as ImagePicker from 'expo-image-picker';
 
-export default function App({navigation}) {
+
+export default function App({ navigation }) {
   const [currentTab, setCurrentTab] = useState("Home");
-  const [tabId,setTabId]=useState(0);
+  const [tabId, setTabId] = useState(0);
   // To get the curretn Status of menu ...
   const [showMenu, setShowMenu] = useState(false);
-  const navigationtodraw =  useNavigation();
+  const navigationtodraw = useNavigation();
+  const defaultImage = Image.resolveAssetSource(logo).uri
+
+  const [image, setImage] = useState();
+
   // Animated Properties...
 
   const offsetValue = useRef(new Animated.Value(0)).current;
@@ -37,20 +44,52 @@ export default function App({navigation}) {
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
   const handleClick = (tabId) => {
     setTabId(tabId)
-    setCurrentTab('Toptab');
+    setCurrentTab('Menu');
   }
 
-  const [user,setUser] = useState('');
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
 
-  useEffect(()=>
-  {
-    async function startupGetter(){
-      
-      try{
-        const id=await AsyncStorage.getItem('userId').then((userid)=>setUser(userid))
+    if (!result.canceled) {
+     setImage(result.assets[0].uri);
+     console.log(image)
+     try{
+
+       await AsyncStorage.setItem(user,JSON.stringify(result.assets[0].uri)).then(()=>console.log('saved'))
+     }
+     catch(error){
+       console.log(error)
+     }
+    }
+  };
+
+  
+
+  
+
+  const [user, setUser] = useState('');
+  const [level, setLevel] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    async function startupGetter() {
+
+      try {
+        const id = await AsyncStorage.getItem('userId').then((userid) => setUser(userid))
+        const em = await AsyncStorage.getItem('email').then((email) => setEmail(email))
+        const lv = await AsyncStorage.getItem('level').then((level) => setLevel(level))
+        const imageTemp=await AsyncStorage.getItem(user).then((img)=>{setImage(JSON.parse(img));return img})
+        .then((img)=>img?null:setImage(defaultImage))
         return id
       }
-      catch{
+      catch {
         console.error('Failed to get user ID in AsyncStorage:', error);
 
       }
@@ -58,22 +97,85 @@ export default function App({navigation}) {
     startupGetter()
   })
 
+  const TabButton = (currentTab, setCurrentTab, title, image,i) => {
+    const navigation = useNavigation();
+  
+    return (
+      
+  
+  
+      <TouchableOpacity onPress={() => {
+        if (title == "LogOut") {
+          navigation.navigate('Login')
+        }
+        else {
+          
+          setCurrentTab(title)
+        }
+      }}>
+        <View style={{
+          flexDirection: "row",
+          alignItems: 'center',
+          paddingVertical: 8,
+          backgroundColor: currentTab == title ? 'white' : 'transparent',
+          paddingLeft: 13,
+          paddingRight: 35,
+          borderRadius: 8,
+          marginTop: 15
+        }}>
+  
+          {/* <Image source={image} style={{
+            width: 25, height: 25,
+            tintColor: currentTab == title ? "#5c0931" : "white"
+          }}></Image> */}
+  
+          <Text style={{
+            fontSize: 15,
+            fontWeight: 'bold',
+            paddingLeft: 15,
+            color: currentTab == title ? "#5c0931" : "white"
+          }}>{title}</Text>
+  
+        </View>
+      </TouchableOpacity>
+    );
+  }
+  
+
 
   return (
 
     <SafeAreaView style={styles.container}>
 
-      <View style={{ justifyContent: 'flex-start', padding: 15, marginTop:20, }}>
-        <Image source={profile}/>
-        
+      <View style={{ justifyContent: 'flex-start', padding: 15, marginTop: 20, }}>
+        <Pressable style={{width:100,height:100,borderRadius:50,overflow:'hidden'}} onPress={()=>pickImage()}>
+
+        {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+        </Pressable>
+
 
         <Text style={{
           fontSize: 15,
           fontWeight: 'bold',
           color: 'white',
           marginTop: 10,
-          paddingLeft:30
+          paddingLeft: 10,
+          paddingTop:10
         }}>{user}</Text>
+        <Text style={{
+          fontSize: 15,
+          fontWeight: 'bold',
+          color: 'white',
+          marginTop: 10,
+          paddingLeft: 10
+        }}>{email}</Text>
+        <Text style={{
+          fontSize: 15,
+          fontWeight: 'bold',
+          color: 'white',
+          marginTop: 10,
+          paddingLeft: 10
+        }}>{level}</Text>
 
 
 
@@ -82,8 +184,11 @@ export default function App({navigation}) {
             // Tab Bar Buttons....
           }
 
-          {TabButton(currentTab, setCurrentTab, "Home", home)}
 
+
+          {TabButton(currentTab, setCurrentTab, "Home", home)}
+          {TabButton(currentTab, setCurrentTab, "Menu", home,1)}
+       
         </View>
 
         <View>
@@ -95,7 +200,7 @@ export default function App({navigation}) {
       {
         // Over lay View...
         // main screen
-    
+
       }
 
       <Animated.View style={{
@@ -115,7 +220,7 @@ export default function App({navigation}) {
           { translateX: offsetValue }
         ]
       }}>
-     
+
         {
           // Menu Button...
         }
@@ -153,34 +258,39 @@ export default function App({navigation}) {
 
             setShowMenu(!showMenu);
           }}>
-            
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+
+
               <Image source={showMenu ? close : menu} style={{
                 width: 20,
                 height: 20,
                 tintColor: 'black',
-                marginTop: 40,
+
 
               }}></Image>
+              <Text style={{ color: "#5c0931", fontSize: 20, fontWeight: 600 }}>OTP</Text>
+              <View>{ }</View>
+            </View>
 
           </TouchableOpacity>
-          
-            {currentTab === "Home" ?  
-          <ScrollView style={styles.box}>
-              
-          <TouchableOpacity onPress={()=>handleClick(1)}>
-          <ImageBackground source={photo} style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25,
-            alignItems:'center', 
-            justifyContent:'center'
-            }}   imageStyle={{ borderRadius: 15}}
-            >
-              <Image source={doc} style={{width:'30%', height:'50%',}}></Image>
-              <Text style={{fontSize:20, color:'white', marginTop:10}}> Documents</Text>
-              </ImageBackground>
- {/* <Card
+
+          {currentTab === "Home" ?
+            <ScrollView style={styles.box}>
+
+              <TouchableOpacity onPress={() => handleClick(1)}>
+                <ImageBackground source={photo} style={{
+                  width: '100%',
+                  height: 210,
+                  borderRadius: 15,
+                  marginTop: 25,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }} imageStyle={{ borderRadius: 15 }}
+                >
+                  <Image source={doc} style={{ width: '30%', height: '50%', }}></Image>
+                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}> Contents</Text>
+                </ImageBackground>
+                {/* <Card
           style={{
             width: '100%',
             height: 210,
@@ -197,7 +307,7 @@ export default function App({navigation}) {
     
      </Card> */}
 
-          {/* <Text style={{
+                {/* <Text style={{
             fontSize: 20,
             fontWeight: 'bold'
             , paddingTop: 15,
@@ -206,20 +316,20 @@ export default function App({navigation}) {
 
           <Text style={{
           }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>*/}
-          </TouchableOpacity> 
-          <TouchableOpacity onPress={()=>handleClick(2)} style={{borderRadius: 15}}>
-          <ImageBackground source={photo} style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25,
-            alignItems:'center', 
-            justifyContent:'center'
-            }}   imageStyle={{ borderRadius: 15}}
-            ><Image source={music} style={{width:'30%', height:'50%',}}></Image>
-              <Text style={{fontSize:20, color:'white', marginTop:10}}>Audio</Text>
-            </ImageBackground>
-          {/* <Card
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleClick(2)} style={{ borderRadius: 15 }}>
+                <ImageBackground source={photo} style={{
+                  width: '100%',
+                  height: 210,
+                  borderRadius: 15,
+                  marginTop: 25,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }} imageStyle={{ borderRadius: 15 }}
+                ><Image source={music} style={{ width: '30%', height: '50%', }}></Image>
+                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Audio</Text>
+                </ImageBackground>
+                {/* <Card
           style={{
             width: '100%',
             height: 210,
@@ -234,22 +344,22 @@ export default function App({navigation}) {
       
     
      </Card> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>handleClick(3)}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleClick(3)}>
 
-          <ImageBackground source={photo} style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25,
-            alignItems:'center', 
-            justifyContent:'center'
-          }}   imageStyle={{ borderRadius: 15}}
-          ><Image source={quiz} style={{width:'30%', height:'50%',}}></Image>
-              <Text style={{fontSize:20, color:'white', marginTop:10}}>Quiz</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-{/* 
+                <ImageBackground source={photo} style={{
+                  width: '100%',
+                  height: 210,
+                  borderRadius: 15,
+                  marginTop: 25,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }} imageStyle={{ borderRadius: 15 }}
+                ><Image source={quiz} style={{ width: '30%', height: '50%', }}></Image>
+                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Quiz</Text>
+                </ImageBackground>
+              </TouchableOpacity>
+              {/* 
           <Text style={{
             fontSize: 20,
             fontWeight: 'bold'
@@ -259,8 +369,9 @@ export default function App({navigation}) {
 
           <Text style={{
           }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text> */}
-          <TouchableOpacity onPress={handleClick}>
-        {/* <Card
+              <TouchableOpacity onPress={handleClick}>
+
+                {/* <Card
           style={{
             width: '100%',
             height: 210,
@@ -275,23 +386,23 @@ export default function App({navigation}) {
       
     
      </Card> */}
-          </TouchableOpacity>
+              </TouchableOpacity>
 
-          {/* <Text style={{
+              {/* <Text style={{
             fontSize: 20,
             fontWeight: 'bold'
             , paddingTop: 15,
             paddingBottom: 5
           }}>Padma</Text> */}
 
-        </ScrollView>
-      : currentTab === "Search" ? <Text>Search</Text> 
-      : currentTab === "Notifications" ? <Text>Notification</Text> 
-      : currentTab === "Settings" ? <Text>Settings</Text> 
-      : currentTab === "Toptab" ? <View style={{height:"100%" }}><Example tabId={tabId}/></View>
-      : <Text>Not</Text>}
-         </Animated.View>
-    </Animated.View>
+            </ScrollView>
+            : currentTab === "Menu" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId} /></View>
+              : currentTab === "Audio" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId}/></View>
+                : currentTab === "Quiz" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId}/></View>
+                  : currentTab === "Toptab" ? <View style={{ height: "100%" }}><Example tabId={tabId} /></View>
+                    : <Text>Not</Text>}
+        </Animated.View>
+      </Animated.View>
     </SafeAreaView >
   );
 }
@@ -300,46 +411,6 @@ export default function App({navigation}) {
 
 // For multiple Buttons...
 // this is the function i can use for all the pages
-const TabButton = (currentTab, setCurrentTab, title, image) => {
-  const navigation = useNavigation();
-
-  return (
-
-
-    <TouchableOpacity onPress={() => {
-      if (title == "LogOut") {
-        navigation.navigate('Login')
-      } else {
-        setCurrentTab(title)
-      }
-    }}>
-      <View style={{
-        flexDirection: "row",
-        alignItems: 'center',
-        paddingVertical: 8,
-        backgroundColor: currentTab == title ? 'white' : 'transparent',
-        paddingLeft: 13,
-        paddingRight: 35,
-        borderRadius: 8,
-        marginTop: 15
-      }}>
-
-        <Image source={image} style={{
-          width: 25, height: 25,
-          tintColor: currentTab == title ? "#5c0931" : "white"
-        }}></Image>
-
-        <Text style={{
-          fontSize: 15,
-          fontWeight: 'bold',
-          paddingLeft: 15,
-          color: currentTab == title ? "#5c0931" : "white"
-        }}>{title}</Text>
-
-      </View>
-    </TouchableOpacity>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -348,7 +419,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
-  box:{
-    display:'flex',
+  box: {
+    display: 'flex',
   }
 });
