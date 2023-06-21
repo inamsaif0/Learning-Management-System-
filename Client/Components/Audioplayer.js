@@ -30,7 +30,7 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
     if(title){
 
       const dateArray = title.split('_')
-      timestamp = dateArray[1].replace(".m4a", "");
+      timestamp = dateArray[1]?.replace(".m4a", "");
       const parsedDate = new Date(timestamp);
       if(!Object.prototype.toString.call(parsedDate) === '[object Date]')
       {

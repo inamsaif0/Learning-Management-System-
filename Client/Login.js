@@ -124,7 +124,7 @@ export default function Login({ navigation }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
-                <View style={{zIndex:0, height: Dimensions.get('window').height / 2.5, }}>
+                <View style={{zIndex:0, height: Dimensions.get('window').height / 2.1, }}>
 
 
                 <View style={styles.brandView}>
@@ -137,7 +137,7 @@ export default function Login({ navigation }) {
                 </View>
                     </View>
             <View style={styles.bottomView}>
-                <View style={{ padding: 40 }}>
+                <View style={{ padding: 60 }}>
                     <Text style={{ fontSize: 34, color: '#5c0931' }} >Welcome</Text>
                     
                     <View style={styles.bottomPart}>
