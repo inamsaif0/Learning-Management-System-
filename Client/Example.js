@@ -19,18 +19,6 @@ import React from 'react';
 
 function Example({tabId}) {
 
-  const [currentTab, setCurrentTab] = React.useState(tabId - 1);
-  const goTo = useTabNavigation();
-  const index = useTabIndex();
-
-
-  React.useEffect(() => {
-
-    setCurrentTab(tabId - 1);
-    
-  }, [tabId]);
-
-
     return (
       <>
       
@@ -39,7 +27,7 @@ function Example({tabId}) {
       style={{backgroundColor:'white', marginTop:15, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
       uppercase={false}
-      defaultIndex={currentTab}
+      defaultIndex={tabId-1}
       disableSwipe={false} 
       >
         <TabScreen label="Content" icon="file-document">

@@ -39,7 +39,6 @@ export default function Login({ navigation }) {
             })
             if (response.data.success) {
                 setUserEmail(email)
-                console.log(response.data)
                 try {
                     await AsyncStorage.setItem('userId', response.data.message.studentName);
                     await AsyncStorage.setItem('email', response.data.message.studentId);

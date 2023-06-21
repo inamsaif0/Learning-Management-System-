@@ -1,25 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import profile from './assets/profile.png';
 // Tab ICons...
 import home from './assets/home.png';
-import search from './assets/search.png';
-import notifications from './assets/bell.png';
-import settings from './assets/settings.png';
 import logout from './assets/logout.png';
 // Menu
 import menu from './assets/menu.png';
 import close from './assets/close.png';
 import { useNavigation } from '@react-navigation/native';
-import { Card, Button } from 'react-native-paper';
 // Photo
 import logo from './assets/adaptive-icon.png'
 import photo from './assets/photo.jpg';
 import { ScrollView, Stack } from 'native-base';
 import Example from './Example';
 import doc from './assets/doc.png'
-import audio from './assets/audio.png'
 import quiz from './assets/quiz.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import music from './assets/music.png';
@@ -57,7 +50,7 @@ export default function App({ navigation }) {
     });
     console.log(result);
 
-    if (!result.canceled) {
+    if (result) {
      setImage(result.assets[0].uri);
      console.log(image)
      try{
@@ -95,21 +88,17 @@ export default function App({ navigation }) {
       }
     }
     startupGetter()
-  })
+  },[])
 
-  const TabButton = (currentTab, setCurrentTab, title, image,i) => {
+  const TabButton = (currentTab, setCurrentTab, title) => {
     const navigation = useNavigation();
   
     return (
-      
-  
-  
       <TouchableOpacity onPress={() => {
         if (title == "LogOut") {
           navigation.navigate('Login')
         }
         else {
-          
           setCurrentTab(title)
         }
       }}>
@@ -187,7 +176,7 @@ export default function App({ navigation }) {
 
 
           {TabButton(currentTab, setCurrentTab, "Home", home)}
-          {TabButton(currentTab, setCurrentTab, "Menu", home,1)}
+          {TabButton(currentTab, setCurrentTab, "Menu", home)}
        
         </View>
 
@@ -258,7 +247,7 @@ export default function App({ navigation }) {
 
             setShowMenu(!showMenu);
           }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 40 }}>
 
 
               <Image source={showMenu ? close : menu} style={{
@@ -290,32 +279,6 @@ export default function App({ navigation }) {
                   <Image source={doc} style={{ width: '30%', height: '50%', }}></Image>
                   <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}> Contents</Text>
                 </ImageBackground>
-                {/* <Card
-          style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25,
-            backgroundColor:'gray'
-          }}
-          >
-      
-        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
-          <Text style={{fontSize:25}}>InamSaif</Text>
-        </Card.Content>
-      
-    
-     </Card> */}
-
-                {/* <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold'
-            , paddingTop: 15,
-            paddingBottom: 5
-          }}>Padma</Text>
-
-          <Text style={{
-          }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text>*/}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleClick(2)} style={{ borderRadius: 15 }}>
                 <ImageBackground source={photo} style={{
@@ -329,24 +292,8 @@ export default function App({ navigation }) {
                 ><Image source={music} style={{ width: '30%', height: '50%', }}></Image>
                   <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Audio</Text>
                 </ImageBackground>
-                {/* <Card
-          style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25
-          }}
-          >
-      
-        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
-          <Text style={{fontSize:25}}>InamSaif</Text>
-        </Card.Content>
-      
-    
-     </Card> */}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleClick(3)}>
-
                 <ImageBackground source={photo} style={{
                   width: '100%',
                   height: 210,
@@ -359,48 +306,10 @@ export default function App({ navigation }) {
                   <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Quiz</Text>
                 </ImageBackground>
               </TouchableOpacity>
-              {/* 
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold'
-            , paddingTop: 15,
-            paddingBottom: 5
-          }}>Muskan</Text>
-
-          <Text style={{
-          }}>Techie, YouTuber, PS Lover, Apple Sheep's Sister</Text> */}
               <TouchableOpacity onPress={handleClick}>
-
-                {/* <Card
-          style={{
-            width: '100%',
-            height: 210,
-            borderRadius: 15,
-            marginTop: 25
-          }}
-          >
-      
-        <Card.Content style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
-          <Text style={{fontSize:25}}>InamSaif</Text>
-        </Card.Content>
-      
-    
-     </Card> */}
               </TouchableOpacity>
-
-              {/* <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold'
-            , paddingTop: 15,
-            paddingBottom: 5
-          }}>Padma</Text> */}
-
             </ScrollView>
-            : currentTab === "Menu" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId} /></View>
-              : currentTab === "Audio" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId}/></View>
-                : currentTab === "Quiz" ? <View style={{ height: "100%" }}><Example tabId={tabId} setTabId={setTabId}/></View>
-                  : currentTab === "Toptab" ? <View style={{ height: "100%" }}><Example tabId={tabId} /></View>
-                    : <Text>Not</Text>}
+            :<View style={{ height: "100%" }}><Example /></View>}
         </Animated.View>
       </Animated.View>
     </SafeAreaView >
