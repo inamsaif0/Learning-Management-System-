@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, SafeAreaView, ActivityIndicator, View, Pressable } from 'react-native';
+import { Text, RefreshControl, ActivityIndicator, View, Pressable } from 'react-native';
 import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList } from 'react-native-gesture-handler';
@@ -22,8 +22,15 @@ export default function ListRecordings() {
     const [urls, setUrls] = React.useState();
     const [loading, setLoading] = React.useState(true);
     const [user, setUser] = React.useState()
+    const [refreshing, setRefreshing] = React.useState(false)
 
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        await getAudio(email.userEmail)
+          setRefreshing(false);
 
+      }, []);
+    
 
     const getActive = (index, isActive) => {
 
@@ -34,57 +41,40 @@ export default function ListRecordings() {
 
 
 
-    const retrieveData = async () => {
+   
+    
+    async function getAudio(email) {
         try {
-            const existingArray = await AsyncStorage.getItem('RECORDING');
-            if (existingArray) {
-                const parsedArray = JSON.parse(existingArray);
-                setRecordings(parsedArray);
-            }
-        } catch (error) {
-            console.error('Error retrieving data from AsyncStorage:', error);
+            const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/audio?email=${email}`, { method: 'GET' })
+                .then((response) => response.json())
+                .then((data) => {
+                    const result = data.map(filePath => {
+                        const sections = filePath.split('/');
+                        const lastSection = sections[sections.length - 1];
+                        console.log(lastSection + "maaz")
+                        return {
+                            lastSection,
+                            url: `https://otp-mobile.s3.amazonaws.com/${filePath}`
+                        };
+                    });
+                    setUrls(result)
+                })
+                .then(() => setLoading(false))
+                .catch((error) => console.error('Error retrieving audio files:', error));
         }
-    };
-    //Helper Function
-    const clearAsyncStorage = async () => {
-        try {
-            await AsyncStorage.clear();
-            console.log('AsyncStorage cleared successfully.');
-        } catch (error) {
-            console.error('Error clearing AsyncStorage:', error);
+        catch (error) {
+            console.error('Error getting audio from server:', error);
         }
-    };
+        const id = await AsyncStorage.getItem('userId').then((userid) => setUser(userid))
+
+
+    }
 
 
     React.useEffect(() => {
         // clearAsyncStorage()
         //retrieveData()
-        async function getAudio(email) {
-            try {
-                const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/audio?email=${email}`, { method: 'GET' })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const result = data.map(filePath => {
-                            const sections = filePath.split('/');
-                            const lastSection = sections[sections.length - 1];
-                            console.log(lastSection + "maaz")
-                            return {
-                                lastSection,
-                                url: `https://otp-mobile.s3.amazonaws.com/${filePath}`
-                            };
-                        });
-                        setUrls(result)
-                    })
-                    .then(() => setLoading(false))
-                    .catch((error) => console.error('Error retrieving audio files:', error));
-            }
-            catch (error) {
-                console.error('Error getting audio from server:', error);
-            }
-            const id = await AsyncStorage.getItem('userId').then((userid) => setUser(userid))
-
-
-        }
+      
         console.log(email.userEmail)
         getAudio(email.userEmail)
 
@@ -122,6 +112,8 @@ export default function ListRecordings() {
 
             <FlatList
                 data={urls}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
                 keyExtractor={(recording, index) => index.toString()}
                 renderItem={({ item, index }) => (
 

@@ -26,9 +26,7 @@ const Item = ({ id, title, numberOfQuestions, teacher, navigation, completed, up
   <Pressable style={styles.item} onPress={() => navigation.navigate('Start', { updateCompleted: updateCompleted, id: id ,completed:completed})} >
    
     <Text style={styles.title}>{title}</Text>
-    <Text style={styles.sub}># Of Questions {numberOfQuestions}</Text>
-    <Text style={styles.sub}>Uploaded By :{teacher}</Text>
-    <Text style={styles.sub}>Time: 1 Hour</Text>
+
     {
       completed ?
 
@@ -58,7 +56,7 @@ export default function Home({ navigation }) {
     {
       id: "2",
       pk: 2,
-      title: "Intermediate Quiz",
+      title: "Beginner Quiz #2",
       numberOfQuestions: 10,
       teacher: "Hannah",
       questions: {},
@@ -66,8 +64,8 @@ export default function Home({ navigation }) {
     },
     {
       id: "3",
-      pk: 3,
-      title: "Intermediate  # 2",
+      pk: 2,
+      title: "Intermediate Quiz",
       numberOfQuestions: 10,
       teacher: "Hannah",
       questions: {},
@@ -75,13 +73,14 @@ export default function Home({ navigation }) {
     },
     {
       id: "4",
-      pk: 4,
-      title: "Beginner Quiz #2",
+      pk: 3,
+      title: "Intermediate  # 2",
       numberOfQuestions: 10,
       teacher: "Hannah",
       questions: {},
       completed: true
     },
+  
     {
       id: "5",
       pk: 5,
@@ -92,7 +91,7 @@ export default function Home({ navigation }) {
       completed: true
     },
     {
-      id: "6",
+      id: "5",
       pk: 6,
       title: "Adjectives/Adverbs Quiz",
       numberOfQuestions: 10,

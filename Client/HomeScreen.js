@@ -51,21 +51,21 @@ export default function App({ navigation }) {
     console.log(result);
 
     if (result) {
-     setImage(result.assets[0].uri);
-     console.log(image)
-     try{
+      setImage(result.assets[0].uri);
+      console.log(image)
+      try {
 
-       await AsyncStorage.setItem(user,JSON.stringify(result.assets[0].uri)).then(()=>console.log('saved'))
-     }
-     catch(error){
-       console.log(error)
-     }
+        await AsyncStorage.setItem(user, JSON.stringify(result.assets[0].uri)).then(() => console.log('saved'))
+      }
+      catch (error) {
+        console.log(error)
+      }
     }
   };
 
-  
 
-  
+
+
 
   const [user, setUser] = useState('');
   const [level, setLevel] = useState('');
@@ -78,8 +78,8 @@ export default function App({ navigation }) {
         const id = await AsyncStorage.getItem('userId').then((userid) => setUser(userid))
         const em = await AsyncStorage.getItem('email').then((email) => setEmail(email))
         const lv = await AsyncStorage.getItem('level').then((level) => setLevel(level))
-        const imageTemp=await AsyncStorage.getItem(user).then((img)=>{setImage(JSON.parse(img));return img})
-        .then((img)=>img?null:setImage(defaultImage))
+        const imageTemp = await AsyncStorage.getItem(user).then((img) => { setImage(JSON.parse(img)); return img })
+          .then((img) => img ? null : setImage(defaultImage))
         return id
       }
       catch {
@@ -88,11 +88,11 @@ export default function App({ navigation }) {
       }
     }
     startupGetter()
-  },[])
+  }, [])
 
   const TabButton = (currentTab, setCurrentTab, title) => {
     const navigation = useNavigation();
-  
+
     return (
       <TouchableOpacity onPress={() => {
         if (title == "LogOut") {
@@ -112,24 +112,24 @@ export default function App({ navigation }) {
           borderRadius: 8,
           marginTop: 15
         }}>
-  
+
           {/* <Image source={image} style={{
             width: 25, height: 25,
             tintColor: currentTab == title ? "#5c0931" : "white"
           }}></Image> */}
-  
+
           <Text style={{
             fontSize: 15,
             fontWeight: 'bold',
             paddingLeft: 15,
             color: currentTab == title ? "#5c0931" : "white"
           }}>{title}</Text>
-  
+
         </View>
       </TouchableOpacity>
     );
   }
-  
+
 
 
   return (
@@ -137,9 +137,9 @@ export default function App({ navigation }) {
     <SafeAreaView style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15, marginTop: 20, }}>
-        <Pressable style={{width:100,height:100,borderRadius:50,overflow:'hidden'}} onPress={()=>pickImage()}>
+        <Pressable style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }} onPress={() => pickImage()}>
 
-        {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+          {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
         </Pressable>
 
 
@@ -149,7 +149,7 @@ export default function App({ navigation }) {
           color: 'white',
           marginTop: 10,
           paddingLeft: 10,
-          paddingTop:10
+          paddingTop: 10
         }}>{user}</Text>
         <Text style={{
           fontSize: 15,
@@ -177,7 +177,7 @@ export default function App({ navigation }) {
 
           {TabButton(currentTab, setCurrentTab, "Home", home)}
           {TabButton(currentTab, setCurrentTab, "Menu", home)}
-       
+
         </View>
 
         <View>
@@ -264,52 +264,85 @@ export default function App({ navigation }) {
           </TouchableOpacity>
 
           {currentTab === "Home" ?
-            <ScrollView style={styles.box}>
+            <ScrollView style={styles.box} showsVerticalScrollIndicator={false}>
 
               <TouchableOpacity onPress={() => handleClick(1)}>
-                <ImageBackground source={photo} style={{
+                <View style={{
                   width: '100%',
                   height: 210,
                   borderRadius: 15,
                   marginTop: 25,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  backgroundColor: '#F4F4F4',
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+
                 }} imageStyle={{ borderRadius: 15 }}
                 >
                   <Image source={doc} style={{ width: '30%', height: '50%', }}></Image>
-                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}> Contents</Text>
-                </ImageBackground>
+                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}> Contents</Text>
+                </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleClick(2)} style={{ borderRadius: 15 }}>
-                <ImageBackground source={photo} style={{
+              <TouchableOpacity onPress={() => handleClick(2)} >
+                <View style={{
                   width: '100%',
                   height: 210,
                   borderRadius: 15,
                   marginTop: 25,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  backgroundColor: '#F4F4F4',
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+
                 }} imageStyle={{ borderRadius: 15 }}
                 ><Image source={music} style={{ width: '30%', height: '50%', }}></Image>
-                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Audio</Text>
-                </ImageBackground>
+                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Audio</Text>
+                </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleClick(3)}>
-                <ImageBackground source={photo} style={{
+              <View style={{
                   width: '100%',
                   height: 210,
                   borderRadius: 15,
                   marginTop: 25,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  backgroundColor: '#F4F4F4',
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+
                 }} imageStyle={{ borderRadius: 15 }}
                 ><Image source={quiz} style={{ width: '30%', height: '50%', }}></Image>
-                  <Text style={{ fontSize: 20, color: 'white', marginTop: 10 }}>Quiz</Text>
-                </ImageBackground>
+                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Quiz</Text>
+                </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleClick}>
               </TouchableOpacity>
             </ScrollView>
-            :<View style={{ height: "100%" }}><Example /></View>}
+            : <View style={{ height: "100%" }}><Example tabId={tabId}/></View>}
         </Animated.View>
       </Animated.View>
     </SafeAreaView >

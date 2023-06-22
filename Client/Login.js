@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'native-base';
-import { Dimensions, ImageBackground, Image } from 'react-native';
+import { Dimensions, KeyboardAvoidingView,Keyboard, Image, TouchableWithoutFeedback } from 'react-native';
 import { StyleSheet, Text, ScrollView, ListItem } from 'react-native';
 import { Icon } from 'native-base';
 import { Checkbox } from 'react-native-paper';
@@ -16,6 +16,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import adaptiveicon from './assets/adaptive-icon_home.png'
 import { UserContext } from './App';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function Login({ navigation }) {
     const [email, setEmail] = React.useState('');
@@ -121,6 +122,11 @@ export default function Login({ navigation }) {
     //   };
 
     return (
+        <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
 
         <ScrollView style={{ flex: 1, backgroundColor: '#fffff' }}
             showsVerticalScrollIndicator={false}>
@@ -193,6 +199,8 @@ export default function Login({ navigation }) {
             </View>
             {/* <StatusBar style="auto" /> */}
         </ScrollView>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -219,9 +227,8 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
     },
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 20,
+     flex:1,
+     
     },
     input: {
         marginBottom: 10,

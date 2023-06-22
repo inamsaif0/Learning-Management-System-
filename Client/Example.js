@@ -21,8 +21,6 @@ function Example({tabId}) {
 
     return (
       <>
-      
-
       <Tabs
       style={{backgroundColor:'white', marginTop:15, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
@@ -31,16 +29,28 @@ function Example({tabId}) {
       disableSwipe={false} 
       >
         <TabScreen label="Content" icon="file-document">
+          <View style={{flex:0.95}}>
+
+
            <Documents />
+
+           
+          </View>
         </TabScreen>
         <TabScreen label="Audio" icon="record-rec">
           <View style={{flex:0.9}}>
 
           <ListRecordings />
+          <View style={{height:50}}></View>
           </View>
         </TabScreen>
         <TabScreen label="Quiz" icon="head-question">
+          <View style={{flex:0.9}}>
+
            <Quiz/>
+           <View style={{height:40}}></View>
+
+          </View>
         </TabScreen>
       </Tabs>
         </>

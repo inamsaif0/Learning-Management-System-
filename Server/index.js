@@ -55,8 +55,8 @@ mongoose.connect("mongodb+srv://otp:inamsaif@cluster0.jnbirzy.mongodb.net/?retry
 
 app.get('/documents',async(req,res)=>{
   const {email}=req.query;
-  studentName=await findNameByEmail('userlists',email) 
-  result=await findDocuments('uploadfiles', studentName);
+  studentName=await findNameByEmail(email) 
+  result=await findDocuments(studentName);
   res.json(result)
 
 
@@ -72,7 +72,8 @@ app.get('/audio',async(req,res)=>{
     const params={
       Bucket:bucketName,
       Delimiter: '/',
-      Prefix: prefix
+      Prefix: prefix,
+      Sort:'descending'
     }
     const data = await s3.listObjects(params).promise();
     const fileKeys = data.Contents.map(obj => obj.Key);
