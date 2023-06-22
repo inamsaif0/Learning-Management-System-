@@ -73,7 +73,6 @@ app.get('/audio',async(req,res)=>{
       Bucket:bucketName,
       Delimiter: '/',
       Prefix: prefix,
-    
     }
     const data = await s3.listObjects(params).promise();
     const fileKeys = data.Contents.map(obj => obj.Key);
