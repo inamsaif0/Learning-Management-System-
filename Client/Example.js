@@ -25,7 +25,7 @@ function Example({tabId}) {
       style={{backgroundColor:'white', marginTop:15, borderRadius:10}} 
       theme={{ colors: { primary: '#5c0931' } }}
       uppercase={false}
-      defaultIndex={tabId-1}
+      defaultIndex={tabId}
       disableSwipe={false} 
       >
         <TabScreen label="Content" icon="file-document">

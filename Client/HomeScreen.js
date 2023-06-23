@@ -113,10 +113,7 @@ export default function App({ navigation }) {
           marginTop: 15
         }}>
 
-          {/* <Image source={image} style={{
-            width: 25, height: 25,
-            tintColor: currentTab == title ? "#5c0931" : "white"
-          }}></Image> */}
+
 
           <Text style={{
             fontSize: 15,
@@ -134,7 +131,7 @@ export default function App({ navigation }) {
 
   return (
 
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15, marginTop: 20, }}>
         <Pressable style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }} onPress={() => pickImage()}>
@@ -266,7 +263,7 @@ export default function App({ navigation }) {
           {currentTab === "Home" ?
             <ScrollView style={styles.box} showsVerticalScrollIndicator={false}>
 
-              <TouchableOpacity onPress={() => handleClick(1)}>
+              <TouchableOpacity onPress={() => handleClick(0)}>
                 <View style={{
                   width: '100%',
                   height: 210,
@@ -291,7 +288,7 @@ export default function App({ navigation }) {
                   <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}> Contents</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleClick(2)} >
+              <TouchableOpacity onPress={() => handleClick(1)} >
                 <View style={{
                   width: '100%',
                   height: 210,
@@ -315,7 +312,7 @@ export default function App({ navigation }) {
                   <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Audio</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleClick(3)}>
+              <TouchableOpacity onPress={() => handleClick(2)}>
               <View style={{
                   width: '100%',
                   height: 210,
@@ -339,13 +336,13 @@ export default function App({ navigation }) {
                   <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Quiz</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleClick}>
-              </TouchableOpacity>
+              <View style={{height:130}}></View>
+          
             </ScrollView>
             : <View style={{ height: "100%" }}><Example tabId={tabId}/></View>}
         </Animated.View>
       </Animated.View>
-    </SafeAreaView >
+    </View >
   );
 }
 
@@ -360,8 +357,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#5c0931',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+    height:"100%"
   },
   box: {
-    display: 'flex',
+    display: 'flex'
   }
 });

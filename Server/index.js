@@ -63,28 +63,32 @@ app.get('/documents',async(req,res)=>{
 
 })
 
-app.get('/audio',async(req,res)=>{
+app.get('/audio', async (req, res) => {
   const { email } = req.query;
   const bucketName = 'otp-mobile';
-  const prefix = "otp-audio/"+email+"/";
+  const prefix = "otp-audio/" + email + "/";
 
-  try{
-    const params={
-      Bucket:bucketName,
+  try {
+    const params = {
+      Bucket: bucketName,
       Delimiter: '/',
-      Prefix: prefix,
-      Sort:'descending'
-    }
-    const data = await s3.listObjects(params).promise();
-    const fileKeys = data.Contents.map(obj => obj.Key);
+      Prefix: prefix
+    };
+
+    const data = await s3.listObjectsV2(params).promise();
+    const audioFiles = data.Contents.filter(file => file.Key.endsWith('.m4a'));
+    
+    // Sort the audio files by LastModified date
+    audioFiles.sort((a, b) => b.LastModified - a.LastModified);
+
+    const fileKeys = audioFiles.map(obj => obj.Key);
     res.json(fileKeys);
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error retrieving files:', error);
     res.status(500).json({ error: 'Failed to retrieve files' });
   }
+});
 
-})
 const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size limit to 10MB
 
 app.post('/audio', upload.single('audio'),(req, res) => {

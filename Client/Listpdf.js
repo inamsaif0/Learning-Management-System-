@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable, Linking, ActivityIndicator } from 'react-native';
+import { Modal,RefreshControl, StyleSheet, Text, View, FlatList, Image, Pressable, Linking, ActivityIndicator, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 import pdf from './assets/pdf.png';
 import { UserContext } from './App';
@@ -16,10 +16,12 @@ export default function Listpdf() {
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [arrow, setArrow] = useState(true)
-  const [datePicked, setDatePicked] = useState(new Date(1598051730000));
+  const [datePicked, setDatePicked] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [filter, setFilter] = useState(false)
+  const [refreshing, setRefreshing] = React.useState(false)
+
 
   function setDate() {
     setShow(false);
@@ -34,8 +36,11 @@ export default function Listpdf() {
   };
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDatePicked(currentDate);
+    if(Platform.OS==='android')
+    {
+      setShow(false);
+      setFilter(!filter)
+    }
   };
 
   const showMode = (currentMode) => {
@@ -57,24 +62,31 @@ export default function Listpdf() {
     }
   }, [filter])
 
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await getDocs(email.userEmail)
+      setRefreshing(false);
+
+  }, []);
+
+
 
 
   async function handleFilter(specifiedDate) {
     try {
-      const response = await fetch(`http://172.20.10.11:3000/documents?email=${email.userEmail}`, {
+      const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/documents?email=${email.userEmail}`, {
         method: 'GET'
       });
       const data = await response.json();
-      setDocs(data);
-    if (specifiedDate && docs) {
+    if (specifiedDate) {
       const specifiedDateMinusOneDay = new Date(specifiedDate);
-      specifiedDateMinusOneDay.setDate(specifiedDateMinusOneDay.getDate() + 1);
+      specifiedDateMinusOneDay.setDate(specifiedDateMinusOneDay.getDate());
 
       const specifiedDateString = specifiedDateMinusOneDay.toISOString().split('T')[0];
 
       console.log(specifiedDateString + "date here")
 
-      const filteredDates = docs.filter((doc) => {
+      const filteredDates = data.filter((doc) => {
         console.log(doc.date)
         return doc.date.split('T')[0] === specifiedDateString;
       });
@@ -89,7 +101,7 @@ export default function Listpdf() {
 
   async function getDocs(email) {
     try {
-      const response = await fetch(`http://172.20.10.11:3000/documents?email=${email}`, { method: 'GET' })
+      const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/documents?email=${email}`, { method: 'GET' })
         .then((response) => response.json())
         .then((data) => setDocs(data))
         .then(() => setIsLoading(false))
@@ -174,12 +186,14 @@ export default function Listpdf() {
       </View>
       <FlatList
         data={docs}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
         renderItem={renderListItem}
         keyExtractor={(item) => item._id}
       />
       {show && (
         <View>
-          <Pressable onPress={() => setDate()}>
+          <Pressable onPress={() => setDate()} style={{padding:10}}>
             <AntDesign name="close" size={24} color="black" />
           </Pressable>
           <DateTimePicker

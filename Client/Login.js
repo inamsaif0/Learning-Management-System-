@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'native-base';
 import { Dimensions, KeyboardAvoidingView,Keyboard, Image, TouchableWithoutFeedback } from 'react-native';
@@ -31,6 +31,7 @@ export default function Login({ navigation }) {
 
     const [error, setError] = React.useState(false)
     const handleLogin = async () => {
+       
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
@@ -44,6 +45,9 @@ export default function Login({ navigation }) {
                     await AsyncStorage.setItem('userId', response.data.message.studentName);
                     await AsyncStorage.setItem('email', response.data.message.studentId);
                     await AsyncStorage.setItem('level', response.data.message.level);
+                    if(checked){
+                        await AsyncStorage.setItem('session',`${checked}`)      
+                    }
                     console.log('User ID set in AsyncStorage:', response.data.message._id);
                 } catch (error) {
                     console.error('Failed to set user ID in AsyncStorage:', error);
@@ -69,9 +73,19 @@ export default function Login({ navigation }) {
             
         }
     }
-    // useEffect(()=>{
-    //     router.prefetch('/users/userList')
-    // },[])
+    useEffect(()=>{
+        async function checkSession(){
+            await AsyncStorage.getItem('session')
+            .then((session)=>{
+                if(session==='true')
+                {
+                    navigation.replace('Home')
+                }
+            })
+        }
+        checkSession()
+    },[])
+
     const validateEmail = () => {
         if (!email) {
             setEmailError('Email is required');

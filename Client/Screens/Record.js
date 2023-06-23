@@ -34,7 +34,6 @@ const sendAudioToServer = async (location, email, fileName) => {
             },
         });
 
-        console.log('Server Response:', response);
     } catch (error) {
         console.error('Error sending audio to server:', error);
     }
@@ -45,6 +44,9 @@ const sendAudioToServer = async (location, email, fileName) => {
 export default function Record() {
     const email = useContext(UserContext);
 
+    const [fadeInOutAnim] = useState(new Animated.Value(0));
+
+
     const navigation = useNavigation()
 
     const [recording, setRecording] = useState();
@@ -52,7 +54,36 @@ export default function Record() {
     const [pause, setPause] = useState();
     const [location, setLocation] = useState("");
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
-    const [clear,setClear]=useState(false)
+    const [clear, setClear] = useState(false)
+    const [showNotification, setShowNotification] = useState(false);
+
+
+
+
+    const fadeIn = () => {
+        Animated.timing(fadeInOutAnim, {
+            toValue: 1,
+            duration: 500, // Fade in duration (adjust as needed)
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const fadeOut = () => {
+        Animated.timing(fadeInOutAnim, {
+            toValue: 0,
+            duration: 500, // Fade out duration (adjust as needed)
+            useNativeDriver: true,
+        }).start(() => {
+            setShowNotification(false);
+        });
+    };
+
+    React.useEffect(() => {
+        if (showNotification) {
+            fadeIn();
+            setTimeout(fadeOut, 2000); // Fade out after 2 seconds (adjust as needed)
+        }
+    }, [showNotification]);
 
     const cancelRecording = async () => {
 
@@ -104,10 +135,8 @@ export default function Record() {
             await Audio.setAudioModeAsync({
                 allowsRecordingIOS: false,
             });
-            console.log(recording)
             const uri = recording.getURI();
             setLocation(uri)
-            console.log('Recording stopped and stored at', uri);
         }
         catch (error) {
             console.error(error)
@@ -170,6 +199,7 @@ export default function Record() {
     function handleUpload() {
         sendAudioToServer(location, email.userEmail, fileName)
         cancelRecording()
+        setShowNotification(true);
     }
 
     const scaleValue = React.useRef(new Animated.Value(1)).current;
@@ -222,7 +252,7 @@ export default function Record() {
             <View style={styles.container}>
                 <TextInput
                     style={{
-                        
+
                         margin: 0,
                         padding: 5,
                         width: "90%",
@@ -274,6 +304,19 @@ export default function Record() {
         onPress={recording ? stopRecording : startRecording}
     /> */}
             </View>
+            {showNotification && (
+               <Animated.View
+               style={[
+                 styles.notificationContainer,
+                 {
+                   opacity: fadeInOutAnim,
+                 },
+               ]}
+             >
+                    <AntDesign name="checkcircleo" size={50} color="green" />
+                    <Text>Upload Complete!</Text>
+                </Animated.View>
+            )}
         </View>
     );
 }
@@ -292,5 +335,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#ecf0f1',
 
 
-    }
+    },
+    notificationContainer: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        borderRadius: 10,
+        padding: 20,
+        elevation: 5,
+        width: "80%", // Adjust the width as needed
+        alignSelf: 'center',
+        top: "40%",
+      },
 });
