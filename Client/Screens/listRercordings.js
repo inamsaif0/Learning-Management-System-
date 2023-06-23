@@ -45,7 +45,7 @@ export default function ListRecordings() {
 
     async function getAudio(email) {
         try {
-            const response = await fetch(`http://192.168.1.3:3000/audio?email=${email}`, { method: 'GET' })
+            const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/audio?email=${email}`, { method: 'GET' })
                 .then((response) => response.json())
                 .then((data) => {
                     const result = data.map(filePath => {
