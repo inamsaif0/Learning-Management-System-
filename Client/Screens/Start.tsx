@@ -10,7 +10,7 @@ interface Itest {
     answer:string
 }
 //id=2
-const test2: Itest[] = [
+const test: Itest[] = [
     {
         questionNumber: 1,
         question: "He _______ to school every day.",
@@ -83,7 +83,8 @@ const test2: Itest[] = [
     }
 ]
 //beginner 2 id=3
-const test3:Itest[]=[
+
+const test2:Itest[]=[
     {
         questionNumber: 1,
         question: "She _______________ (play) tennis yesterday.",
@@ -156,7 +157,7 @@ const test3:Itest[]=[
     }
 ]
 
-//inter level 2 id=4
+//inter level 2 id=4    beg1
 const test4:Itest[]=[
     {
         questionNumber: 1,
@@ -230,8 +231,11 @@ const test4:Itest[]=[
     }
 ]
 //id=1
-//Inter Level Quiz
-const test: Itest[] = [
+//Inter Level Quiz    //this has to change 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const test3: Itest[] = [
 
     {
         questionNumber: 1,
