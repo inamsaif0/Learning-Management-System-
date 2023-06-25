@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Animated, Pressable, Easing } from 'react-native';
+import { Text, View, StyleSheet, Animated, Pressable, Easing,ActivityIndicator } from 'react-native';
 import { Audio } from 'expo-av';
 import Timer from '../Components/Timer';
 import { AntDesign } from '@expo/vector-icons';
@@ -28,11 +28,12 @@ const sendAudioToServer = async (location, email, fileName) => {
         // Send the audio file to the Node.js server
         const response = await fetch('https://d7a5-3-35-175-207.ngrok-free.app/audio', {
             method: 'POST',
-            body: JSON.stringify({ audio: audioData, time: time, email: email, name: fileName }),
+            body: JSON.stringify({ audio: audioData, time: time, email: email, name: fileName.replace(/\s/g, '-') }),
             headers: {
                 'Content-Type': 'application/json',
             },
         });
+        return response
 
     } catch (error) {
         console.error('Error sending audio to server:', error);
@@ -56,6 +57,8 @@ export default function Record() {
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
     const [clear, setClear] = useState(false)
     const [showNotification, setShowNotification] = useState(false);
+    const [loading, setLoading] = React.useState(false);
+
 
 
 
@@ -196,10 +199,20 @@ export default function Record() {
         }
     };
 
-    function handleUpload() {
-        sendAudioToServer(location, email.userEmail, fileName)
-        cancelRecording()
-        setShowNotification(true);
+    async function handleUpload() {
+        try {
+            setLoading(true)
+            const response = await sendAudioToServer(location, email.userEmail, fileName);
+            cancelRecording();
+            setLoading(false)
+            setShowNotification(true);
+            // Handle the response if needed
+            console.log('Server response:', response);
+          } catch (error) {
+            // Handle any errors that occurred during the upload
+            console.error('Error uploading audio:', error);
+            // Optionally show an error notification or perform other error handling
+          }
     }
 
     const scaleValue = React.useRef(new Animated.Value(1)).current;
@@ -235,6 +248,16 @@ export default function Record() {
 
         ])
     );
+
+    if (loading) {
+        return (
+            <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+
+                <ActivityIndicator size="large" color="#5c0931" />
+                <Text style={{marginTop:50,padding:20,textAlign:"center",fontWeight:600}}>Please Don't Close The App Your Recording Is Being Uploaded</Text>
+            </View>
+        )
+    }
 
 
 
@@ -291,7 +314,7 @@ export default function Record() {
                         }
                     </Pressable>
 
-                    <Pressable onPress={() => navigation.navigate('listRecordings')}>
+                    <Pressable onPress={() => navigation.goBack()}>
                         <Entypo name="list" size={40} color="black" style={{}} />
                     </Pressable>
 

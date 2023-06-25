@@ -36,8 +36,24 @@ export default function App({ navigation }) {
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
   const handleClick = (tabId) => {
-    setTabId(tabId)
-    setCurrentTab('Menu');
+    if(tabId===0)
+    {
+      setTabId(tabId)
+      setCurrentTab('Notes');
+
+    }
+    if(tabId===1)
+    {
+      setTabId(tabId)
+      setCurrentTab('Recordings');
+
+    }
+    if(tabId===2)
+    {
+      setTabId(tabId)
+      setCurrentTab('Quiz');
+
+    }
   }
 
   const pickImage = async () => {
@@ -89,14 +105,44 @@ export default function App({ navigation }) {
     }
     startupGetter()
   }, [])
+  
+
+  async function handleLogout(){
+    await AsyncStorage.multiRemove(['session','userEmail'])
+    .then(()=>navigation.navigate('Login'))
+  }
 
   const TabButton = (currentTab, setCurrentTab, title) => {
     const navigation = useNavigation();
 
     return (
       <TouchableOpacity onPress={() => {
+        Animated.timing(scaleValue, {
+          toValue: showMenu ? 1 : 0.88,
+          duration: 300,
+          useNativeDriver: true
+        })
+          .start()
+
+        Animated.timing(offsetValue, {
+          // YOur Random Value...
+          toValue: showMenu ? 0 : 230,
+          duration: 300,
+          useNativeDriver: true
+        })
+          .start()
+
+        Animated.timing(closeButtonOffset, {
+          // Your Random Value...
+          toValue: !showMenu ? -30 : 0,
+          duration: 300,
+          useNativeDriver: true
+        })
+          .start()
+
+        setShowMenu(!showMenu);
         if (title == "LogOut") {
-          navigation.navigate('Login')
+          handleLogout()  
         }
         else {
           setCurrentTab(title)
@@ -134,7 +180,7 @@ export default function App({ navigation }) {
     <View style={styles.container}>
 
       <View style={{ justifyContent: 'flex-start', padding: 15, marginTop: 20, }}>
-        <Pressable style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }} onPress={() => pickImage()}>
+        <Pressable style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden',marginTop:50 }} onPress={() => pickImage()}>
 
           {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
         </Pressable>
@@ -172,8 +218,10 @@ export default function App({ navigation }) {
 
 
 
-          {TabButton(currentTab, setCurrentTab, "Home", home)}
-          {TabButton(currentTab, setCurrentTab, "Menu", home)}
+          {TabButton(currentTab, setCurrentTab, "Home")}
+          {TabButton(currentTab, setCurrentTab, "Notes")}
+          {TabButton(currentTab, setCurrentTab, "Recordings")}
+          {TabButton(currentTab, setCurrentTab, "Quiz")}
 
         </View>
 
@@ -260,7 +308,7 @@ export default function App({ navigation }) {
 
           </TouchableOpacity>
 
-          {currentTab === "Home" ?
+          {currentTab === "Home" &&
             <ScrollView style={styles.box} showsVerticalScrollIndicator={false}>
 
               <TouchableOpacity onPress={() => handleClick(0)}>
@@ -285,7 +333,7 @@ export default function App({ navigation }) {
                 }} imageStyle={{ borderRadius: 15 }}
                 >
                   <Image source={doc} style={{ width: '30%', height: '50%', }}></Image>
-                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}> Contents</Text>
+                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}> Notes</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleClick(1)} >
@@ -309,7 +357,7 @@ export default function App({ navigation }) {
 
                 }} imageStyle={{ borderRadius: 15 }}
                 ><Image source={music} style={{ width: '30%', height: '50%', }}></Image>
-                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Audio</Text>
+                  <Text style={{ fontSize: 20, color: '#5c0931', marginTop: 10 }}>Recordings</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleClick(2)}>
@@ -338,8 +386,10 @@ export default function App({ navigation }) {
               </TouchableOpacity>
               <View style={{height:130}}></View>
           
-            </ScrollView>
-            : <View style={{ height: "100%" }}><Example tabId={tabId}/></View>}
+            </ScrollView>}
+            {currentTab==='Notes'&& <View style={{ height: "100%" }}><Example handleClick={handleClick} tabId={0}/></View>}
+            {currentTab==='Recordings'&& <View style={{ height: "100%" }}><Example handleClick={handleClick} tabId={1}/></View>}
+            {currentTab==='Quiz'&& <View style={{ height: "100%" }}><Example handleClick={handleClick} tabId={2}/></View>}
         </Animated.View>
       </Animated.View>
     </View >

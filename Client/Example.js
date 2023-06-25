@@ -17,7 +17,7 @@ import Record from './Screens/Record';
 import ListRecordings from './Screens/listRercordings';
 import React from 'react';
 
-function Example({tabId}) {
+function Example({tabId,handleClick}) {
 
     return (
       <>
@@ -28,28 +28,21 @@ function Example({tabId}) {
       defaultIndex={tabId}
       disableSwipe={false} 
       >
-        <TabScreen label="Content" icon="file-document">
+        <TabScreen onPress={()=>handleClick(0)} label="Notes" icon="file-document">
           <View style={{flex:0.95}}>
-
-
            <Documents />
-
-           
           </View>
         </TabScreen>
-        <TabScreen label="Audio" icon="record-rec">
+        <TabScreen onPress={()=>handleClick(1)} label="Recordings" icon="record-rec">
           <View style={{flex:0.9}}>
-
           <ListRecordings />
           <View style={{height:50}}></View>
           </View>
         </TabScreen>
-        <TabScreen label="Quiz" icon="head-question">
+        <TabScreen onPress={()=>handleClick(2)} label="Quiz" icon="head-question">
           <View style={{flex:0.9}}>
-
            <Quiz/>
            <View style={{height:40}}></View>
-
           </View>
         </TabScreen>
       </Tabs>

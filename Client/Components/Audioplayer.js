@@ -62,15 +62,8 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
     }
 
   useEffect(() => {
-    //console.log(audioFile)
-    
-      Parsedate()
-    
 
-    // Load the audio file when the component mounts
-    loadAudio();
-
-    // Clean up resources when the component unmounts
+        loadAudio();
     return () => {
       unloadAudio();
     };
@@ -99,8 +92,8 @@ const AudioPlayer = ({ audioFile, title, getActive, index, user,active }) => {
 
   const loadAudio = async () => {
     try {
-      const { sound } = await Audio.Sound.createAsync({ uri: audioFile }, {}, updatePlaybackStatus);
-      setSound(sound);
+      await Audio.Sound.createAsync({ uri: audioFile }, {}, updatePlaybackStatus)
+      .then(({sound})=>setSound(sound))
     } catch (error) {
       console.error('Error loading audio:', error);
     }

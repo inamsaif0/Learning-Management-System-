@@ -47,6 +47,7 @@ export default function Login({ navigation }) {
                     await AsyncStorage.setItem('level', response.data.message.level);
                     if(checked){
                         await AsyncStorage.setItem('session',`${checked}`)      
+                        await AsyncStorage.setItem('sessionEmail',`${response.data.message.studentId}`)      
                     }
                     console.log('User ID set in AsyncStorage:', response.data.message._id);
                 } catch (error) {
@@ -82,6 +83,7 @@ export default function Login({ navigation }) {
                     navigation.replace('Home')
                 }
             })
+            await AsyncStorage.getItem('sessionEmail').then((userEmail)=>setUserEmail(userEmail))
         }
         checkSession()
     },[])

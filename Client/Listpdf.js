@@ -6,6 +6,7 @@ import { UserContext } from './App';
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'native-base';
+import docWord from './assets/docWord.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
 export default function Listpdf() {
   const email = React.useContext(UserContext);
@@ -36,11 +37,18 @@ export default function Listpdf() {
   };
 
   const onChange = (event, selectedDate) => {
+
     if(Platform.OS==='android')
     {
+      setFilter(true)
+      const currentDate = selectedDate;
       setShow(false);
-      setFilter(!filter)
+      setDate(currentDate);
     }
+    setFilter(true)
+    const currentDate = selectedDate;
+    setDatePicked(currentDate);
+
   };
 
   const showMode = (currentMode) => {
@@ -53,14 +61,17 @@ export default function Listpdf() {
 
   React.useEffect(() => {
     console.log(datePicked)
-    try {
-      handleFilter(datePicked)
-    }
-    catch (error) {
-      console.log(error)
+    if(filter){
 
+      try {
+        handleFilter(datePicked)
+      }
+      catch (error) {
+      console.log(error)
+      
     }
-  }, [filter])
+  }
+  }, [filter,datePicked])
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -129,9 +140,8 @@ export default function Listpdf() {
   };
 
   function renderListItem({ item }) {
-    if (!item.filename.split('.').pop() === "pdf") {
-      setNonPdf(true);
-    }
+    const isPdf = item.filename.split('.').pop().toLowerCase() === 'pdf';
+
 
 
 
@@ -139,10 +149,11 @@ export default function Listpdf() {
     return (
       <View>
         <Pressable onPress={() => {
-          !notPdf ? openModal("http://docs.google.com/gview?embedded=true&url=" + item.fileUrl) : Linking.openURL(item.fileUrl);
-          console.log(item.fileUrl);
-        }} style={styles.listItem}>
-          <Image source={pdf} style={{ width: 60, height: 60, borderRadius: 30 }} />
+          openModal("http://docs.google.com/gview?embedded=true&url=" + item.fileUrl);
+        }}
+     
+        style={styles.listItem}>
+          <Image source={isPdf?pdf:docWord} style={{ width: 60, height: 60, borderRadius: 30 }} />
           <View style={{ alignItems: "flex-start", marginLeft: 10, justifyContent: 'space-evenly', flex: 1 }}>
             <Text style={{ fontWeight: "bold" }}>{item.filename}</Text>
             <Text style={{ fontWeight: "bold" }}>Teacher: {item.teacher}</Text>
@@ -193,15 +204,17 @@ export default function Listpdf() {
       />
       {show && (
         <View>
-          <Pressable onPress={() => setDate()} style={{padding:10}}>
+          {Platform.OS==='ios'&&<Pressable onPress={() => setDate()} style={{padding:10}}>
             <AntDesign name="close" size={24} color="black" />
-          </Pressable>
+          </Pressable>}
           <DateTimePicker
+            
             testID="dateTimePicker"
             value={datePicked}
             mode={'date'}
             onChange={onChange}
             display='inline'
+            style={{paddingTop:40}}
 
           />
         </View>
