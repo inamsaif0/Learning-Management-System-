@@ -7,7 +7,7 @@ import AudioPlayer from '../Components/Audioplayer';
 import { EmailContext } from '../Login';
 import { UserContext } from '../App';
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useIsFocused } from '@react-navigation/native';
 
 
 
@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function ListRecordings() {
     const email = React.useContext(UserContext);
     const navigation = useNavigation();
+    const isFocused=useIsFocused();
 
     const [recordings, setRecordings] = React.useState([])
     const [active, setActive] = React.useState(false);
@@ -39,12 +40,9 @@ export default function ListRecordings() {
 
     };
 
-
-
-
-
     async function getAudio(email) {
         try {
+            setLoading(true)
             const response = await fetch(`https://d7a5-3-35-175-207.ngrok-free.app/audio?email=${email}`, { method: 'GET' })
                 .then((response) => response.json())
                 .then((data) => {
@@ -80,7 +78,7 @@ export default function ListRecordings() {
 
 
 
-    }, [])
+    }, [isFocused])
 
     if (loading) {
         return (
