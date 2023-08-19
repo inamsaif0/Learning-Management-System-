@@ -32,7 +32,7 @@ app.use(express.urlencoded({limit: '25mb', extended: true}));
 
 
 
-mongoose.connect("mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://otp:inam1234<password>@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, (err) => {
