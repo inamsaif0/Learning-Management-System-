@@ -32,13 +32,17 @@ app.use(express.urlencoded({limit: '25mb', extended: true}));
 
 
 
-mongoose.connect("mongodb+srv://otp:inamsaif@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority",{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-    useNewUrlParser:true
-});()=>{
-    console.log("connected to DB") // should update
-}
+mongoose.connect("mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}, (err) => {
+  if (err) {
+    console.error("Error connecting to DB:", err);
+  } else {
+    console.log("Connected to DB");
+  }
+});
+
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
