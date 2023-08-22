@@ -8,8 +8,6 @@ const path = require('path');
 const filesupload = require('./Models/fileupload');
 const fileupload = require("./Models/fileupload");
 const { findDocuments,findNameByEmail } = require('./mongoGetDocs');
-const { MongoClient } = require('mongodb');
-
 // const SP = require('./Models/ServiceProvider.model')
 // const References = require('./Models/References')
 // const CompletedTransaction = require("./Models/CompletedTransactions");
