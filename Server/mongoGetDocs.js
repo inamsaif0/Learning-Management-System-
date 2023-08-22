@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 const userLists = require('./Models/userLists');
 
-const uri = ''; // Replace with your MongoDB connection URI
+const uri = 'mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URI
 const dbName = 'test'; // Replace with your database name
 
 // Create a MongoDB connection pool

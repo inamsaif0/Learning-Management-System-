@@ -8,6 +8,8 @@ const path = require('path');
 const filesupload = require('./Models/fileupload');
 const fileupload = require("./Models/fileupload");
 const { findDocuments,findNameByEmail } = require('./mongoGetDocs');
+const { MongoClient } = require('mongodb');
+
 // const SP = require('./Models/ServiceProvider.model')
 // const References = require('./Models/References')
 // const CompletedTransaction = require("./Models/CompletedTransactions");
@@ -32,17 +34,45 @@ app.use(express.urlencoded({limit: '25mb', extended: true}));
 
 
 
-mongoose.connect("mongodb+srv://otp:inam1234<password>@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
+// mongoose.connect("mongodb+srv://otp:inam1234<password>@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// }, (err) => {
+//   if (err) {
+//     console.error("Error connecting to DB:", err);
+//   } else {
+//     console.log("Connected to DB");
+//   }
+// });
+
+const uri = 'mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URI
+const dbName = 'test'; // Replace with your database name
+
+// Create a MongoDB connection pool
+const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}, (err) => {
-  if (err) {
-    console.error("Error connecting to DB:", err);
-  } else {
-    console.log("Connected to DB");
-  }
-});
+  maxPoolSize: 10, // Adjust the maximum pool size as per your requirements
+};
 
+const client = new MongoClient(uri, options);
+let db; // Declare a global variable to store the database instance
+
+// Function to connect to the MongoDB database
+const connectToDatabase = async () => {
+  try {
+    if (!db) {
+      await client.connect();
+      db = client.db(dbName);
+      console.log('Connected to the database');
+    }
+    return db;
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+};
+
+connectToDatabase();
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
