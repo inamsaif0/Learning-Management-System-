@@ -1,5 +1,5 @@
 Client/node_modules/
-Server/node_modules
+Server/node_modules/
 Client/.expo/
 Client/dist/
 npm-debug.*
