@@ -1,4 +1,4 @@
-const apiUrl='https://d7a5-3-35-175-207.ngrok-free.app/api';
+const apiUrl='https://0ae5-3-35-175-207.ngrok-free.app/api';
 
 
 export default async function postDataToServer(data:object){
