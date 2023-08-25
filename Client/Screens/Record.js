@@ -26,7 +26,7 @@ const sendAudioToServer = async (location, email, fileName) => {
         const time = new Date()
 
         // Send the audio file to the Node.js server
-        const response = await fetch('https://d7a5-3-35-175-207.ngrok-free.app/audio', {
+        const response = await fetch('http://3.35.175.207:3000/audio', {
             method: 'POST',
             body: JSON.stringify({ audio: audioData, time: time, email: email, name: fileName.replace(/\s/g, '-') }),
             headers: {

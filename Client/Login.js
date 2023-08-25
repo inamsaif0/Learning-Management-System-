@@ -35,7 +35,7 @@ export default function Login({ navigation }) {
         validateEmail();
         validatePassword();
         if (!emailError && !passwordError) {
-            const response = await axios.post('https://d7a5-3-35-175-207.ngrok-free.app/login', {
+            const response = await axios.post('http://3.35.175.207:3000/login', {
                 email: email,
                 password: password
             })
