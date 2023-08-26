@@ -34,45 +34,43 @@ app.use(express.urlencoded({limit: '25mb', extended: true}));
 
 
 
-// mongoose.connect("mongodb+srv://otp:inam1234<password>@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority",{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+    useNewUrlParser:true
+}).then(()=>{
+    console.log("connected to DB") // should update
+})
+
+
+// const uri = 'mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URI
+// const dbName = 'test'; // Replace with your database name
+
+// // Create a MongoDB connection pool
+// const options = {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
-// }, (err) => {
-//   if (err) {
-//     console.error("Error connecting to DB:", err);
-//   } else {
-//     console.log("Connected to DB");
+//   maxPoolSize: 10, // Adjust the maximum pool size as per your requirements
+// };
+
+// const client = new MongoClient(uri, options);
+// let db; // Declare a global variable to store the database instance
+
+// // Function to connect to the MongoDB database
+// const connectToDatabase = async () => {
+//   try {
+//     if (!db) {
+//       await client.connect();
+//       db = client.db(dbName);
+//       console.log('Connected to the database');
+//     }
+//     return db;
+//   } catch (error) {
+//     console.error('Error connecting to the database:', error);
 //   }
-// });
+// };
 
-const uri = 'mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URI
-const dbName = 'test'; // Replace with your database name
-
-// Create a MongoDB connection pool
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  maxPoolSize: 10, // Adjust the maximum pool size as per your requirements
-};
-
-const client = new MongoClient(uri, options);
-let db; // Declare a global variable to store the database instance
-
-// Function to connect to the MongoDB database
-const connectToDatabase = async () => {
-  try {
-    if (!db) {
-      await client.connect();
-      db = client.db(dbName);
-      console.log('Connected to the database');
-    }
-    return db;
-  } catch (error) {
-    console.error('Error connecting to the database:', error);
-  }
-};
-
-connectToDatabase();
+// connectToDatabase();
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -222,41 +220,75 @@ app.post('/audio', upload.single('audio'),(req, res) => {
 //   //   return res.status(500).json({ error: 'Failed to upload file' });
 //   // }
 // });
-
-
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    console.log(email+password)
-    try {
-      console.log("login happening")
-      const user = await userList.findOne({ studentId: email, password: password });
-      console.log(user)
-      if (user.status===true) {
+  const { email, password } = req.body;
+  
+  try {
+    console.log("Login attempt for email: " + email);
+    
+    // Find the user in the database
+    const user = await userList.findOne({ studentId: email, password: password });
+    
+    if (user) {
+      if (user.status === true) {
         res.json({
           success: true,
           message: user
         });
-      }
-      else if(user.status===false){
-        res.json({
-          success:false,
-          message:"blocked"
-        })
-
-      }
-      else {
+      } else {
         res.json({
           success: false,
-          message: 'Invalid Email or Password'
+          message: "Blocked"
         });
       }
-    } catch (err) {
+    } else {
       res.json({
         success: false,
-        message: err.message
+        message: 'Invalid Email or Password'
       });
     }
-  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
+});
+
+
+// app.post('/login', async (req, res) => {
+//     const { email, password } = req.body;
+//     console.log(email+password)
+//     try {
+//       console.log("login happening")
+//       const user = await userList.findOne({ studentId: email, password: password });
+//       console.log(user)
+//       if (user.status===true) {
+//         res.json({
+//           success: true,
+//           message: user
+//         });
+//       }
+//       else if(user.status===false){
+//         res.json({
+//           success:false,
+//           message:"blocked"
+//         })
+
+//       }
+//       else {
+//         res.json({
+//           success: false,
+//           message: 'Invalid Email or Password'
+//         });
+//       }
+//     } catch (err) {
+//       res.json({
+//         success: false,
+//         message: err.message
+//       });
+//     }
+//   });
   
 
   ///////////////////////////////////////////////////////////////////////
