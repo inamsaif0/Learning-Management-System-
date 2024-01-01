@@ -14,8 +14,8 @@ const { findDocuments,findNameByEmail } = require('./mongoGetDocs');
 
 
 const s3 = new AWS.S3({
-  accessKeyId: "AKIA5FUXJXFEIHM7O4FR",
-  secretAccessKey: "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",
+  accessKeyId: "",
+  secretAccessKey: "",
   region:'ap-northeast-1'
   });
 
@@ -43,7 +43,7 @@ app.use(express.urlencoded({limit: '25mb', extended: true}));
 //   }
 // });
 
-const uri = 'mongodb+srv://otp:inam1234@cluster0.jnbirzy.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URI
+const uri = ''; // Replace with your MongoDB connection URI
 const dbName = 'test'; // Replace with your database name
 
 // Create a MongoDB connection pool
